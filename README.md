@@ -1,3 +1,14 @@
+# Liberu CMS
+
+### Other active projects
+* https://github.com/liberu-accounting/accounting-laravel
+* https://github.com/liberu-automation/automation-laravel
+* https://github.com/liberu-crm/crm-laravel
+* https://github.com/liberu-ecommerce/ecommerce-laravel
+* https://github.com/liberu-maintenance/maintenance-laravel
+* https://github.com/liberu-real-estate/real-estate-laravel
+
+
 ### Description
 Welcome to Liberu CMS, our forward-thinking open-source project designed to empower content creators and administrators alike. Leveraging the dynamic capabilities of Laravel 11, PHP 8.3, Livewire 3, and Filament 3, Liberu CMS is not just a content management system – it's a versatile and intuitive platform crafted to elevate the creation, organization, and delivery of digital content.
 
