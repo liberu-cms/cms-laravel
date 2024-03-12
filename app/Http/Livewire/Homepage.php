@@ -1,3 +1,7 @@
+/**
+ * Livewire component for rendering the homepage of the application.
+ * This includes displaying featured posts.
+ */
 &lt;?php
 
 namespace App\Http\Livewire;
@@ -14,6 +18,15 @@ class Homepage extends Component
         $this->featuredPosts = Post::where('is_featured', true)->get();
     }
 
+    public function render()
+    {
+        return view('livewire.homepage', ['featuredPosts' => $this->featuredPosts]);
+    }
+}
+    {
+        return view('livewire.homepage', ['featuredPosts' => $this->featuredPosts]);
+    }
+}
     public function render()
     {
         return view('livewire.homepage', ['featuredPosts' => $this->featuredPosts]);
