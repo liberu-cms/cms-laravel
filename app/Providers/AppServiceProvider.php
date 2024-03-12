@@ -22,3 +22,16 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 }
+use App\Models\Page;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Page::creating(function ($page) {
+            if (empty($page->slug)) {
+                $page->slug = \Str::slug($page->title);
+            }
+        });
+    }
