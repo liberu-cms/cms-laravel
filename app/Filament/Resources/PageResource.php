@@ -11,6 +11,11 @@ use Filament\Resources\Table;
 use Filament\Tables;
 
 class PageResource extends Resource
+/**
+ * PageResource class.
+ *
+ * This class defines the Filament resource for managing pages, including form and table configurations.
+ */
 {
     protected static $model = Page::class;
 
@@ -32,6 +37,12 @@ class PageResource extends Resource
                     ->relationship('user', 'name')
                     ->required(),
                 Forms\Components\Select::make('category_id')
+    /**
+     * Configures the form used for creating and editing pages.
+     * 
+     * @param Form $form The form object to be configured.
+     * @return Form The configured form object with fields for the page's title, content, slug, published date, user, and category.
+     */
                     ->relationship('category', 'name')
                     ->required(),
             ]);
@@ -64,3 +75,14 @@ class PageResource extends Resource
         ];
     }
 }
+    /**
+     * Configures the table used for listing pages.
+     * 
+     * @param Table $table The table object to be configured.
+     * @return Table The configured table object with columns for the page's title, slug, published date, author, and category.
+     */
+    /**
+     * Returns an array of page routes for the resource.
+     * 
+     * @return array The array of page routes.
+     */

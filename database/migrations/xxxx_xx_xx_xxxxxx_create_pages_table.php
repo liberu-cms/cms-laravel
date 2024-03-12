@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Migration for creating the 'pages' table in the database.
+ *
+ * This migration file is responsible for creating the 'pages' table with fields for title, content, slug, published_at, user_id, and category_id.
+ */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +26,16 @@ class CreatePagesTable extends Migration
         });
     }
 
+    public function down()
+    {
+        Schema::dropIfExists('pages');
+    }
+}
+    public function down()
+    {
+        Schema::dropIfExists('pages');
+    }
+}
     public function down()
     {
         Schema::dropIfExists('pages');

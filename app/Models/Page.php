@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Page Model.
+ *
+ * Represents the Page entity in the database with relationships to User and Category models.
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +29,16 @@ class Page extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
     public function user()
     {
         return $this->belongsTo(User::class);
