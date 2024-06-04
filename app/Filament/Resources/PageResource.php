@@ -4,17 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Page;
-use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class PageResource extends Resource
 {
-    protected static $model = Page::class;
+    protected static ?string $model = Page::class;
 
-    protected static function form(Form $form): Form
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -37,7 +36,7 @@ class PageResource extends Resource
             ]);
     }
 
-    protected static function table(Table $table): Table
+    public static function table(Table $table): Table
     {
         return $table
             ->columns([
