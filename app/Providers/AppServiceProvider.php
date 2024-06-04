@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\Page;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 }
-use App\Models\Page;
 
     /**
      * Bootstrap any application services.
