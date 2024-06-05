@@ -62,4 +62,9 @@ class PageResource extends Resource
             Pages\EditPage::route('/{record}/edit'),
         ];
     }
+
+    public static function isDeferred(): bool
+    {
+        return false;
+    }
 }
