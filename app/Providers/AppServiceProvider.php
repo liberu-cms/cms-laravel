@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * AppServiceProvider class.
+ *
+ * Used for application-level service registration and bootstrapping services, including setting up model event listeners.
+ */
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
