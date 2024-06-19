@@ -12,5 +12,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', \App\Http\Livewire\Homepage::class);
+// Route::get('/', \App\Http\Livewire\Homepage::class);
+Route::get('/', function () {
+    return view('welcome');
+});
