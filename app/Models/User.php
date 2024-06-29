@@ -2,16 +2,40 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use JoelButcher\Socialstream\HasConnectedAccounts;
+use JoelButcher\Socialstream\SetsProfilePhotoFromUrl;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens;
+    use HasConnectedAccounts;
+    use HasRoles;
+    use HasFactory;
+    use HasProfilePhoto {
+        HasProfilePhoto::profilePhotoUrl as getPhotoUrl;
+    }
+    use Notifiable;
+    use SetsProfilePhotoFromUrl;
+    use TwoFactorAuthenticatable;
+    use HasTeams;
+
+    /**
+     * Get the teams the user belongs to.
+     */
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_user')->withTimestamps();
+    }
+    use Laravel\Jetstream\HasTeams;
 
     /**
      * The attributes that are mass assignable.
@@ -25,22 +49,53 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes that should be hidden for arrays.
      *
      * @var array<int, string>
      */
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
-     * The attributes that should be cast.
+     * The accessors to append to the model's array form.
      *
-     * @var array<string, string>
+     * @var array<int, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+    protected $appends = [
+        'profile_photo_url',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+        ];
+    }
+
+    /**
+     * Get the URL to the user's profile photo.
+     */
+    public function profilePhotoUrl(): Attribute
+    {
+        return filter_var($this->profile_photo_path, FILTER_VALIDATE_URL)
+            ? Attribute::get(fn () => $this->profile_photo_path)
+            : $this->getPhotoUrl();
+    }
+
+    /**
+     * Get the teams the user owns.
+     */
+    public function ownedTeams()
+    {
+        return $this->hasMany(Team::class);
+    }
 }
