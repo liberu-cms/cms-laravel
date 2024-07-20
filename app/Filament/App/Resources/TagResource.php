@@ -10,9 +10,9 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Admin\Resources\TagResource\Pages;
+use App\Filament\App\Resources\TagResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Admin\Resources\TagResource\RelationManagers;
+use App\Filament\App\Resources\TagResource\RelationManagers;
 
 class TagResource extends Resource
 {
