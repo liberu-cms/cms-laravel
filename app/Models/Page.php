@@ -3,7 +3,7 @@
 /**
  * Page Model.
  *
- * Represents the Page entity in the database with relationships to User and Category models.
+ * Represents the Page entity in the database with relationships to User, Category, and Tag models.
  */
 
 namespace App\Models;
@@ -24,6 +24,10 @@ class Page extends Model
         'category_id',
     ];
 
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -32,6 +36,11 @@ class Page extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }
     public function user()

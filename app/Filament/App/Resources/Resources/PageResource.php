@@ -18,6 +18,8 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -36,14 +38,10 @@ class PageResource extends Resource
                     ->relationship('user', 'name')
                     ->required(),
                 Forms\Components\Select::make('category_id')
-    /**
-     * Configures the form used for creating and editing pages.
-     * 
-     * @param Form $form The form object to be configured.
-     * @return Form The configured form object with fields for the page's title, content, slug, published date, user, and category.
-     */
                     ->relationship('category', 'name')
                     ->required(),
+                Forms\Components\TagsInput::make('tags')
+                    ->relationship('tags', 'name'),
             ]);
     }
 
@@ -51,8 +49,8 @@ class PageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('slug'),
+                Tables\Columns\TextColumn::make('title')->searchable(),
+                Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\TextColumn::make('published_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('user.name')
@@ -62,31 +60,39 @@ class PageResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
         return [
-            Pages\ListPages::route('/'),
-            Pages\CreatePage::route('/create'),
-            Pages\EditPage::route('/{record}/edit'),
+            'index' => Pages\ListPages::route('/'),
+            'create' => Pages\CreatePage::route('/create'),
+            'edit' => Pages\EditPage::route('/{record}/edit'),
         ];
-    }
-
-    public static function isDeferred(): bool
-    {
-        return false;
     }
 }
     /**
      * Configures the table used for listing pages.
-     * 
+     *
      * @param Table $table The table object to be configured.
      * @return Table The configured table object with columns for the page's title, slug, published date, author, and category.
      */
     /**
      * Returns an array of page routes for the resource.
-     * 
+     *
      * @return array The array of page routes.
      */

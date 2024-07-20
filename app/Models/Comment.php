@@ -9,12 +9,12 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'comment_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'content_id',
-        'author_id',
-        'comment_body',
+        'user_id',
+        'body',
     ];
 
     public function content()
@@ -22,10 +22,8 @@ class Comment extends Model
         return $this->belongsTo(Content::class);
     }
 
-    public function author()
+    public function user()
     {
-        return $this->belongsTo(Author::class);
+        return $this->belongsTo(User::class);
     }
-
-    
 }

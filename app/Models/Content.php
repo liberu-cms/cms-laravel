@@ -9,27 +9,31 @@ class Content extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'content_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'content_title',
-        'content_body',
+        'title',
+        'body',
         'author_id',
-        'published_date',
-        'content_type',
+        'published_at',
+        'type',
         'category_id',
-        'content_status',
+        'status',
         'featured_image_url',
+    ];
+
+    protected $casts = [
+        'published_at' => 'datetime',
     ];
 
     public function author()
     {
-        return $this->belongsTo(Author::class);
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function category()
     {
-        return $this->belongsTo(ContentCategory::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function comments()
@@ -37,8 +41,8 @@ class Content extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function tag()
+    public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }
