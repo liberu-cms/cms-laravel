@@ -23,12 +23,3 @@ class Homepage extends Component
         return view('livewire.homepage', ['featuredPosts' => $this->featuredPosts]);
     }
 }
-    {
-        return view('livewire.homepage', ['featuredPosts' => $this->featuredPosts]);
-    }
-}
-    public function render()
-    {
-        return view('livewire.homepage', ['featuredPosts' => $this->featuredPosts]);
-    }
-}
