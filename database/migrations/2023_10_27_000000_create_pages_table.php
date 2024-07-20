@@ -21,7 +21,7 @@ class CreatePagesTable extends Migration
             $table->string('slug')->unique();
             $table->timestamp('published_at')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }
