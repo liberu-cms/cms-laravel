@@ -1,8 +1,9 @@
+<?php
+
 /**
  * Livewire component for rendering the homepage of the application.
  * This includes displaying featured posts.
  */
-&lt;?php
 
 namespace App\Http\Livewire;
 
