@@ -31,13 +31,3 @@ class CreatePagesTable extends Migration
         Schema::dropIfExists('pages');
     }
 }
-    public function down()
-    {
-        Schema::dropIfExists('pages');
-    }
-}
-    public function down()
-    {
-        Schema::dropIfExists('pages');
-    }
-}
