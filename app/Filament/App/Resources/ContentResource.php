@@ -8,65 +8,45 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BooleanColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ContentResource extends Resource
 {
     protected static ?string $model = Content::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
-    protected static ?string $navigationLabel = 'Content';
-
-    protected static ?string $recordTitleAttribute = 'content_title';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('content_title')
+                Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\RichEditor::make('body')
+                    ->required(),
                 Forms\Components\Select::make('author_id')
-                    ->relationship('author', 'author_name')
-                    ->required(),
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'content_category_name')
-                    ->required(),
-                Forms\Components\RichEditor::make('content_body')
-                    ->required()
-                    ->columnSpanFull()
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, $livewire) {
-                        $livewire->emit('updatePreview', $state);
-                    }),
-                Forms\Components\View::make('livewire.content-preview')
-                    ->label('Preview')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('meta_title')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('meta_description')
-                    ->maxLength(65535),
-                Forms\Components\Toggle::make('is_featured')
+                    ->relationship('author', 'name')
                     ->required(),
                 Forms\Components\DateTimePicker::make('published_at'),
-                Forms\Components\Select::make('content_status')
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'post' => 'Post',
+                        'page' => 'Page',
+                    ])
+                    ->required(),
+                Forms\Components\Select::make('category_id')
+                    ->relationship('category', 'name'),
+                Forms\Components\Select::make('status')
                     ->options([
                         'draft' => 'Draft',
                         'published' => 'Published',
-                        'archived' => 'Archived',
-                    ]),
+                    ])
+                    ->required(),
                 Forms\Components\FileUpload::make('featured_image_url')
-                    ->image()
-                    ->directory('content-images')
-                    ->label('Featured Image'),
-                Forms\Components\TagsInput::make('tag')
-                    ->label('Tags')
-                    ->separator(',')
-                    ->relationship('tag', 'tag_name'),
+                    ->image(),
             ]);
     }
 
@@ -74,37 +54,27 @@ class ContentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('content_title')
-                    ->label('Content Title')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('author.name')
                     ->sortable(),
-                TextColumn::make('author.author_name')
-                    ->label('Author')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('type')
                     ->sortable(),
-                TextColumn::make('category.content_category_name')
-                    ->label('Category')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('status')
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('content_status')
-                    ->label('Content Status')
-                    ->colors([
-                        'draft' => 'warning',
-                        'published' => 'success',
-                        'archived' => 'danger',
-                    ]),
-                BooleanColumn::make('is_featured')
-                    ->label('Is Featured')
-                    ->trueValue(true)
-                    ->falseValue(false)
+                Tables\Columns\TextColumn::make('published_at')
+                    ->dateTime()
                     ->sortable(),
-                ImageColumn::make('featured_image_url')
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('version_history')
+                    ->url(fn (Content $record): string => route('filament.app.resources.contents.version-history', $record))
+                    ->icon('heroicon-o-clock')
+                    ->label('Version History'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -126,6 +96,7 @@ class ContentResource extends Resource
             'index' => Pages\ListContents::route('/'),
             'create' => Pages\CreateContent::route('/create'),
             'edit' => Pages\EditContent::route('/{record}/edit'),
+            'version-history' => Pages\ContentVersionHistory::route('/{record}/version-history'),
         ];
     }
 }
