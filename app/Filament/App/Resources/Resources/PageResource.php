@@ -2,19 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\App\Resources\PageResource\Pages;
+use App\Filament\Resources\PageResource\Pages;
 use App\Models\Page;
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
 class PageResource extends Resource
-/**
- * PageResource class.
- *
- * This class defines the Filament resource for managing pages, including form and table configurations.
- */
 {
     protected static ?string $model = Page::class;
 
@@ -31,15 +27,18 @@ class PageResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('slug')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->unique(Page::class, 'slug', ignoreRecord: true),
                 Forms\Components\DateTimePicker::make('published_at')
                     ->required(),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
-                    ->required(),
+                    ->required()
+                    ->searchable(),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
-                    ->required(),
+                    ->required()
+                    ->searchable(),
                 Forms\Components\TagsInput::make('tags')
                     ->relationship('tags', 'name'),
             ]);
@@ -49,23 +48,38 @@ class PageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')->searchable(),
-                Tables\Columns\TextColumn::make('slug')->searchable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('slug')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime(),
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Author'),
+                    ->label('Author')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('Category'),
+                    ->label('Category')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('category')
+                    ->relationship('category', 'name'),
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
@@ -85,14 +99,3 @@ class PageResource extends Resource
         ];
     }
 }
-    /**
-     * Configures the table used for listing pages.
-     *
-     * @param Table $table The table object to be configured.
-     * @return Table The configured table object with columns for the page's title, slug, published date, author, and category.
-     */
-    /**
-     * Returns an array of page routes for the resource.
-     *
-     * @return array The array of page routes.
-     */
