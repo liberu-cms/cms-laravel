@@ -11,8 +11,8 @@ use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Admin\Resources\ContentCategoryResource\Pages;
-use App\Filament\Admin\Resources\ContentCategoryResource\RelationManagers;
+use App\Filament\App\Resources\ContentCategoryResource\Pages;
+use App\Filament\App\Resources\ContentCategoryResource\RelationManagers;
 
 class ContentCategoryResource extends Resource
 {
