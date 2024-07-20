@@ -27,6 +27,10 @@ class ContentResource extends Resource
                     ->maxLength(255),
                 Forms\Components\RichEditor::make('body')
                     ->required(),
+                Forms\Components\TextInput::make('slug')
+                    ->required()
+                    ->unique(Content::class, 'slug', fn ($record) => $record)
+                    ->maxLength(255),
                 Forms\Components\Select::make('author_id')
                     ->relationship('author', 'name')
                     ->required(),
@@ -42,61 +46,3 @@ class ContentResource extends Resource
                 Forms\Components\Select::make('status')
                     ->options([
                         'draft' => 'Draft',
-                        'published' => 'Published',
-                    ])
-                    ->required(),
-                Forms\Components\FileUpload::make('featured_image_url')
-                    ->image(),
-            ]);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('author.name')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('type')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('version_history')
-                    ->url(fn (Content $record): string => route('filament.app.resources.contents.version-history', $record))
-                    ->icon('heroicon-o-clock')
-                    ->label('Version History'),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListContents::route('/'),
-            'create' => Pages\CreateContent::route('/create'),
-            'edit' => Pages\EditContent::route('/{record}/edit'),
-            'version-history' => Pages\ContentVersionHistory::route('/{record}/version-history'),
-        ];
-    }
-}
