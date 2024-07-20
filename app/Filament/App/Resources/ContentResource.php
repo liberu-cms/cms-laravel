@@ -18,7 +18,7 @@ class ContentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -27,6 +27,10 @@ class ContentResource extends Resource
                     ->maxLength(255),
                 Forms\Components\RichEditor::make('body')
                     ->required(),
+                Forms\Components\TextInput::make('slug')
+                    ->required()
+                    ->unique(Content::class, 'slug', fn ($record) => $record)
+                    ->maxLength(255),
                 Forms\Components\Select::make('author_id')
                     ->relationship('author', 'name')
                     ->required(),
