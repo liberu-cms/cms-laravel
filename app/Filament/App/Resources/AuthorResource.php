@@ -11,8 +11,8 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Admin\Resources\AuthorResource\Pages;
-use App\Filament\Admin\Resources\AuthorResource\RelationManagers;
+use App\Filament\App\Resources\AuthorResource\Pages;
+use App\Filament\App\Resources\AuthorResource\RelationManagers;
 use Filament\Tables\Columns\TextColumn;
 
 class AuthorResource extends Resource
