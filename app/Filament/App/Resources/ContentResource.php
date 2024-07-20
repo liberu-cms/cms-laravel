@@ -101,7 +101,8 @@
                     ]),
                 Forms\Components\FileUpload::make('featured_image_url')
                     ->image()
-                    ->directory('content-images'),
+                    ->directory('content-images')
+                    ->label('Featured Image'),
                 Forms\Components\TagsInput::make('tag')
                     ->label('Tags')
                     ->separator(',')
