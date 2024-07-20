@@ -13,7 +13,6 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 
-#[Resource]
 class ContentResource extends Resource
 {
     protected static ?string $model = Content::class;
