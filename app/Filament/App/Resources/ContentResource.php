@@ -5,11 +5,15 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\ContentResource\Pages;
 use App\Models\Content;
 use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Table;
 
+#[Resource]
 class ContentResource extends Resource
 {
     protected static ?string $model = Content::class;
@@ -17,6 +21,8 @@ class ContentResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationLabel = 'Content';
+
+    protected static ?string $recordTitleAttribute = 'content_title';
 
     public static function form(Form $form): Form
     {
@@ -32,7 +38,8 @@ class ContentResource extends Resource
                     ->relationship('category', 'content_category_name')
                     ->required(),
                 Forms\Components\RichEditor::make('content_body')
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('meta_title')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('meta_description')
@@ -94,7 +101,9 @@ class ContentResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
