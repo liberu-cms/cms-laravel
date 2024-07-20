@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources\CommentResource\Pages;
+namespace App\Filament\App\Resources\CommentResource\Pages;
 
 use App\Filament\App\Resources\CommentResource;
 use Filament\Actions;
