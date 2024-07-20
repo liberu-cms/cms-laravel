@@ -38,6 +38,13 @@ class ContentResource extends Resource
                     ->required(),
                 Forms\Components\RichEditor::make('content_body')
                     ->required()
+                    ->columnSpanFull()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, $livewire) {
+                        $livewire->emit('updatePreview', $state);
+                    }),
+                Forms\Components\View::make('livewire.content-preview')
+                    ->label('Preview')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('meta_title')
                     ->maxLength(255),
