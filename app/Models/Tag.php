@@ -9,14 +9,20 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected  $primaryKey = 'tag_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'tag_name',
+        'name',
+        'slug',
     ];
 
     public function contents()
     {
-        return $this->belongsToMany(Content::class);
+        return $this->morphedByMany(Content::class, 'taggable');
+    }
+
+    public function pages()
+    {
+        return $this->morphedByMany(Page::class, 'taggable');
     }
 }
