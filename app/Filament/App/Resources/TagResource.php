@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources;
+namespace App\Filament\App\Resources;
 
 use App\Models\Tag;
 use Filament\Forms;
