@@ -1,8 +1,10 @@
 
                         'archived' => 'Archived',
                     ]),
-                ImageColumn::make('featured_image_url')
-                    ->label('Featured Image URL'),
+                Forms\Components\FileUpload::make('featured_image_url')
+                    ->image()
+                    ->directory('content-images')
+                    ->label('Featured Image'),
                 Forms\Components\TagsInput::make('tag')
                     ->label('Tags')
                     ->separator(',')
@@ -67,5 +69,43 @@
             'create' => Pages\CreateContent::route('/create'),
             'edit' => Pages\EditContent::route('/{record}/edit'),
         ];
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('content_title')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('author_id')
+                    ->relationship('author', 'author_name')
+                    ->required(),
+                Forms\Components\Select::make('category_id')
+                    ->relationship('category', 'content_category_name')
+                    ->required(),
+                Forms\Components\RichEditor::make('content_body')
+                    ->required(),
+                Forms\Components\TextInput::make('meta_title')
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('meta_description')
+                    ->maxLength(65535),
+                Forms\Components\Toggle::make('is_featured')
+                    ->required(),
+                Forms\Components\DateTimePicker::make('published_at'),
+                Forms\Components\Select::make('content_status')
+                    ->options([
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                        'archived' => 'Archived',
+                    ]),
+                Forms\Components\FileUpload::make('featured_image_url')
+                    ->image()
+                    ->directory('content-images'),
+                Forms\Components\TagsInput::make('tag')
+                    ->label('Tags')
+                    ->separator(',')
+                    ->relationship('tag', 'tag_name'),
+            ]);
     }
 }
