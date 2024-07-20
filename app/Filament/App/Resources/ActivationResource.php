@@ -2,7 +2,7 @@
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\Admin\Resources\ActivationResource\Pages;
+use App\Filament\App\Resources\ActivationResource\Pages;
 use App\Models\Activation;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
