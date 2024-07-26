@@ -1,3 +1,5 @@
+use Illuminate\Support\Facades\Cache;
+
 class Content extends Model
 {
     use HasFactory, SEOable;
@@ -37,4 +39,19 @@ class Content extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function ($content) {
+            Cache::forget("content_{$content->id}");
+        });
+    }
+
+    public static function findCached($id)
+    {
+        return Cache::remember("content_{$id}", now()->addHours(24), function () use ($id) {
+            return static::find($id);
+        });
     }

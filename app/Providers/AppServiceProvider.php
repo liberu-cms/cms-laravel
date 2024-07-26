@@ -31,5 +31,15 @@ class AppServiceProvider extends ServiceProvider
                 $page->slug = \Str::slug($page->title);
             }
         });
+
+        if (config('app.debug')) {
+            \DB::listen(function ($query) {
+                \Log::info(
+                    $query->sql,
+                    $query->bindings,
+                    $query->time
+                );
+            });
+        }
     }
 }

@@ -29,7 +29,8 @@
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(fn ($query) => $query->with('author'));
     }
 
     public static function getRelations(): array
