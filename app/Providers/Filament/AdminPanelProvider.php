@@ -53,6 +53,11 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
             ])
+            ->resources([
+                \App\Filament\Resources\UserResource::class,
+                \App\Filament\Resources\RoleResource::class,
+                \App\Filament\Resources\PermissionResource::class,
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
