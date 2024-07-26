@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contents', function (Blueprint $table) {
             $table->integer('content_id', true);
-            $table->string('content_title')->unique();
+            $table->string('content_title');
             $table->text('content_body');
             $table->integer('author_id');
             $table->date('published_date')->nullable();
@@ -21,10 +21,13 @@ return new class extends Migration
             $table->integer('category_id');
             $table->string('content_status');
             $table->string('featured_image_url')->nullable();
+            $table->string('language_code', 5);
+            $table->integer('translation_group_id');
             $table->timestamps();
-
+        
             $table->foreign('author_id')->references('author_id')->on('authors');
             $table->foreign('category_id')->references('content_category_id')->on('content_categories');
+            $table->unique(['content_title', 'language_code']);
         });
     }
 
