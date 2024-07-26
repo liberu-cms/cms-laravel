@@ -1,4 +1,11 @@
                 ]),
+            Select::make('language')
+                ->options(Language::pluck('name', 'code'))
+                ->required(),
+            Select::make('parent_id')
+                ->label('Translate from')
+                ->options(Content::where('parent_id', null)->pluck('title', 'id'))
+                ->nullable(),
         ]);
     }
 
@@ -16,14 +23,21 @@
                     ->sortable(),
                 TextColumn::make('status')
                     ->sortable(),
+                TextColumn::make('language')
+                    ->sortable(),
                 TextColumn::make('published_at')
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('language')
+                    ->options(Language::pluck('name', 'code')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('translate')
+                    ->icon('heroicon-o-translate')
+                    ->url(fn (Content $record) => route('filament.resources.contents.create', ['parent_id' => $record->id]))
+                    ->visible(fn (Content $record) => $record->parent_id === null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

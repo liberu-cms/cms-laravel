@@ -1,16 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\LanguageMiddleware;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::middleware([LanguageMiddleware::class])->group(function () {
+    Route::get('/', \App\Http\Livewire\Homepage::class);
 
-Route::get('/', \App\Http\Livewire\Homepage::class);
+    Route::get('/{lang}', function ($lang) {
+        App::setLocale($lang);
+        return redirect('/');
+    })->where('lang', '[a-z]{2}');
+
+    // Add other localized routes here
+});

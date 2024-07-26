@@ -16,6 +16,8 @@ class Content extends Model
         'status',
         'featured_image_url',
         'slug',
+        'language',
+        'parent_id',
     ];
 
     protected $casts = [
@@ -34,6 +36,9 @@ class Content extends Model
                 }
             }
         });
+        static::saved(function ($content) {
+            Cache::forget("content_{$content->id}");
+        });
     }
 
     public function author()
@@ -41,12 +46,14 @@ class Content extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public static function boot()
+    public function parent()
     {
-        parent::boot();
-        static::saved(function ($content) {
-            Cache::forget("content_{$content->id}");
-        });
+        return $this->belongsTo(Content::class, 'parent_id');
+    }
+
+    public function translations()
+    {
+        return $this->hasMany(Content::class, 'parent_id');
     }
 
     public static function findCached($id)
@@ -55,3 +62,9 @@ class Content extends Model
             return static::find($id);
         });
     }
+
+    public function getTranslation($language)
+    {
+        return $this->translations()->where('language', $language)->first() ?? $this;
+    }
+}
