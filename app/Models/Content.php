@@ -4,22 +4,23 @@ class Content extends Model
 {
     use HasFactory, SEOable;
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'content_id';
 
     protected $fillable = [
-        'title',
-        'body',
+        'content_title',
+        'content_body',
         'author_id',
-        'published_at',
-        'type',
+        'published_date',
+        'content_type',
         'category_id',
-        'status',
+        'content_status',
         'featured_image_url',
-        'slug',
+        'language_code',
+        'translation_group_id',
     ];
 
     protected $casts = [
-        'published_at' => 'datetime',
+        'published_date' => 'date',
     ];
 
     public static function boot()
@@ -34,6 +35,10 @@ class Content extends Model
                 }
             }
         });
+
+        static::saved(function ($content) {
+            Cache::forget("content_{$content->content_id}");
+        });
     }
 
     public function author()
@@ -41,12 +46,15 @@ class Content extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public static function boot()
+    public function language()
     {
-        parent::boot();
-        static::saved(function ($content) {
-            Cache::forget("content_{$content->id}");
-        });
+        return $this->belongsTo(Language::class, 'language_code', 'code');
+    }
+
+    public function translations()
+    {
+        return $this->hasMany(Content::class, 'translation_group_id', 'translation_group_id')
+            ->where('content_id', '!=', $this->content_id);
     }
 
     public static function findCached($id)
@@ -55,3 +63,9 @@ class Content extends Model
             return static::find($id);
         });
     }
+
+    public function getTranslation($languageCode)
+    {
+        return $this->translations()->where('language_code', $languageCode)->first();
+    }
+}
