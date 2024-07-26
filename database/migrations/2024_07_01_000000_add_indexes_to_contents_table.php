@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::table('contents', function (Blueprint $table) {
             $table->index('author_id');
-            $table->index('published_at');
-            $table->index('status');
+//            $table->index('published_at');
+//            $table->index('status');
         });
     }
 
@@ -19,8 +19,8 @@ return new class extends Migration
     {
         Schema::table('contents', function (Blueprint $table) {
             $table->dropIndex(['author_id']);
-            $table->dropIndex(['published_at']);
-            $table->dropIndex(['status']);
+ //           $table->dropIndex(['published_at']);
+ //           $table->dropIndex(['status']);
         });
     }
 };
