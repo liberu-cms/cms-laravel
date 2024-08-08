@@ -6,12 +6,14 @@
     <title>Homepage</title>
 </head>
 <body>
+   <div class="">
     @livewire('header')
 
-    @livewire('navigation')
+    {{-- @livewire('navigation') --}}
 
     <main>
         <section class="featured-posts">
+            
             @foreach($featuredPosts as $post)
                 <article class="post">
                     <h2>{{ $post->title }}</h2>
@@ -21,7 +23,8 @@
             @endforeach
         </section>
     </main>
+   </div>
 
-    @livewire('footer')
+    {{-- @livewire('footer') --}}
 </body>
 </html>
