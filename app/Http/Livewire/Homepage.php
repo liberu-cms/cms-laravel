@@ -16,7 +16,7 @@ class Homepage extends Component
 
     public function mount()
     {
-        $this->featuredPosts = Post::where('is_featured', true)->get();
+        $this->featuredPosts = Post::where('featured', true)->get();
     }
 
     public function render()
