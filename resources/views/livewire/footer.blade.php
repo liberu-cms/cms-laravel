@@ -1,4 +1,4 @@
-<footer style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+<footer style="background-color: #f8f9fa; padding: 20px; text-align: center;" class="fixed bottom-0 w-full flex justify-between">
     <p>&copy; {{ date('Y') }} CMS Laravel. All rights reserved.</p>
     <p>
         <a href="/privacy-policy" style="margin-right: 15px; text-decoration: none; color: #333;">Privacy Policy</a>
