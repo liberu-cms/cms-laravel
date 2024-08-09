@@ -4,5 +4,7 @@
         <a href="/privacy-policy" style="margin-right: 15px; text-decoration: none; color: #333;">Privacy Policy</a>
         <a href="/terms-of-service" style="margin-right: 15px; text-decoration: none; color: #333;">Terms of Service</a>
         <a href="/contact" style="text-decoration: none; color: #333;">Contact Us</a>
+        <a href="/login" style="text-decoration: none; color: #333;">login</a>
+        <a href="/register" style="text-decoration: none; color: #333;">register</a>
     </p>
 </footer>
