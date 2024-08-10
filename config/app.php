@@ -175,6 +175,7 @@ return [
         App\Providers\TeamServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
+        Spatie\Menu\Laravel\MenuServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -190,6 +191,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Menu' => Spatie\Menu\Laravel\Facades\Menu::class,
     ])->toArray(),
 
 ];

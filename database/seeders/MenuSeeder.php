@@ -16,38 +16,14 @@ class MenuSeeder extends Seeder
                 'order' => 1
             ],
             [
-                'name' => 'Properties',
-                'url' => '/properties',
-                'order' => 2,
-                'children' => [
-                    ['name' => 'For Sale', 'url' => '/properties/for-sale', 'order' => 1],
-                    ['name' => 'For Rent', 'url' => '/properties/for-rent', 'order' => 2],
-                ]
-            ],
-            [
-                'name' => 'Services',
-                'url' => '/services',
-                'order' => 3,
-                'children' => [
-                    ['name' => 'Buying', 'url' => '/services/buying', 'order' => 1],
-                    ['name' => 'Selling', 'url' => '/services/selling', 'order' => 2],
-                    ['name' => 'Renting', 'url' => '/services/renting', 'order' => 3],
-                ]
-            ],
-            [
                 'name' => 'About',
                 'url' => '/about',
-                'order' => 4
+                'order' => 2
             ],
             [
                 'name' => 'Contact',
                 'url' => '/contact',
-                'order' => 5
-            ],
-            [
-                'name' => 'Calculators',
-                'url' => '/calculators',
-                'order' => 6
+                'order' => 3
             ],
         ];
 
