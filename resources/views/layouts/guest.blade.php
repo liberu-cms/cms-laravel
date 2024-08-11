@@ -20,10 +20,13 @@
 </head>
 
 <body>
-    <livewire:navigation />
-    <div class="font-sans text-gray-900 antialiased">
-        {{ $slot }}
-    </div>
+    <section>
+        <livewire:navigation />
+        <div class="font-sans text-gray-900 antialiased">
+            {{ $slot }}
+        </div>
+        <livewire:footer />
+    </section>
 
     @livewireScripts
 </body>
