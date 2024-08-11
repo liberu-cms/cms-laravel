@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Contact;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/contact', Contact::class);
 Route::get('/', \App\Http\Livewire\Homepage::class);
 
 Route::middleware([
