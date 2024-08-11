@@ -1,7 +1,7 @@
 <?php
-
 use App\Http\Livewire\Homepage;
 use App\Livewire\About;
+use App\Livewire\Contact;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Homepage::class);
 Route::get('/about', About::class);
+Route::get('/contact', Contact::class);
 
 Route::middleware([
     'auth:sanctum',
