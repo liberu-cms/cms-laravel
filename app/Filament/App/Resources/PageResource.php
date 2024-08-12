@@ -20,30 +20,30 @@ class PageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('content')
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('published_at')
-                    ->required(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name')
-                    ->required(),
-                Forms\Components\TagsInput::make('tags')
-                    ->relationship('tags', 'name'),
-            ]);
-    }
+    // public static function form(Form $form): Form
+    // {
+    //     return $form
+    //         ->schema([
+    //             Forms\Components\TextInput::make('title')
+    //                 ->required()
+    //                 ->maxLength(255),
+    //             Forms\Components\Textarea::make('content')
+    //                 ->required(),
+    //             Forms\Components\TextInput::make('slug')
+    //                 ->required()
+    //                 ->maxLength(255),
+    //             Forms\Components\DateTimePicker::make('published_at')
+    //                 ->required(),
+    //             Forms\Components\Select::make('user_id')
+    //                 ->relationship('user', 'name')
+    //                 ->required(),
+    //             Forms\Components\Select::make('category_id')
+    //                 ->relationship('category', 'name')
+    //                 ->required(),
+    //             Forms\Components\TagsInput::make('tags')
+    //                 ->relationship('tags', 'name'),
+    //         ]);
+    // }
 
     public static function table(Table $table): Table
     {
