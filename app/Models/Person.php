@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\TenantConnectionResolver;
+
 use File;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
-use LaravelLiberu\People\Models\Person as CorePerson;
+use Illuminate\Database\Eloquent\Model;
 
-class Person extends CorePerson
+class Person extends Model
 {
     use HasFactory;
-    use TenantConnectionResolver;
 
     /**
      * The attributes that should be mutated to dates.
