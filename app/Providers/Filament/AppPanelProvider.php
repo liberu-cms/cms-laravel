@@ -41,10 +41,10 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('app')
-            ->login([AuthenticatedSessionController::class, 'create'])
-            ->registration()
-            ->passwordReset()
-            ->emailVerification()
+            // ->login([AuthenticatedSessionController::class, 'create'])
+            // ->registration()
+            // ->passwordReset()
+            // ->emailVerification()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Gray,
@@ -98,20 +98,20 @@ class AppPanelProvider extends PanelProvider
         //     ]);
         // }
 
-        if (Features::hasTeamFeatures()) {
-            $panel
-                ->tenant(Team::class, ownershipRelationship: 'team')
-                ->tenantRegistration(Pages\CreateTeam::class)
-                ->tenantProfile(Pages\EditTeam::class)
-                ->userMenuItems([
-                    MenuItem::make()
-                        ->label('Team Settings')
-                        ->icon('heroicon-o-cog-6-tooth')
-                        ->url(fn () => $this->shouldRegisterMenuItem()
-                            ? url(Pages\EditTeam::getUrl())
-                            : url($panel->getPath())),
-                ]);
-        }
+        // if (Features::hasTeamFeatures()) {
+        //     $panel
+        //         ->tenant(Team::class, ownershipRelationship: 'team')
+        //         ->tenantRegistration(Pages\CreateTeam::class)
+        //         ->tenantProfile(Pages\EditTeam::class)
+        //         ->userMenuItems([
+        //             MenuItem::make()
+        //                 ->label('Team Settings')
+        //                 ->icon('heroicon-o-cog-6-tooth')
+        //                 ->url(fn () => $this->shouldRegisterMenuItem()
+        //                     ? url(Pages\EditTeam::getUrl())
+        //                     : url($panel->getPath())),
+        //         ]);
+        // }
 
         return $panel;
     }

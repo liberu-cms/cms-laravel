@@ -9,8 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "bezhansalleh/filament-shield": "*",
-        "filament/filament": "*",
+        "bezhansalleh/filament-shield": "^3.2",
         "guzzlehttp/guzzle": "^7.8",
         "joelbutcher/socialstream": "*",
         "laravel/framework": "^11.0",
@@ -26,6 +25,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "filament/filament": "^3.2",
         "laravel/pint": "^1.14",
         "laravel/sail": "^1.28",
         "mockery/mockery": "^1.6",
