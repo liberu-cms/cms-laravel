@@ -10,8 +10,6 @@ class Dashboard extends Page
 
     public static $icon = 'heroicon-o-home';
 
-    public function view()
-    {
-        return view('filament.pages.dashboard');
-    }
+    public static string $view = 'filament.pages.dashboard';
+
 }
