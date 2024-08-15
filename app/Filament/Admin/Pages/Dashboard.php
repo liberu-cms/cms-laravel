@@ -8,7 +8,7 @@ class Dashboard extends Page
 
     public static ?string $title = 'Dashboard';
 
-    public static $icon = 'heroicon-o-home';
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 
     public static string $view = 'filament.pages.dashboard';
 
