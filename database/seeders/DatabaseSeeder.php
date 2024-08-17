@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MenuSeeder::class,
             SiteSettingsSeeder::class,
+            HomeContentSeeder::class,
         ]);
 
         
