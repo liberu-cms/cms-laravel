@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('guest_layout_managments', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->longText('content');
+            $table->integer('fk_menu_id');
+            $table->integer('sort_order');
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }

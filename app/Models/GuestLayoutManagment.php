@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class GuestLayoutManagment extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'content',
+        'fk_menu_id',
+        'sort_order',
+        'is_active',
+    ];
 }

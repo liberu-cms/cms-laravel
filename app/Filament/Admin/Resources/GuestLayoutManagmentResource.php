@@ -6,6 +6,10 @@ use App\Filament\Admin\Resources\GuestLayoutManagmentResource\Pages;
 use App\Filament\Admin\Resources\GuestLayoutManagmentResource\RelationManagers;
 use App\Models\GuestLayoutManagment;
 use Filament\Forms;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,7 +28,34 @@ class GuestLayoutManagmentResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')->autocapitalize('words'),
+                TextInput::make('fk_menu_id')->numeric(),
+                TextInput::make('sort_order')->numeric(),
+                ToggleButtons::make('is_active')->label('Display the content')->boolean()->inline(),
+                Section::make()->columns([
+                    'sm' => 12,
+                    'xl' => 12,
+                    '2xl' => 12,
+                ])->schema([
+                    MarkdownEditor::make('content')
+                        ->toolbarButtons([
+                            'attachFiles',
+                            'blockquote',
+                            'bold',
+                            'bulletList',
+                            'codeBlock',
+                            'heading',
+                            'italic',
+                            'link',
+                            'orderedList',
+                            'redo',
+                            'strike',
+                            'table',
+                            'undo',
+                        ])->columnSpan('full')
+                ])
+
+
             ]);
     }
 
