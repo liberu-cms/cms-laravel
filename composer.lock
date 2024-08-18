@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6339c67b70a08893147b4e4ab8270b6c",
+    "content-hash": "dc4ff4163054bd7ef72718638aae1c09",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1255,6 +1255,7 @@
         },
         {
             "name": "filament/actions",
+<<<<<<< HEAD
             "version": "v3.2.101",
             "source": {
                 "type": "git",
@@ -1265,6 +1266,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/filamentphp/actions/zipball/1ce746a4a75975f1844c175201f1f03443c48c95",
                 "reference": "1ce746a4a75975f1844c175201f1f03443c48c95",
+=======
+            "version": "v3.2.100",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filamentphp/actions.git",
+                "reference": "c4329f82ec0be66c79fdab3f83d339a6377c47c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filamentphp/actions/zipball/c4329f82ec0be66c79fdab3f83d339a6377c47c4",
+                "reference": "c4329f82ec0be66c79fdab3f83d339a6377c47c4",
+>>>>>>> refs/remotes/origin/main
                 "shasum": ""
             },
             "require": {
@@ -1304,6 +1317,7 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
+<<<<<<< HEAD
             "time": "2024-08-14T16:52:38+00:00"
         },
         {
@@ -1318,6 +1332,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/filamentphp/panels/zipball/99c703952af053e1ef22a4dd556eba589a574d87",
                 "reference": "99c703952af053e1ef22a4dd556eba589a574d87",
+=======
+            "time": "2024-08-12T16:38:34+00:00"
+        },
+        {
+            "name": "filament/filament",
+            "version": "v3.2.100",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filamentphp/panels.git",
+                "reference": "33154a5319c55bc51f19633c9afbad371862d9dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filamentphp/panels/zipball/33154a5319c55bc51f19633c9afbad371862d9dd",
+                "reference": "33154a5319c55bc51f19633c9afbad371862d9dd",
+>>>>>>> refs/remotes/origin/main
                 "shasum": ""
             },
             "require": {
@@ -1369,11 +1399,19 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
+<<<<<<< HEAD
             "time": "2024-08-14T16:52:48+00:00"
         },
         {
             "name": "filament/forms",
             "version": "v3.2.101",
+=======
+            "time": "2024-08-13T12:35:59+00:00"
+        },
+        {
+            "name": "filament/forms",
+            "version": "v3.2.100",
+>>>>>>> refs/remotes/origin/main
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
@@ -1429,7 +1467,11 @@
         },
         {
             "name": "filament/infolists",
+<<<<<<< HEAD
             "version": "v3.2.101",
+=======
+            "version": "v3.2.100",
+>>>>>>> refs/remotes/origin/main
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/infolists.git",
@@ -1480,7 +1522,11 @@
         },
         {
             "name": "filament/notifications",
+<<<<<<< HEAD
             "version": "v3.2.101",
+=======
+            "version": "v3.2.100",
+>>>>>>> refs/remotes/origin/main
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -1532,7 +1578,11 @@
         },
         {
             "name": "filament/support",
+<<<<<<< HEAD
             "version": "v3.2.101",
+=======
+            "version": "v3.2.100",
+>>>>>>> refs/remotes/origin/main
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
@@ -1591,7 +1641,11 @@
         },
         {
             "name": "filament/tables",
+<<<<<<< HEAD
             "version": "v3.2.101",
+=======
+            "version": "v3.2.100",
+>>>>>>> refs/remotes/origin/main
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
@@ -1643,7 +1697,11 @@
         },
         {
             "name": "filament/widgets",
+<<<<<<< HEAD
             "version": "v3.2.101",
+=======
+            "version": "v3.2.100",
+>>>>>>> refs/remotes/origin/main
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/widgets.git",

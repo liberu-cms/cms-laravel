@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Cache;
 
 class SiteSettingsService
 {
-    public function get($key = null)
+    
+    public static function get($key = null)
     {
         $settings = Cache::remember(config('site-settings.cache_key'), config('site-settings.cache_duration'), function () {
             return SiteSettings::first() ?? new SiteSettings();
