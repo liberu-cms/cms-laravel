@@ -7,7 +7,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\HomeContent;
+use App\Models\GuestLayoutManagment;
 use Livewire\Component;
 use App\Models\Post;
 
@@ -18,7 +18,7 @@ class Homepage extends Component
 
     public function mount()
     {
-        $this->contents = HomeContent::active()->orderBy('sort_order')->get();
+        $this->contents = GuestLayoutManagment::active()->orderBy('sort_order')->get();
         $this->featuredPosts = Post::where('featured', true)->get();
     }
 
