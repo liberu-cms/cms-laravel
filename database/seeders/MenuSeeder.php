@@ -17,12 +17,12 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'About',
-                'url' => '/about',
+                'url' => 'about',
                 'order' => 2
             ],
             [
                 'name' => 'Contact',
-                'url' => '/contact',
+                'url' => 'contact',
                 'order' => 3
             ],
         ];

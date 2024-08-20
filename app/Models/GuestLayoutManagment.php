@@ -16,4 +16,9 @@ class GuestLayoutManagment extends Model
         'sort_order',
         'is_active',
     ];
+
+    public function scopeActive()
+    {
+        return $this->where('is_active', true);
+    }
 }
