@@ -23,7 +23,7 @@ class Webrender extends Component
                 $elements[$content['sort_order']] = $content;
             }
         }
-        return $elements;
+        return $elements ?? [];
     }
 
     public function render()
