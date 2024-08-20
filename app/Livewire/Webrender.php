@@ -2,18 +2,34 @@
 
 namespace App\Livewire;
 
+use App\Models\GuestLayoutManagment;
+use App\Models\Menu;
+use Illuminate\Http\Request;
 use Livewire\Component;
 
 class Webrender extends Component
 {
     protected $contents;
-    public function mount(){
+    public function mount(Request $request){
+        $this->getModules($request->path());
         $this->contents = session('contents');
+    }
+
+    protected function getModules($url){
+        $menu = Menu::where('url', $url)->first();
+        $contents = GuestLayoutManagment::where('fk_menu_id', $menu->id)->get()->toArray();
+        if ($contents) {
+            $elements = [];
+            foreach ($contents as $content) {
+                $elements[$content['sort_order']] = $content;
+            }
+            session(['contents' => $elements]);
+        }
+        return $contents;
     }
 
     public function render()
     {
-        // dd($this->contents);
         return view('livewire.webrender', [
             'contents' => $this->contents
         ]);
