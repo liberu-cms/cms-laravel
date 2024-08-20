@@ -17,3 +17,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', Webrender::class);
+Route::get('/{dynamicUrl}', Webrender::class);
