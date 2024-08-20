@@ -14,6 +14,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -66,7 +67,12 @@ class GuestLayoutManagmentResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id'),
+                TextColumn::make('name')->sortable(),
+                TextColumn::make('menu.name')->sortable(),
+                TextColumn::make('sort_order')->sortable(),
+                TextColumn::make('is_active')->formatStateUsing(fn ($state) => $state ? 'Yes' : 'No')
+                ->sortable(),
             ])
             ->filters([
                 //
@@ -84,7 +90,7 @@ class GuestLayoutManagmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            
         ];
     }
 

@@ -21,4 +21,9 @@ class GuestLayoutManagment extends Model
     {
         return $this->where('is_active', true);
     }
+
+    public function menu()
+    {
+        return $this->belongsTo(Menu::class, 'fk_menu_id');
+    }
 }

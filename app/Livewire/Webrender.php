@@ -20,7 +20,9 @@ class Webrender extends Component
         if ($contents) {
             $elements = [];
             foreach ($contents as $content) {
-                $elements[$content['sort_order']] = $content;
+                if($content['is_active'] != 0) {
+                    $elements[$content['sort_order']] = $content;
+                }
             }
         }
         return $elements ?? [];
