@@ -11,8 +11,7 @@ class Webrender extends Component
 {
     protected $contents;
     public function mount(Request $request){
-        $this->getModules($request->path());
-        $this->contents = session('contents');
+        $this->contents =  $this->getModules($request->path());
     }
 
     protected function getModules($url){
@@ -23,9 +22,8 @@ class Webrender extends Component
             foreach ($contents as $content) {
                 $elements[$content['sort_order']] = $content;
             }
-            session(['contents' => $elements]);
         }
-        return $contents;
+        return $elements;
     }
 
     public function render()
