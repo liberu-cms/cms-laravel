@@ -26,10 +26,10 @@ class GuestMenuResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->autocapitalize('words'),
-                TextInput::make('url'),
+                TextInput::make('name')->autocapitalize('words')->required(),
+                TextInput::make('url')->required(),
                 TextInput::make('parent_id'),
-                TextInput::make('order'),
+                TextInput::make('order')->required(),
             ]);
     }
 

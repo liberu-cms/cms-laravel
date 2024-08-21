@@ -30,12 +30,12 @@ class GuestLayoutManagmentResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->autocapitalize('words'),
+                TextInput::make('name')->autocapitalize('words')->required(),
                 Select::make('fk_menu_id')->label('Menu')->options(
                     \App\Models\Menu::all()->pluck('name', 'id')
-                ),
-                TextInput::make('sort_order')->numeric(),
-                ToggleButtons::make('is_active')->label('Display the content')->boolean()->inline(),
+                )->required(),
+                TextInput::make('sort_order')->numeric()->required(),
+                ToggleButtons::make('is_active')->label('Display the content')->boolean()->inline()->required(),
                 Section::make()->columns([
                     'sm' => 12,
                     'xl' => 12,
@@ -56,7 +56,7 @@ class GuestLayoutManagmentResource extends Resource
                             'strike',
                             'table',
                             'undo',
-                        ])->columnSpan('full')
+                        ])->required()->columnSpan('full')
                 ])
 
 
