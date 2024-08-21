@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <section>
+    <div>
         @if ($contents)
             @foreach ($contents as $element)
                 {!! $element['content'] !!}
@@ -7,5 +7,5 @@
         @else
             <p>No content found</p>
         @endif
-    </section>
+    </div>
 </x-guest-layout>
