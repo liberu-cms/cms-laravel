@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\SiteSettings;
 use Intelrx\Sitesettings\SiteConfig;
 
 class SiteSettingsSeeder extends Seeder
