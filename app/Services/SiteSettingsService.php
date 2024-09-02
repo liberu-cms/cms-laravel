@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\SiteSettings;
+use Intelrx\Sitesettings\Models\SiteSettings;
 use Illuminate\Support\Facades\Cache;
 
 class SiteSettingsService
