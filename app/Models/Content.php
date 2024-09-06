@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\FileService;
+use App\Traits\IsTenantModel;
 use App\Traits\SEOable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Cache;
 class Content extends Model
 {
     use HasFactory, SEOable;
+    use IsTenantModel;
 
     protected $primaryKey = 'id';
 

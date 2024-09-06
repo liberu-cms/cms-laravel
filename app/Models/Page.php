@@ -1,13 +1,8 @@
 <?php
 
-/**
- * Page Model.
- *
- * Represents the Page entity in the database with relationships to User, Category, and Tag models.
- */
-
 namespace App\Models;
 
+use App\Traits\IsTenantModel;
 use App\Traits\SEOable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Page extends Model
 {
     use HasFactory, SEOable;
+    use IsTenantModel;
 
     protected $fillable = [
         'title',
@@ -29,10 +25,10 @@ class Page extends Model
         'published_at' => 'datetime',
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+    // public function category()
+    // {
+    //     return $this->belongsTo(Category::class);
+    // }
 
     public function user()
     {
