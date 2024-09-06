@@ -87,10 +87,9 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
 
     public function canAccessPanel(Panel $panel): bool
     {
-        if ($panel->getId() === "admin" && !$this->hasRole('admin')) {
-            return false;
+        if ($panel->getId() === "admin") {
+            return $this->hasRole('admin');
         }
-
         return true; // TODO: Check panel and role
     }
 
