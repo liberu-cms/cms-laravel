@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Team;
+use App\Models\ContentCategory;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TeamPolicy
+class ContentCategoryPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class TeamPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_teams');
+        return $user->can('view_any_content::category');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Team $team): bool
+    public function view(User $user, ContentCategory $contentCategory): bool
     {
-        return $user->can('view_teams');
+        return $user->can('view_content::category');
     }
 
     /**
@@ -31,23 +31,23 @@ class TeamPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_teams');
+        return $user->can('create_content::category');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Team $team): bool
+    public function update(User $user, ContentCategory $contentCategory): bool
     {
-        return $user->can('update_teams');
+        return $user->can('update_content::category');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Team $team): bool
+    public function delete(User $user, ContentCategory $contentCategory): bool
     {
-        return $user->can('delete_teams');
+        return $user->can('delete_content::category');
     }
 
     /**
@@ -55,15 +55,15 @@ class TeamPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_teams');
+        return $user->can('delete_any_content::category');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Team $team): bool
+    public function forceDelete(User $user, ContentCategory $contentCategory): bool
     {
-        return $user->can('force_delete_teams');
+        return $user->can('force_delete_content::category');
     }
 
     /**
@@ -71,15 +71,15 @@ class TeamPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_teams');
+        return $user->can('force_delete_any_content::category');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Team $team): bool
+    public function restore(User $user, ContentCategory $contentCategory): bool
     {
-        return $user->can('restore_teams');
+        return $user->can('restore_content::category');
     }
 
     /**
@@ -87,15 +87,15 @@ class TeamPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_teams');
+        return $user->can('restore_any_content::category');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Team $team): bool
+    public function replicate(User $user, ContentCategory $contentCategory): bool
     {
-        return $user->can('replicate_teams');
+        return $user->can('replicate_content::category');
     }
 
     /**
@@ -103,6 +103,6 @@ class TeamPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_teams');
+        return $user->can('reorder_content::category');
     }
 }
