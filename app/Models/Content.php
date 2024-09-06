@@ -1,3 +1,11 @@
+<?php 
+
+namespace App\Models;
+
+use App\Services\FileService;
+use App\Traits\SEOable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class Content extends Model
@@ -34,19 +42,15 @@ class Content extends Model
                 }
             }
         });
+
+        static::saved(function ($content) {
+            Cache::forget("content_{$content->id}");
+        });
     }
 
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-        static::saved(function ($content) {
-            Cache::forget("content_{$content->id}");
-        });
     }
 
     public static function findCached($id)
@@ -55,3 +59,5 @@ class Content extends Model
             return static::find($id);
         });
     }
+
+}

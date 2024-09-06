@@ -3,6 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasDefaultTenant;
+use Filament\Models\Contracts\HasTenants;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,15 +15,23 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
+use JoelButcher\Socialstream\SetsProfilePhotoFromUrl;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasDefaultTenant, HasTenants, FilamentUser
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
-    use HasTeams;
+    use HasProfilePhoto {
+        HasProfilePhoto::profilePhotoUrl as getPhotoUrl;
+    }
     use Notifiable;
+    use SetsProfilePhotoFromUrl;
+    use HasTeams;
     use TwoFactorAuthenticatable;
     use HasRoles;
 
@@ -68,8 +80,39 @@ class User extends Authenticatable
         ];
     }
 
-    public function getTenants(Panel $panel)
+    public function getTenants(Panel $panel): array | Collection
     {
         return $this->teams;
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        $user = auth()->user();
+        if ($panel->getId() === "admin" && !$user->hasRole('admin')) {
+            return false;
+        }
+
+        return true; // TODO: Check panel and role
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->teams->contains($tenant);
+    }
+
+    public function canAccessFilament(): bool
+    {
+        //        return $this->hasVerifiedEmail();
+        return true;
+    }
+
+    public function getDefaultTenant(Panel $panel): ?Model
+    {
+        return $this->latestTeam;
+    }
+
+    public function latestTeam(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'current_team_id');
     }
 }
