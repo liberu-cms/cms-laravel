@@ -2,7 +2,7 @@
     <div>
         @if ($contents)
             @foreach ($contents as $element)
-                {!! $element['content'] !!}
+                <?php echo $element['content']; ?>
             @endforeach
         @else
             <p>No content found</p>
