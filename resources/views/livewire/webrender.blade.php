@@ -2,7 +2,7 @@
     <div>
         @if ($contents)
             @foreach ($contents as $element)
-                {!! $element['content'] !!}
+                @include('partials.content-element', ['content' => $element['content']])
             @endforeach
         @else
             <p>No content found</p>
