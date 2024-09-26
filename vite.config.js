@@ -3,6 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
+    base: '/',
     plugins: [
         laravel({
             input: [
