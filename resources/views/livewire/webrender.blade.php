@@ -1,5 +1,6 @@
 <x-guest-layout>
     <div>
+        
         @if ($contents)
             @foreach ($contents as $element)
                 @include('partials.content-element', ['content' => $element['content']])
