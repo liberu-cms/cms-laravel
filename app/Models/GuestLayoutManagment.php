@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class GuestLayoutManagment extends Model
 {
@@ -16,6 +17,26 @@ class GuestLayoutManagment extends Model
         'sort_order',
         'is_active',
     ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            self::makeComponent($model->content, $model->name);
+        });
+
+        static::updating(function ($model) {
+           self::makeComponent($model->content, $model->name);
+        });
+    }
+
+    public static function makeComponent($component, $name)
+    {
+        file_put_contents(
+            resource_path('views/partials/elements' . $name . '.blade.php'),
+            $component
+        );
+    }
 
     public function scopeActive()
     {

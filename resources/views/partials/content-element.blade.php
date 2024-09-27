@@ -1,3 +1,1 @@
-<div class="content-element">
-    {!! $content !!}
-</div>
+{!! $content !!}

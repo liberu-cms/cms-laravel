@@ -1,12 +1,9 @@
 <x-guest-layout>
-    <div>
-        
         @if ($contents)
             @foreach ($contents as $element)
-                @include('partials.content-element', ['content' => $element['content']])
+                @include('partials.elements.' . $element['name'])
             @endforeach
         @else
             <p>No content found</p>
         @endif
-    </div>
 </x-guest-layout>
