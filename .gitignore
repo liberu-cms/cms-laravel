@@ -26,3 +26,4 @@ Homestead.json
 rr
 .rr.yaml
 /resources/views/partials/elements/*
+!/resources/views/partials/elements/default.blade.*
