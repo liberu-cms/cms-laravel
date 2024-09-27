@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\WebRenderController;
 use App\Http\Livewire\Homepage;
 use App\Livewire\About;
 use App\Livewire\Contact;
@@ -17,4 +19,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', Webrender::class);
-Route::get('/{dynamicUrl}', Webrender::class);
+Route::get('/{dynamicUrl}', [WebRenderController::class, 'index']);
