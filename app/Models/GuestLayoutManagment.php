@@ -22,20 +22,27 @@ class GuestLayoutManagment extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            self::makeComponent($model->content, $model->name);
+            $name = \Str::replace(' ', '_', $model->name);
+            self::makeComponent($model->content, $name);
         });
 
         static::updating(function ($model) {
-           self::makeComponent($model->content, $model->name);
+          $name = \Str::replace(' ', '_', $model->name);
+           self::makeComponent($model->content, $name);
         });
     }
 
     public static function makeComponent($component, $name)
     {
         file_put_contents(
-            resource_path('views/partials/elements' . $name . '.blade.php'),
+            resource_path('views/partials/elements/' . $name . '.blade.php'),
             $component
         );
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = \Str::replace(' ', '_', $value);
     }
 
     public function scopeActive()
