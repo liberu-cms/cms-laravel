@@ -11,7 +11,7 @@
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.2",
         "guzzlehttp/guzzle": "^7.8",
-        "intelrx/sitesettings": "^1.0",
+        "intelrx/sitesettings": "^2.0",
         "joelbutcher/socialstream": "*",
         "laravel/framework": "^11.0",
         "laravel/jetstream": "*",

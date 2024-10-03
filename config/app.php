@@ -171,7 +171,6 @@ return [
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\Filament\AppPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Intelrx\Sitesettings\SitesettingsProvider::class,
         App\Providers\TeamServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
@@ -192,8 +191,6 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'Menu' => Spatie\Menu\Laravel\Facades\Menu::class,
-        'SiteConfig' => Intelrx\Sitesettings\SiteConfig::class,
-
     ])->toArray(),
 
 ];
