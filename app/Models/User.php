@@ -44,6 +44,7 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         'name',
         'email',
         'password',
+        'is_active',
     ];
 
     /**
@@ -88,9 +89,50 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === "admin") {
-            return $this->hasRole('admin');
+            return $this->hasRole(['admin', 'super_admin']);
         }
-        return true; // TODO: Check panel and role
+
+        if ($panel->getId() === "app") {
+            return $this->hasAnyRole(['admin', 'editor', 'author', 'viewer']);
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if user has permission to perform an action
+     */
+    public function hasPermissionTo($permission): bool
+    {
+        return $this->hasPermissionViaRole($permission) || parent::hasPermissionTo($permission);
+    }
+
+    /**
+     * Check if user has a specific permission through any of their roles
+     */
+    public function hasPermissionViaRole($permission): bool
+    {
+        foreach ($this->roles as $role) {
+            if ($role->permissions->contains('name', $permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all permissions for the user
+     */
+    public function getAllPermissions()
+    {
+        $permissions = collect();
+
+        foreach ($this->roles as $role) {
+            $permissions = $permissions->merge($role->permissions);
+        }
+
+        return $permissions->unique('id');
     }
 
     public function canAccessTenant(Model $tenant): bool
