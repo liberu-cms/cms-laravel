@@ -469,7 +469,78 @@ class Content extends Model
         $html = '';
 
         foreach ($this->contentBlocks as $block) {
-            $html .= $block->render();
+            $settings = $block->pivot->settings ?? [];
+            $classes = [];
+
+            // Apply settings to generate appropriate classes
+            if (isset($settings['alignment'])) {
+                $classes[] = 'text-' . $settings['alignment'];
+            }
+
+            if (isset($settings['size'])) {
+                $classes[] = 'size-' . $settings['size'];
+            }
+
+            $classAttribute = !empty($classes) ? ' class="' . implode(' ', $classes) . '"' : '';
+
+            switch ($block->type) {
+                case 'text':
+                    $html .= '<div' . $classAttribute . '>' . $block->content . '</div>';
+                    break;
+
+                case 'heading':
+                    $html .= $block->content; // Headings already have their own tags
+                    break;
+
+                case 'image':
+                    $html .= '<figure' . $classAttribute . '>';
+                    $html .= '<img src="' . $block->content . '" alt="Content image" class="img-fluid">';
+                    if (!empty($block->caption)) {
+                        $html .= '<figcaption>' . $block->caption . '</figcaption>';
+                    }
+                    $html .= '</figure>';
+                    break;
+
+                case 'video':
+                    $html .= '<div' . $classAttribute . '>';
+                    if (strpos($block->content, 'youtube.com') !== false || strpos($block->content, 'youtu.be') !== false) {
+                        $videoId = strpos($block->content, 'v=') !== false
+                            ? substr($block->content, strpos($block->content, 'v=') + 2)
+                            : basename($block->content);
+                        $videoId = strtok($videoId, '&');
+                        $html .= '<div class="embed-responsive embed-responsive-16by9">';
+                        $html .= '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' . $videoId . '" allowfullscreen></iframe>';
+                        $html .= '</div>';
+                    } elseif (strpos($block->content, 'vimeo.com') !== false) {
+                        $videoId = basename($block->content);
+                        $html .= '<div class="embed-responsive embed-responsive-16by9">';
+                        $html .= '<iframe class="embed-responsive-item" src="https://player.vimeo.com/video/' . $videoId . '" allowfullscreen></iframe>';
+                        $html .= '</div>';
+                    } else {
+                        $html .= '<p>Unsupported video URL: ' . $block->content . '</p>';
+                    }
+                    $html .= '</div>';
+                    break;
+
+                case 'quote':
+                    $html .= '<blockquote' . $classAttribute . '>' . $block->content . '</blockquote>';
+                    break;
+
+                case 'code':
+                    $html .= '<pre><code>' . htmlspecialchars($block->content) . '</code></pre>';
+                    break;
+
+                case 'list':
+                    $html .= $block->content; // Lists already have their own tags
+                    break;
+
+                case 'table':
+                    $html .= '<div class="table-responsive">' . $block->content . '</div>';
+                    break;
+
+                default:
+                    $html .= $block->content;
+            }
         }
 
         return $html;
