@@ -115,85 +115,12 @@ class EditContent extends EditRecord
         return $actions;
     }
 
-    protected function getFormSchema(): array
-    {
-        $schema = parent::getFormSchema();
-
-        // Add SEO tab to the form
-        $schema[] = Forms\Components\Tabs\Tab::make('SEO')
-            ->schema([
-                Forms\Components\TextInput::make('meta_title')
-                    ->label('Meta Title')
-                    ->placeholder('Enter meta title')
-                    ->helperText('Recommended length: 50-60 characters')
-                    ->maxLength(60)
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
-                        $livewire->emit('seoDataUpdated',
-                            $state,
-                            $livewire->data['meta_description'] ?? '',
-                            $livewire->data['meta_keywords'] ?? '',
-                            $livewire->data['canonical_url'] ?? ''
-                        );
-                    }),
-
-                Forms\Components\Textarea::make('meta_description')
-                    ->label('Meta Description')
-                    ->placeholder('Enter meta description')
-                    ->helperText('Recommended length: 150-160 characters')
-                    ->maxLength(160)
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
-                        $livewire->emit('seoDataUpdated',
-                            $livewire->data['meta_title'] ?? '',
-                            $state,
-                            $livewire->data['meta_keywords'] ?? '',
-                            $livewire->data['canonical_url'] ?? ''
-                        );
-                    }),
-
-                Forms\Components\TextInput::make('meta_keywords')
-                    ->label('Meta Keywords')
-                    ->placeholder('keyword1, keyword2, keyword3')
-                    ->helperText('Separate keywords with commas. Recommended: 3-5 keywords')
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
-                        $livewire->emit('seoDataUpdated',
-                            $livewire->data['meta_title'] ?? '',
-                            $livewire->data['meta_description'] ?? '',
-                            $state,
-                            $livewire->data['canonical_url'] ?? ''
-                        );
-                    }),
-
-                Forms\Components\TextInput::make('canonical_url')
-                    ->label('Canonical URL')
-                    ->placeholder('https://example.com/page')
-                    ->helperText('Use this to prevent duplicate content issues')
-                    ->url()
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
-                        $livewire->emit('seoDataUpdated',
-                            $livewire->data['meta_title'] ?? '',
-                            $livewire->data['meta_description'] ?? '',
-                            $livewire->data['meta_keywords'] ?? '',
-                            $state
-                        );
-                    }),
-
-                Forms\Components\View::make('filament.components.seo-analyzer'),
-            ]);
-
-        return $schema;
-    }
-
     #[On('updatePreview')]
     public function updatePreview($content)
     {
         // This method will be called when the content is updated
         // You can perform any necessary transformations here
         $this->emit('updatePreview', $content);
-        $this->emit('contentUpdated', $content, $this->data['title'] ?? '');
     }
 
     protected function afterSave(): void

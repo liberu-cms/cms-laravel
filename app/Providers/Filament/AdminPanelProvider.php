@@ -19,6 +19,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationGroup;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -53,7 +54,19 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])->plugins([
+            ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Administration')
+                    ->icon('heroicon-o-cog'),
+                NavigationGroup::make()
+                    ->label('Content')
+                    ->icon('heroicon-o-document-text'),
+                NavigationGroup::make()
+                    ->label('Settings')
+                    ->icon('heroicon-o-adjustments-horizontal'),
+            ])
+            ->plugins([
                 FilamentShieldPlugin::make()
             ]);
     }
