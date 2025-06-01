@@ -26,14 +26,10 @@ class Content extends Model
         'status',
         'featured_image_url',
         'slug',
-        'is_draft',
-        'last_autosaved_at',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
-        'last_autosaved_at' => 'datetime',
-        'is_draft' => 'boolean',
     ];
 
     public static function boot()
@@ -62,6 +58,11 @@ class Content extends Model
     public function versions()
     {
         return $this->hasMany(ContentVersion::class)->orderBy('version_number', 'desc');
+    }
+
+    public function media()
+    {
+        return $this->morphToMany(Media::class, 'mediable');
     }
 
     public function createVersion()
