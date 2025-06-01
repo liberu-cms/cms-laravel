@@ -130,6 +130,21 @@ class ContentPolicy
     }
 
     /**
+     * Determine whether the user can approve the content.
+     */
+    public function approve(User $user, Content $content): bool
+    {
+        return $user->can('approve_content') &&
+               ($user->id === $content->review_by || $user->hasRole('editor') || $user->hasRole('admin'));
+    }
+
+    /**
+     * Determine whether the user can schedule content.
+     */
+    public function schedule(User $user, Content $content): bool
+    {
+        return $user->can('schedule_content');
+    }
      * Determine whether the user can publish content.
      */
     public function publish(User $user, Content $content): bool
