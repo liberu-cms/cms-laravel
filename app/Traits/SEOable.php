@@ -10,6 +10,8 @@ trait SEOable
             'meta_title',
             'meta_description',
             'canonical_url',
+            'meta_keywords',
+            'seo_score',
         ]);
     }
 
@@ -26,5 +28,15 @@ trait SEOable
     public function getCanonicalUrlAttribute($value)
     {
         return $value ?: url($this->slug);
+    }
+
+    public function getMetaKeywordsAttribute($value)
+    {
+        return $value ?: '';
+    }
+
+    public function getSeoScoreAttribute($value)
+    {
+        return $value ?: 0;
     }
 }
