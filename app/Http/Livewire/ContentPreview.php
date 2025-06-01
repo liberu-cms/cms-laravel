@@ -12,19 +12,16 @@ class ContentPreview extends Component
 
     protected $listeners = ['updatePreview'];
 
-    public function mount(Content $content)
+    public function mount(Content $content = null)
     {
-        $this->content = $content;
-        $this->updatePreview();
+        $this->content = $content ?? new Content();
+        $this->updatePreview($this->content->body);
     }
 
     public function updatePreview($content = null)
     {
-        if ($content !== null) {
-            $this->content->content_body = $content;
-        }
         // Convert markdown to HTML or apply any other necessary transformations
-        $this->previewHtml = $this->content->content_body;
+        $this->previewHtml = $content ?? $this->content->body ?? '';
     }
 
     public function render()
