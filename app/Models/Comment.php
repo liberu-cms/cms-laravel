@@ -13,10 +13,21 @@ class Comment extends Model
 
     protected $primaryKey = 'id';
 
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_REJECTED = 'rejected';
+    const STATUS_SPAM = 'spam';
+
     protected $fillable = [
         'content_id',
         'user_id',
         'body',
+        'status',
+        'parent_id',
+    ];
+
+    protected $attributes = [
+        'status' => self::STATUS_PENDING,
     ];
 
     public function content()
@@ -27,5 +38,35 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
+
+    public function isPending()
+    {
+        return $this->status === self::STATUS_PENDING;
+    }
+
+    public function isApproved()
+    {
+        return $this->status === self::STATUS_APPROVED;
+    }
+
+    public function isRejected()
+    {
+        return $this->status === self::STATUS_REJECTED;
+    }
+
+    public function isSpam()
+    {
+        return $this->status === self::STATUS_SPAM;
     }
 }
