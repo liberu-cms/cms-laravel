@@ -119,13 +119,6 @@ class EditContent extends EditRecord
     {
         $schema = parent::getFormSchema();
 
-        // Add content blocks editor tab
-        $schema[] = Forms\Components\Tabs\Tab::make('Content Blocks')
-            ->schema([
-                Forms\Components\View::make('filament.components.content-block-editor')
-                    ->viewData(['content' => $this->record])
-            ]);
-
         // Add SEO tab to the form
         $schema[] = Forms\Components\Tabs\Tab::make('SEO')
             ->schema([
