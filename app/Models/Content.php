@@ -8,7 +8,7 @@ use App\Traits\SEOable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades/Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ContentStatusChanged;
 
@@ -34,7 +34,6 @@ class Content extends Model
         'review_by',
         'reviewed_at',
         'reviewed_by',
-        'language_id', // Add default language ID
     ];
 
     protected $casts = [
@@ -420,142 +419,59 @@ class Content extends Model
         $this->save();
     }
 
-    /**
-     * Get the default language for this content
-     */
-    public function language()
+    public function contentBlocks()
     {
-        return $this->belongsTo(Language::class, 'language_id');
+        return $this->morphToMany(ContentBlock::class, 'blockable')
+            ->using(Blockable::class)
+            ->withPivot('order', 'settings')
+            ->orderBy('order');
     }
 
-    /**
-     * Get all translations for this content
-     */
-    public function translations()
+    public function addBlock(ContentBlock $block, $order = null, $settings = [])
     {
-        return $this->hasMany(ContentTranslation::class);
-    }
-
-    /**
-     * Get a specific translation by language code
-     */
-    public function getTranslation($languageCode)
-    {
-        $language = Language::where('code', $languageCode)->first();
-
-        if (!$language) {
-            return null;
+        if ($order === null) {
+            $order = $this->contentBlocks()->count();
         }
 
-        return $this->translations()
-            ->where('language_id', $language->id)
-            ->first();
-    }
-
-    /**
-     * Check if content has a translation in the specified language
-     */
-    public function hasTranslation($languageCode)
-    {
-        return $this->getTranslation($languageCode) !== null;
-    }
-
-    /**
-     * Create a new translation for this content
-     */
-    public function createTranslation($languageCode, array $data)
-    {
-        $language = Language::where('code', $languageCode)->first();
-
-        if (!$language) {
-            throw new \Exception("Language with code {$languageCode} not found");
-        }
-
-        // Check if translation already exists
-        $existingTranslation = $this->getTranslation($languageCode);
-        if ($existingTranslation) {
-            return $existingTranslation->update($data);
-        }
-
-        // Create new translation
-        return $this->translations()->create(array_merge(
-            $data,
-            [
-                'language_id' => $language->id,
-                'translator_id' => Auth::id(),
-                'translated_at' => now(),
-            ]
-        ));
-    }
-
-    /**
-     * Get content in the specified language or fall back to default
-     */
-    public function getContentInLanguage($languageCode)
-    {
-        $translation = $this->getTranslation($languageCode);
-
-        if ($translation) {
-            return [
-                'title' => $translation->title,
-                'body' => $translation->body,
-                'slug' => $translation->slug,
-                'featured_image_url' => $translation->featured_image_url ?: $this->featured_image_url,
-                'is_translation' => true,
-                'language_code' => $languageCode,
-            ];
-        }
-
-        // Fall back to original content
-        return [
-            'title' => $this->title,
-            'body' => $this->body,
-            'slug' => $this->slug,
-            'featured_image_url' => $this->featured_image_url,
-            'is_translation' => false,
-            'language_code' => $this->language ? $this->language->code : null,
-        ];
-    }
-
-    // Override the createVersion method to include translations
-    public function createVersion()
-    {
-        $latestVersion = $this->versions()->first();
-        $versionNumber = $latestVersion ? $latestVersion->version_number + 1 : 1;
-
-        $version = $this->versions()->create([
-            'title' => $this->title,
-            'body' => $this->body,
-            'author_id' => Auth::id() ?? $this->author_id,
-            'version_number' => $versionNumber,
-            'published_at' => $this->published_at,
-            'type' => $this->type,
-            'category_id' => $this->category_id,
-            'status' => $this->status,
-            'featured_image_url' => $this->featured_image_url,
-            'slug' => $this->slug,
-            'workflow_status' => $this->workflow_status,
-            'scheduled_for' => $this->scheduled_for,
-            'review_by' => $this->review_by,
-            'reviewed_at' => $this->reviewed_at,
-            'reviewed_by' => $this->reviewed_by,
-            'language_id' => $this->language_id,
+        $this->contentBlocks()->attach($block->id, [
+            'order' => $order,
+            'settings' => $settings,
         ]);
 
-        // Also version the translations
-        foreach ($this->translations as $translation) {
-            $version->translationVersions()->create([
-                'content_translation_id' => $translation->id,
-                'title' => $translation->title,
-                'body' => $translation->body,
-                'language_id' => $translation->language_id,
-                'slug' => $translation->slug,
-                'featured_image_url' => $translation->featured_image_url,
-                'status' => $translation->status,
-                'translator_id' => $translation->translator_id,
+        return $this;
+    }
+
+    public function removeBlock(ContentBlock $block)
+    {
+        $this->contentBlocks()->detach($block->id);
+
+        // Reorder remaining blocks
+        $this->reorderBlocks();
+
+        return $this;
+    }
+
+    public function reorderBlocks()
+    {
+        $blocks = $this->contentBlocks()->orderBy('order')->get();
+
+        foreach ($blocks as $index => $block) {
+            $this->contentBlocks()->updateExistingPivot($block->id, [
+                'order' => $index,
             ]);
         }
 
-        return $version;
+        return $this;
+    }
+
+    public function renderBlocks()
+    {
+        $html = '';
+
+        foreach ($this->contentBlocks as $block) {
+            $html .= $block->render();
+        }
+
+        return $html;
     }
 }
