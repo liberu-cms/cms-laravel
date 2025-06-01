@@ -310,6 +310,68 @@ class Content extends Model
         ]);
     }
 
+    public function analytics()
+    {
+        return $this->hasMany(ContentAnalytics::class);
+    }
+
+    public function recordView($isUnique = false, $source = null, $deviceType = null, $country = null, $referrer = null)
+    {
+        return ContentAnalytics::recordView(
+            $this->id,
+            $isUnique,
+            $source,
+            $deviceType,
+            $country,
+            $referrer
+        );
+    }
+
+    public function recordInteraction($type, $value = 1)
+    {
+        return ContentAnalytics::recordInteraction($this->id, $type, $value);
+    }
+
+    public function updateAnalyticsMetrics($avgTimeOnPage = null, $bounceRate = null, $conversionRate = null)
+    {
+        return ContentAnalytics::updateMetrics(
+            $this->id,
+            $avgTimeOnPage,
+            $bounceRate,
+            $conversionRate
+        );
+    }
+
+    public function getViewsCount($startDate = null, $endDate = null)
+    {
+        $query = $this->analytics();
+
+        if ($startDate) {
+            $query->where('date', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->where('date', '<=', $endDate);
+        }
+
+        return $query->sum('views');
+    }
+
+    public function getUniqueViewsCount($startDate = null, $endDate = null)
+    {
+        $query = $this->analytics();
+
+        if ($startDate) {
+            $query->where('date', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->where('date', '<=', $endDate);
+        }
+
+        return $query->sum('unique_views');
+    }
+
     public function publish()
     {
         $this->workflow_status = self::STATUS_PUBLISHED;
