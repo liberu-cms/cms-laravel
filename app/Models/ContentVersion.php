@@ -20,6 +20,7 @@ class ContentVersion extends Model
         'category_id',
         'status',
         'featured_image_url',
+        'slug',
     ];
 
     protected $casts = [
