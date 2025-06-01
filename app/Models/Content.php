@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use App\Services\FileService;
-use App\Traits\Fileable;
 use App\Traits\IsTenantModel;
 use App\Traits\SEOable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades/Auth;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ContentStatusChanged;
 
@@ -373,63 +372,13 @@ class Content extends Model
         return $query->sum('unique_views');
     }
 
-    /**
-     * Share content to social media platforms
-     *
-     * @param array $platforms
-     * @return array
-     */
-    public function shareToSocialMedia(array $platforms = ['facebook', 'twitter', 'linkedin'])
-    {
-        $socialMediaService = app(SocialMediaService::class);
-        return $socialMediaService->shareContent($this, $platforms);
-    }
-
-    /**
-     * Get social media analytics for this content
-     *
-     * @return array
-     */
-    public function getSocialMediaAnalytics()
-    {
-        $socialMediaService = app(SocialMediaService::class);
-        return $socialMediaService->getContentAnalytics($this);
-    }
-
-    /**
-     * Get social media shares for this content
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function socialMediaShares()
-    {
-        return $this->hasMany(SocialMediaAnalytics::class)
-            ->where('action', 'share');
-    }
-
-    /**
-     * Get social media engagements for this content
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function socialMediaEngagements()
-    {
-        return $this->hasMany(SocialMediaAnalytics::class)
-            ->where('action', 'engagement');
-    }
-
-    public function publishAndShare(array $platforms = ['facebook', 'twitter', 'linkedin'])
+    public function publish()
     {
         $this->workflow_status = self::STATUS_PUBLISHED;
         $this->published_at = now();
         $this->save();
 
-        // Share to social media
-        $this->shareToSocialMedia($platforms);
-
         Notification::send($this->author, new ContentStatusChanged($this, 'published'));
-
-        return $this;
     }
 
     public function reject()
@@ -438,19 +387,15 @@ class Content extends Model
         $this->save();
 
         Notification::send($this->author, new ContentStatusChanged($this, 'rejected'));
-
-        return $this;
     }
 
-    public function schedule($scheduledDate)
+    public function scheduleFor($dateTime)
     {
         $this->workflow_status = self::STATUS_SCHEDULED;
-        $this->scheduled_for = $scheduledDate;
+        $this->scheduled_for = $dateTime;
         $this->save();
 
         Notification::send($this->author, new ContentStatusChanged($this, 'scheduled'));
-
-        return $this;
     }
 
     public function approve()
@@ -459,8 +404,6 @@ class Content extends Model
         $this->save();
 
         Notification::send($this->author, new ContentStatusChanged($this, 'approved'));
-
-        return $this;
     }
 
     public function reviewBy($userId)
