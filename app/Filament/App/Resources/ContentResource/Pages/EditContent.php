@@ -18,38 +18,41 @@ class EditContent extends EditRecord
     protected function getHeaderActions(): array
     {
         $actions = [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn () => auth()->user()->can('delete', $this->record)),
             Actions\Action::make('version_history')
                 ->url(fn () => $this->getResource()::getUrl('version-history', ['record' => $this->record]))
                 ->icon('heroicon-o-clock')
                 ->label('Version History'),
         ];
 
-        // Add workflow actions based on current status
+        // Add workflow actions based on current status and user permissions
         if ($this->record->isDraft()) {
-            $actions[] = Actions\Action::make('submit_for_review')
-                ->label('Submit for Review')
-                ->icon('heroicon-o-paper-airplane')
-                ->form([
-                    Forms\Components\Select::make('review_by')
-                        ->label('Assign Reviewer')
-                        ->options(function () {
-                            return User::permission('review_content')
-                                ->where('id', '!=', auth()->id())
-                                ->pluck('name', 'id');
-                        })
-                        ->searchable()
-                ])
-                ->action(function (array $data): void {
-                    $this->record->submitForReview($data['review_by'] ?? null);
-                    Notification::make()
-                        ->title('Content submitted for review')
-                        ->success()
-                        ->send();
-                });
+            if (auth()->user()->can('review_content')) {
+                $actions[] = Actions\Action::make('submit_for_review')
+                    ->label('Submit for Review')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->form([
+                        Forms\Components\Select::make('review_by')
+                            ->label('Assign Reviewer')
+                            ->options(function () {
+                                return User::permission('review_content')
+                                    ->where('id', '!=', auth()->id())
+                                    ->pluck('name', 'id');
+                            })
+                            ->searchable()
+                    ])
+                    ->action(function (array $data): void {
+                        $this->record->submitForReview($data['review_by'] ?? null);
+                        Notification::make()
+                            ->title('Content submitted for review')
+                            ->success()
+                            ->send();
+                    });
+            }
         }
 
-        if ($this->record->isInReview() && auth()->user()->can('approve', $this->record)) {
+        if ($this->record->isInReview() && auth()->user()->can('review', $this->record)) {
             $actions[] = Actions\Action::make('approve')
                 ->label('Approve')
                 ->icon('heroicon-o-check-circle')
@@ -81,7 +84,7 @@ class EditContent extends EditRecord
                 });
         }
 
-        if ($this->record->isApproved()) {
+        if ($this->record->isApproved() && auth()->user()->can('publish', $this->record)) {
             $actions[] = Actions\Action::make('publish')
                 ->label('Publish Now')
                 ->icon('heroicon-o-globe-alt')
