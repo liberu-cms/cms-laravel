@@ -379,6 +379,8 @@ class Content extends Model
         $this->save();
 
         Notification::send($this->author, new ContentStatusChanged($this, 'published'));
+
+        return $this;
     }
 
     public function reject()
@@ -387,15 +389,19 @@ class Content extends Model
         $this->save();
 
         Notification::send($this->author, new ContentStatusChanged($this, 'rejected'));
+
+        return $this;
     }
 
-    public function scheduleFor($dateTime)
+    public function schedule($scheduledDate)
     {
         $this->workflow_status = self::STATUS_SCHEDULED;
-        $this->scheduled_for = $dateTime;
+        $this->scheduled_for = $scheduledDate;
         $this->save();
 
         Notification::send($this->author, new ContentStatusChanged($this, 'scheduled'));
+
+        return $this;
     }
 
     public function approve()
@@ -404,6 +410,8 @@ class Content extends Model
         $this->save();
 
         Notification::send($this->author, new ContentStatusChanged($this, 'approved'));
+
+        return $this;
     }
 
     public function reviewBy($userId)
