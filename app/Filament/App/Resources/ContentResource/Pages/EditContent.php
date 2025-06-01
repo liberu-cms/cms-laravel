@@ -18,41 +18,38 @@ class EditContent extends EditRecord
     protected function getHeaderActions(): array
     {
         $actions = [
-            Actions\DeleteAction::make()
-                ->visible(fn () => auth()->user()->can('delete', $this->record)),
+            Actions\DeleteAction::make(),
             Actions\Action::make('version_history')
                 ->url(fn () => $this->getResource()::getUrl('version-history', ['record' => $this->record]))
                 ->icon('heroicon-o-clock')
                 ->label('Version History'),
         ];
 
-        // Add workflow actions based on current status and user permissions
+        // Add workflow actions based on current status
         if ($this->record->isDraft()) {
-            if (auth()->user()->can('review_content')) {
-                $actions[] = Actions\Action::make('submit_for_review')
-                    ->label('Submit for Review')
-                    ->icon('heroicon-o-paper-airplane')
-                    ->form([
-                        Forms\Components\Select::make('review_by')
-                            ->label('Assign Reviewer')
-                            ->options(function () {
-                                return User::permission('review_content')
-                                    ->where('id', '!=', auth()->id())
-                                    ->pluck('name', 'id');
-                            })
-                            ->searchable()
-                    ])
-                    ->action(function (array $data): void {
-                        $this->record->submitForReview($data['review_by'] ?? null);
-                        Notification::make()
-                            ->title('Content submitted for review')
-                            ->success()
-                            ->send();
-                    });
-            }
+            $actions[] = Actions\Action::make('submit_for_review')
+                ->label('Submit for Review')
+                ->icon('heroicon-o-paper-airplane')
+                ->form([
+                    Forms\Components\Select::make('review_by')
+                        ->label('Assign Reviewer')
+                        ->options(function () {
+                            return User::permission('review_content')
+                                ->where('id', '!=', auth()->id())
+                                ->pluck('name', 'id');
+                        })
+                        ->searchable()
+                ])
+                ->action(function (array $data): void {
+                    $this->record->submitForReview($data['review_by'] ?? null);
+                    Notification::make()
+                        ->title('Content submitted for review')
+                        ->success()
+                        ->send();
+                });
         }
 
-        if ($this->record->isInReview() && auth()->user()->can('review', $this->record)) {
+        if ($this->record->isInReview() && auth()->user()->can('approve', $this->record)) {
             $actions[] = Actions\Action::make('approve')
                 ->label('Approve')
                 ->icon('heroicon-o-check-circle')
@@ -84,7 +81,7 @@ class EditContent extends EditRecord
                 });
         }
 
-        if ($this->record->isApproved() && auth()->user()->can('publish', $this->record)) {
+        if ($this->record->isApproved()) {
             $actions[] = Actions\Action::make('publish')
                 ->label('Publish Now')
                 ->icon('heroicon-o-globe-alt')
@@ -118,12 +115,85 @@ class EditContent extends EditRecord
         return $actions;
     }
 
+    protected function getFormSchema(): array
+    {
+        $schema = parent::getFormSchema();
+
+        // Add SEO tab to the form
+        $schema[] = Forms\Components\Tabs\Tab::make('SEO')
+            ->schema([
+                Forms\Components\TextInput::make('meta_title')
+                    ->label('Meta Title')
+                    ->placeholder('Enter meta title')
+                    ->helperText('Recommended length: 50-60 characters')
+                    ->maxLength(60)
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
+                        $livewire->emit('seoDataUpdated',
+                            $state,
+                            $livewire->data['meta_description'] ?? '',
+                            $livewire->data['meta_keywords'] ?? '',
+                            $livewire->data['canonical_url'] ?? ''
+                        );
+                    }),
+
+                Forms\Components\Textarea::make('meta_description')
+                    ->label('Meta Description')
+                    ->placeholder('Enter meta description')
+                    ->helperText('Recommended length: 150-160 characters')
+                    ->maxLength(160)
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
+                        $livewire->emit('seoDataUpdated',
+                            $livewire->data['meta_title'] ?? '',
+                            $state,
+                            $livewire->data['meta_keywords'] ?? '',
+                            $livewire->data['canonical_url'] ?? ''
+                        );
+                    }),
+
+                Forms\Components\TextInput::make('meta_keywords')
+                    ->label('Meta Keywords')
+                    ->placeholder('keyword1, keyword2, keyword3')
+                    ->helperText('Separate keywords with commas. Recommended: 3-5 keywords')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
+                        $livewire->emit('seoDataUpdated',
+                            $livewire->data['meta_title'] ?? '',
+                            $livewire->data['meta_description'] ?? '',
+                            $state,
+                            $livewire->data['canonical_url'] ?? ''
+                        );
+                    }),
+
+                Forms\Components\TextInput::make('canonical_url')
+                    ->label('Canonical URL')
+                    ->placeholder('https://example.com/page')
+                    ->helperText('Use this to prevent duplicate content issues')
+                    ->url()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
+                        $livewire->emit('seoDataUpdated',
+                            $livewire->data['meta_title'] ?? '',
+                            $livewire->data['meta_description'] ?? '',
+                            $livewire->data['meta_keywords'] ?? '',
+                            $state
+                        );
+                    }),
+
+                Forms\Components\View::make('filament.components.seo-analyzer'),
+            ]);
+
+        return $schema;
+    }
+
     #[On('updatePreview')]
     public function updatePreview($content)
     {
         // This method will be called when the content is updated
         // You can perform any necessary transformations here
         $this->emit('updatePreview', $content);
+        $this->emit('contentUpdated', $content, $this->data['title'] ?? '');
     }
 
     protected function afterSave(): void
