@@ -69,7 +69,7 @@ class Content extends Model
         });
 
         static::saved(function ($content) {
-            Cache::forget("content_{$content->id}";
+            Cache::forget("content_{$content->id}");
 
             // Send notification if workflow status has changed
             if ($content->isDirty('workflow_status')) {
