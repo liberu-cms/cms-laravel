@@ -474,4 +474,38 @@ class Content extends Model
 
         return $html;
     }
+
+    public function media()
+    {
+        return $this->morphToMany(Media::class, 'mediable');
+    }
+
+    public function attachMedia(Media $media, $collection = null)
+    {
+        return $this->media()->attach($media, [
+            'collection' => $collection,
+        ]);
+    }
+
+    public function detachMedia(Media $media)
+    {
+        return $this->media()->detach($media);
+    }
+
+    public function syncMedia(array $mediaIds, $collection = null)
+    {
+        $attachData = [];
+        foreach ($mediaIds as $id) {
+            $attachData[$id] = ['collection' => $collection];
+        }
+
+        return $this->media()->sync($attachData);
+    }
+
+    public function getMediaByCollection($collection)
+    {
+        return $this->media()
+            ->wherePivot('collection', $collection)
+            ->get();
+    }
 }
