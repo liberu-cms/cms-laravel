@@ -1,15 +1,10 @@
 <?php
 
-/**
- * AppServiceProvider class.
- *
- * Used for application-level service registration and bootstrapping services, including setting up model event listeners.
- */
-
 namespace App\Providers;
 
+use App\Modules\ModuleManager;
+use App\Modules\ModuleServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Page;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,7 +13,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Register the module manager as a singleton
+        $this->app->singleton(ModuleManager::class, function ($app) {
+            return new ModuleManager();
+        });
+
+        // Register the module service provider
+        $this->app->register(ModuleServiceProvider::class);
     }
 
     /**
@@ -26,20 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Page::creating(function ($page) {
-            if (empty($page->slug)) {
-                $page->slug = \Str::slug($page->title);
-            }
-        });
-
-        if (config('app.debug')) {
-            // \DB::listen(function ($query) {
-            //     \Log::info(
-            //         $query->sql,
-            //         $query->bindings,
-            //         $query->time
-            //     );
-            // });
-        }
+        //
     }
 }
