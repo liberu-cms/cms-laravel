@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Exceptions\ExceptionHandler;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class EntityManagementService extends Controller
                 return $this->responseMessage("{(new $model)->activity_module} not found", 406);
             }
             return Response::json($data);
-        } catch (\Exception $error) {
+        } catch (Exception $error) {
             throw new ExceptionHandler($error);
         }
     }
@@ -36,7 +37,7 @@ class EntityManagementService extends Controller
             $modelData = $model::create($data);
             DB::commit();
             return $this->httpResponse($modelData, null, $data[(new $model)->activity_column]);
-        } catch (\Exception $error) {
+        } catch (Exception $error) {
             DB::rollBack();
             throw new ExceptionHandler($error);
         }
@@ -62,7 +63,7 @@ class EntityManagementService extends Controller
             $modelData->update($data);
             DB::commit();
             return $this->httpResponse($modelData, null, $data[(new $model)->activity_column]);
-        } catch (\Exception $error) {
+        } catch (Exception $error) {
             DB::rollBack();
             throw new ExceptionHandler($error);
         }
@@ -87,7 +88,7 @@ class EntityManagementService extends Controller
             $modelData->delete();
             DB::commit();
             return $this->httpResponse($modelData, "{$modelData[(new $model)->activity_column]} Deleted Successfully");
-        } catch (\Exception $error) {
+        } catch (Exception $error) {
             DB::rollBack();
             throw new ExceptionHandler($error);
         }

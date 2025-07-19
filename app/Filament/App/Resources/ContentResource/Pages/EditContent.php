@@ -2,6 +2,14 @@
 
 namespace App\Filament\App\Resources\ContentResource\Pages;
 
+use Filament\Actions\DeleteAction;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\View;
 use App\Filament\App\Resources\ContentResource;
 use App\Models\Content;
 use App\Models\User;
@@ -18,8 +26,8 @@ class EditContent extends EditRecord
     protected function getHeaderActions(): array
     {
         $actions = [
-            Actions\DeleteAction::make(),
-            Actions\Action::make('version_history')
+            DeleteAction::make(),
+            Action::make('version_history')
                 ->url(fn () => $this->getResource()::getUrl('version-history', ['record' => $this->record]))
                 ->icon('heroicon-o-clock')
                 ->label('Version History'),
@@ -27,11 +35,11 @@ class EditContent extends EditRecord
 
         // Add workflow actions based on current status
         if ($this->record->isDraft()) {
-            $actions[] = Actions\Action::make('submit_for_review')
+            $actions[] = Action::make('submit_for_review')
                 ->label('Submit for Review')
                 ->icon('heroicon-o-paper-airplane')
-                ->form([
-                    Forms\Components\Select::make('review_by')
+                ->schema([
+                    Select::make('review_by')
                         ->label('Assign Reviewer')
                         ->options(function () {
                             return User::permission('review_content')
@@ -50,7 +58,7 @@ class EditContent extends EditRecord
         }
 
         if ($this->record->isInReview() && auth()->user()->can('approve', $this->record)) {
-            $actions[] = Actions\Action::make('approve')
+            $actions[] = Action::make('approve')
                 ->label('Approve')
                 ->icon('heroicon-o-check-circle')
                 ->color('success')
@@ -62,12 +70,12 @@ class EditContent extends EditRecord
                         ->send();
                 });
 
-            $actions[] = Actions\Action::make('reject')
+            $actions[] = Action::make('reject')
                 ->label('Reject')
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
-                ->form([
-                    Forms\Components\Textarea::make('rejection_reason')
+                ->schema([
+                    Textarea::make('rejection_reason')
                         ->label('Reason for Rejection')
                         ->required()
                 ])
@@ -82,7 +90,7 @@ class EditContent extends EditRecord
         }
 
         if ($this->record->isApproved()) {
-            $actions[] = Actions\Action::make('publish')
+            $actions[] = Action::make('publish')
                 ->label('Publish Now')
                 ->icon('heroicon-o-globe-alt')
                 ->color('success')
@@ -94,11 +102,11 @@ class EditContent extends EditRecord
                         ->send();
                 });
 
-            $actions[] = Actions\Action::make('schedule')
+            $actions[] = Action::make('schedule')
                 ->label('Schedule')
                 ->icon('heroicon-o-calendar')
-                ->form([
-                    Forms\Components\DateTimePicker::make('scheduled_for')
+                ->schema([
+                    DateTimePicker::make('scheduled_for')
                         ->label('Schedule Publication For')
                         ->required()
                         ->minDate(now())
@@ -120,9 +128,9 @@ class EditContent extends EditRecord
         $schema = parent::getFormSchema();
 
         // Add SEO tab to the form
-        $schema[] = Forms\Components\Tabs\Tab::make('SEO')
+        $schema[] = Tab::make('SEO')
             ->schema([
-                Forms\Components\TextInput::make('meta_title')
+                TextInput::make('meta_title')
                     ->label('Meta Title')
                     ->placeholder('Enter meta title')
                     ->helperText('Recommended length: 50-60 characters')
@@ -137,7 +145,7 @@ class EditContent extends EditRecord
                         );
                     }),
 
-                Forms\Components\Textarea::make('meta_description')
+                Textarea::make('meta_description')
                     ->label('Meta Description')
                     ->placeholder('Enter meta description')
                     ->helperText('Recommended length: 150-160 characters')
@@ -152,7 +160,7 @@ class EditContent extends EditRecord
                         );
                     }),
 
-                Forms\Components\TextInput::make('meta_keywords')
+                TextInput::make('meta_keywords')
                     ->label('Meta Keywords')
                     ->placeholder('keyword1, keyword2, keyword3')
                     ->helperText('Separate keywords with commas. Recommended: 3-5 keywords')
@@ -166,7 +174,7 @@ class EditContent extends EditRecord
                         );
                     }),
 
-                Forms\Components\TextInput::make('canonical_url')
+                TextInput::make('canonical_url')
                     ->label('Canonical URL')
                     ->placeholder('https://example.com/page')
                     ->helperText('Use this to prevent duplicate content issues')
@@ -181,7 +189,7 @@ class EditContent extends EditRecord
                         );
                     }),
 
-                Forms\Components\View::make('filament.components.seo-analyzer'),
+                View::make('filament.components.seo-analyzer'),
             ]);
 
         return $schema;

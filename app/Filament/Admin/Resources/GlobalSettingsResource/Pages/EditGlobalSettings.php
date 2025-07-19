@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\GlobalSettingsResource\Pages;
 
+use Filament\Actions\DeleteAction;
 use App\Filament\Admin\Resources\GlobalSettingsResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
@@ -13,7 +14,7 @@ class EditGlobalSettings extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

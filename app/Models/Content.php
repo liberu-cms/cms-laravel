@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use App\Services\FileService;
 use App\Traits\IsTenantModel;
 use App\Traits\SEOable;
@@ -58,7 +59,7 @@ class Content extends Model
                 // Additional validation or processing logic
                 $fileService = app(FileService::class);
                 if (!$fileService->validateFileType($content->featured_image_url, 'image')) {
-                    throw new \Exception('Invalid file type or size for featured image.');
+                    throw new Exception('Invalid file type or size for featured image.');
                 }
             }
 

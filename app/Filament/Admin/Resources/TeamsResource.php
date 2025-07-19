@@ -2,13 +2,20 @@
 
 namespace App\Filament\Admin\Resources;
 
+use Filament\Schemas\Schema;
+use App\Models\User;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Admin\Resources\TeamsResource\Pages\ListTeams;
+use App\Filament\Admin\Resources\TeamsResource\Pages\CreateTeams;
+use App\Filament\Admin\Resources\TeamsResource\Pages\EditTeams;
 use App\Filament\Admin\Resources\TeamsResource\Pages;
 use App\Filament\Admin\Resources\TeamsResource\RelationManagers;
 use App\Models\Team;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -20,17 +27,17 @@ class TeamsResource extends Resource
 { 
     protected static ?string $model = Team::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Administration';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \UnitEnum | null $navigationGroup = 'Administration';
     protected static ?string $navigationLabel = 'Teams';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')->autocapitalize('words')->required(),
                 Select::make('user_id')->label('Owner')->options(
-                    \App\Models\User::all()->pluck('name', 'id')
+                    User::all()->pluck('name', 'id')
                 )->required(),
             ]);
     }
@@ -46,12 +53,12 @@ class TeamsResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -66,9 +73,9 @@ class TeamsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTeams::route('/'),
-            'create' => Pages\CreateTeams::route('/create'),
-            'edit' => Pages\EditTeams::route('/{record}/edit'),
+            'index' => ListTeams::route('/'),
+            'create' => CreateTeams::route('/create'),
+            'edit' => EditTeams::route('/{record}/edit'),
         ];
     }
 }

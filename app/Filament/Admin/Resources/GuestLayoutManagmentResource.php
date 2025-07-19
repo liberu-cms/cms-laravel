@@ -2,16 +2,23 @@
 
 namespace App\Filament\Admin\Resources;
 
+use Filament\Schemas\Schema;
+use App\Models\Menu;
+use Filament\Schemas\Components\Section;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Admin\Resources\GuestLayoutManagmentResource\Pages\ListGuestLayoutManagments;
+use App\Filament\Admin\Resources\GuestLayoutManagmentResource\Pages\CreateGuestLayoutManagment;
+use App\Filament\Admin\Resources\GuestLayoutManagmentResource\Pages\EditGuestLayoutManagment;
 use App\Filament\Admin\Resources\GuestLayoutManagmentResource\Pages;
 use App\Filament\Admin\Resources\GuestLayoutManagmentResource\RelationManagers;
 use App\Models\GuestLayoutManagment;
 use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -23,17 +30,17 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class GuestLayoutManagmentResource extends Resource
 {
     protected static ?string $model = GuestLayoutManagment::class;
-    protected static ?string $navigationGroup = 'Guest Configuration';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \UnitEnum | null $navigationGroup = 'Guest Configuration';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Layout managment';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')->autocapitalize('words')->required(),
                 Select::make('fk_menu_id')->label('Menu')->options(
-                    \App\Models\Menu::all()->pluck('name', 'id')
+                    Menu::all()->pluck('name', 'id')
                 )->required(),
                 TextInput::make('sort_order')->numeric()->required(),
                 ToggleButtons::make('is_active')->label('Display the content')->boolean()->inline()->required(),
@@ -78,15 +85,15 @@ class GuestLayoutManagmentResource extends Resource
             ->filters([
                 SelectFilter::make('fk_menu_id')->label('Menu')
                 ->options(
-                    \App\Models\Menu::all()->pluck('name', 'id')
+                    Menu::all()->pluck('name', 'id')
                 )
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -101,9 +108,9 @@ class GuestLayoutManagmentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGuestLayoutManagments::route('/'),
-            'create' => Pages\CreateGuestLayoutManagment::route('/create'),
-            'edit' => Pages\EditGuestLayoutManagment::route('/{record}/edit'),
+            'index' => ListGuestLayoutManagments::route('/'),
+            'create' => CreateGuestLayoutManagment::route('/create'),
+            'edit' => EditGuestLayoutManagment::route('/{record}/edit'),
         ];
     }
 }

@@ -2,6 +2,12 @@
 
 namespace App\Filament\App\Resources;
 
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\App\Resources\ContentResource\Pages\ListContents;
+use App\Filament\App\Resources\ContentResource\Pages\CreateContent;
+use App\Filament\App\Resources\ContentResource\Pages\EditContent;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -41,12 +47,12 @@ class ContentResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->modifyQueryUsing(fn($query) => $query->with('author'));
@@ -62,9 +68,9 @@ class ContentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListContents::route('/'),
-            'create' => Pages\CreateContent::route('/create'),
-            'edit' => Pages\EditContent::route('/{record}/edit'),
+            'index' => ListContents::route('/'),
+            'create' => CreateContent::route('/create'),
+            'edit' => EditContent::route('/{record}/edit'),
         ];
     }
 }

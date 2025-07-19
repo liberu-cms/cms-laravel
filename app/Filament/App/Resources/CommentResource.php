@@ -2,12 +2,22 @@
 
 namespace App\Filament\App\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\EditAction;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\BulkAction;
+use App\Filament\App\Resources\CommentResource\Pages\ListComments;
+use App\Filament\App\Resources\CommentResource\Pages\CreateComment;
+use App\Filament\App\Resources\CommentResource\Pages\EditComment;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Author;
 use App\Models\Comment;
 use App\Models\Content;
-use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
@@ -23,14 +33,14 @@ class CommentResource extends Resource
 {
     protected static ?string $model = Comment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static string | \UnitEnum | null $navigationGroup = 'Content Management';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Select::make('content_id')
                     ->label('Content')
                     ->required()
@@ -72,20 +82,20 @@ class CommentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('content.content_title')
+                TextColumn::make('content.content_title')
                     ->label('Content')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->label('User')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('body')
+                TextColumn::make('body')
                     ->label('Comment')
                     ->limit(50)
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
@@ -93,12 +103,12 @@ class CommentResource extends Resource
                         'rejected' => 'danger',
                         'spam' => 'danger',
                     }),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->options([
                         Comment::STATUS_PENDING => 'Pending',
                         Comment::STATUS_APPROVED => 'Approved',
@@ -106,38 +116,38 @@ class CommentResource extends Resource
                         Comment::STATUS_SPAM => 'Spam',
                     ]),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('approve')
+            ->recordActions([
+                EditAction::make(),
+                Action::make('approve')
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->visible(fn (Comment $record) => $record->status !== Comment::STATUS_APPROVED)
                     ->action(fn (Comment $record) => $record->update(['status' => Comment::STATUS_APPROVED])),
-                Tables\Actions\Action::make('reject')
+                Action::make('reject')
                     ->icon('heroicon-o-x-mark')
                     ->color('danger')
                     ->visible(fn (Comment $record) => $record->status !== Comment::STATUS_REJECTED)
                     ->action(fn (Comment $record) => $record->update(['status' => Comment::STATUS_REJECTED])),
-                Tables\Actions\Action::make('mark_as_spam')
+                Action::make('mark_as_spam')
                     ->icon('heroicon-o-exclamation-triangle')
                     ->color('danger')
                     ->visible(fn (Comment $record) => $record->status !== Comment::STATUS_SPAM)
                     ->action(fn (Comment $record) => $record->update(['status' => Comment::STATUS_SPAM])),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('approve_selected')
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    BulkAction::make('approve_selected')
                         ->label('Approve Selected')
                         ->icon('heroicon-o-check')
                         ->color('success')
                         ->action(fn (Collection $records) => $records->each->update(['status' => Comment::STATUS_APPROVED])),
-                    Tables\Actions\BulkAction::make('reject_selected')
+                    BulkAction::make('reject_selected')
                         ->label('Reject Selected')
                         ->icon('heroicon-o-x-mark')
                         ->color('danger')
                         ->action(fn (Collection $records) => $records->each->update(['status' => Comment::STATUS_REJECTED])),
-                    Tables\Actions\BulkAction::make('mark_as_spam_selected')
+                    BulkAction::make('mark_as_spam_selected')
                         ->label('Mark as Spam')
                         ->icon('heroicon-o-exclamation-triangle')
                         ->color('danger')
@@ -156,9 +166,9 @@ class CommentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListComments::route('/'),
-            'create' => Pages\CreateComment::route('/create'),
-            'edit' => Pages\EditComment::route('/{record}/edit'),
+            'index' => ListComments::route('/'),
+            'create' => CreateComment::route('/create'),
+            'edit' => EditComment::route('/{record}/edit'),
         ];
     }
 }

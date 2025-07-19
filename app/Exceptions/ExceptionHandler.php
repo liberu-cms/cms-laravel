@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Log;
 use App\Http\Controllers\ExceptionHandlerController;
 use Exception;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class ExceptionHandler extends Exception
     public function report(): void
     {
         if($this->http_status != 422){
-            \Log::emergency($this->data);
+            Log::emergency($this->data);
             // (new ExceptionHandlerController())->store(new Request($this->data));
         }
     }

@@ -2,8 +2,16 @@
 
 namespace App\Filament\Admin\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Admin\Resources\GlobalSettingsResource\Pages\ListGlobalSettings;
+use App\Filament\Admin\Resources\GlobalSettingsResource\Pages\CreateGlobalSettings;
+use App\Filament\Admin\Resources\GlobalSettingsResource\Pages\EditGlobalSettings;
 use App\Filament\Admin\Resources\GlobalSettingsResource\Pages;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Forms;
 use Filament\Tables;
@@ -14,16 +22,16 @@ class GlobalSettingsResource extends Resource
 {
     protected static ?string $model = SiteSettings::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Administration';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \UnitEnum | null $navigationGroup = 'Administration';
     protected static ?string $navigationLabel = 'Settings';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('key')->label('Title')->required(),
-                Forms\Components\TextInput::make('value')->required(),
+        return $schema
+            ->components([
+                TextInput::make('key')->label('Title')->required(),
+                TextInput::make('value')->required(),
             ]);
     }
 
@@ -31,18 +39,18 @@ class GlobalSettingsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('key')->label('Title'),
-                Tables\Columns\TextColumn::make('value')->label('Value'),
+                TextColumn::make('key')->label('Title'),
+                TextColumn::make('value')->label('Value'),
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -57,9 +65,9 @@ class GlobalSettingsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGlobalSettings::route('/'),
-            'create' => Pages\CreateGlobalSettings::route('/create'),
-            'edit' => Pages\EditGlobalSettings::route('/{record}/edit'),
+            'index' => ListGlobalSettings::route('/'),
+            'create' => CreateGlobalSettings::route('/create'),
+            'edit' => EditGlobalSettings::route('/{record}/edit'),
         ];
     }
 }

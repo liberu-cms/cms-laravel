@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -22,12 +23,12 @@ class GuestLayoutManagment extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $name = \Str::replace(' ', '_', $model->name);
+            $name = Str::replace(' ', '_', $model->name);
             self::makeComponent($model->content, $name);
         });
 
         static::updating(function ($model) {
-          $name = \Str::replace(' ', '_', $model->name);
+          $name = Str::replace(' ', '_', $model->name);
            self::makeComponent($model->content, $name);
         });
     }
@@ -42,7 +43,7 @@ class GuestLayoutManagment extends Model
 
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = \Str::replace(' ', '_', $value);
+        $this->attributes['name'] = Str::replace(' ', '_', $value);
     }
 
     public function scopeActive()

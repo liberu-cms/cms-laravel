@@ -2,9 +2,15 @@
 
 namespace App\Filament\App\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\App\Resources\ActivationResource\Pages\ListActivations;
+use App\Filament\App\Resources\ActivationResource\Pages\CreateActivation;
+use App\Filament\App\Resources\ActivationResource\Pages\EditActivation;
 use App\Filament\App\Resources\ActivationResource\Pages;
 use App\Models\Activation;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,18 +24,18 @@ class ActivationResource extends Resource
 {
     protected static ?string $model = Activation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     /**
      * Define the form schema for creating and editing activations.
      *
-     * @param Form $form
-     * @return Form
+     * @param \Filament\Schemas\Schema $schema
+     * @return \Filament\Schemas\Schema
      */
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 // Add form fields here
             ]);
     }
@@ -49,12 +55,12 @@ class ActivationResource extends Resource
             ->filters([
                 // Add filters here
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -79,9 +85,9 @@ class ActivationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListActivations::route('/'),
-            'create' => Pages\CreateActivation::route('/create'),
-            'edit' => Pages\EditActivation::route('/{record}/edit'),
+            'index' => ListActivations::route('/'),
+            'create' => CreateActivation::route('/create'),
+            'edit' => EditActivation::route('/{record}/edit'),
         ];
     }
 }
