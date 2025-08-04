@@ -29,8 +29,8 @@ class ActivationResource extends Resource
     /**
      * Define the form schema for creating and editing activations.
      *
-     * @param \Filament\Schemas\Schema $schema
-     * @return \Filament\Schemas\Schema
+     * @param Schema $schema
+     * @return Schema
      */
     public static function form(Schema $schema): Schema
     {
