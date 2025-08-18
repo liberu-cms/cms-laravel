@@ -287,30 +287,6 @@ class Content extends Model
         }
     }
 
-    public function createVersion()
-    {
-        $latestVersion = $this->versions()->first();
-        $versionNumber = $latestVersion ? $latestVersion->version_number + 1 : 1;
-
-        return $this->versions()->create([
-            'title' => $this->title,
-            'body' => $this->body,
-            'author_id' => Auth::id() ?? $this->author_id,
-            'version_number' => $versionNumber,
-            'published_at' => $this->published_at,
-            'type' => $this->type,
-            'category_id' => $this->category_id,
-            'status' => $this->status,
-            'featured_image_url' => $this->featured_image_url,
-            'slug' => $this->slug,
-            'workflow_status' => $this->workflow_status,
-            'scheduled_for' => $this->scheduled_for,
-            'review_by' => $this->review_by,
-            'reviewed_at' => $this->reviewed_at,
-            'reviewed_by' => $this->reviewed_by,
-        ]);
-    }
-
     public function analytics()
     {
         return $this->hasMany(ContentAnalytics::class);
