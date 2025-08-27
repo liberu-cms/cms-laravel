@@ -349,39 +349,7 @@ class Content extends Model
         return $query->sum('unique_views');
     }
 
-    public function publish()
-    {
-        $this->workflow_status = self::STATUS_PUBLISHED;
-        $this->published_at = now();
-        $this->save();
 
-        Notification::send($this->author, new ContentStatusChanged($this, 'published'));
-    }
-
-    public function reject()
-    {
-        $this->workflow_status = self::STATUS_REJECTED;
-        $this->save();
-
-        Notification::send($this->author, new ContentStatusChanged($this, 'rejected'));
-    }
-
-    public function scheduleFor($dateTime)
-    {
-        $this->workflow_status = self::STATUS_SCHEDULED;
-        $this->scheduled_for = $dateTime;
-        $this->save();
-
-        Notification::send($this->author, new ContentStatusChanged($this, 'scheduled'));
-    }
-
-    public function approve()
-    {
-        $this->workflow_status = self::STATUS_APPROVED;
-        $this->save();
-
-        Notification::send($this->author, new ContentStatusChanged($this, 'approved'));
-    }
 
     public function reviewBy($userId)
     {
