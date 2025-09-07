@@ -68,6 +68,145 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         'profile_photo_url',
     ];
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles');
+    }
+
+    public function hasRole($role)
+    {
+        if (is_string($role)) {
+            return $this->roles()->where('slug', $role)->exists();
+        }
+
+        if ($role instanceof Role) {
+            return $this->roles()->where('id', $role->id)->exists();
+        }
+
+        return false;
+    }
+
+    public function hasAnyRole($roles)
+    {
+        foreach ($roles as $role) {
+            if ($this->hasRole($role)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasPermission($permission)
+    {
+        foreach ($this->roles as $role) {
+            if ($role->hasPermission($permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function assignRole($role)
+    {
+        if (is_string($role)) {
+            $role = Role::where('slug', $role)->firstOrFail();
+        }
+
+        if (!$this->hasRole($role)) {
+            $this->roles()->attach($role);
+        }
+
+        return $this;
+    }
+
+    public function removeRole($role)
+    {
+        if (is_string($role)) {
+            $role = Role::where('slug', $role)->firstOrFail();
+        }
+
+        $this->roles()->detach($role);
+
+        return $this;
+    }
+
+    public function syncRoles($roles)
+    {
+        $roleIds = [];
+
+        foreach ($roles as $role) {
+            if (is_string($role)) {
+                $roleModel = Role::where('slug', $role)->first();
+                if ($roleModel) {
+                    $roleIds[] = $roleModel->id;
+                }
+            } elseif ($role instanceof Role) {
+                $roleIds[] = $role->id;
+            } elseif (is_numeric($role)) {
+                $roleIds[] = $role;
+            }
+        }
+
+        $this->roles()->sync($roleIds);
+
+        return $this;
+    }
+
+    public function getHighestRole()
+    {
+        return $this->roles()->orderBy('level', 'desc')->first();
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->hasRole(Role::SUPER_ADMIN);
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole(Role::ADMIN) || $this->isSuperAdmin();
+    }
+
+    public function isEditor()
+    {
+        return $this->hasRole(Role::EDITOR) || $this->isAdmin();
+    }
+
+    public function isAuthor()
+    {
+        return $this->hasRole(Role::AUTHOR) || $this->isEditor();
+    }
+
+    public function canManageUser(User $user)
+    {
+        // Super admin can manage all users
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        // Cannot manage users with higher role level
+        $myHighestRole = $this->getHighestRole();
+        $userHighestRole = $user->getHighestRole();
+
+        if (!$myHighestRole || !$userHighestRole) {
+            return false;
+        }
+
+        return $myHighestRole->level > $userHighestRole->level;
+    }
+
+    public function content()
+    {
+        return $this->hasMany(Content::class, 'author_id');
+    }
+
+    public function mediaUploads()
+    {
+        return $this->hasMany(MediaLibrary::class, 'uploaded_by');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

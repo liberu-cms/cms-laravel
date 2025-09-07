@@ -2,32 +2,28 @@
 
 namespace App\Models;
 
-use App\Traits\IsTenantModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
     use HasFactory;
-    use IsTenantModel;
-
-    protected $primaryKey = 'id';
-
-    const STATUS_PENDING = 'pending';
-    const STATUS_APPROVED = 'approved';
-    const STATUS_REJECTED = 'rejected';
-    const STATUS_SPAM = 'spam';
 
     protected $fillable = [
         'content_id',
-        'user_id',
-        'body',
-        'status',
         'parent_id',
+        'author_name',
+        'author_email',
+        'author_url',
+        'author_ip',
+        'author_user_agent',
+        'comment_content',
+        'is_approved',
+        'user_id',
     ];
 
-    protected $attributes = [
-        'status' => self::STATUS_PENDING,
+    protected $casts = [
+        'is_approved' => 'boolean',
     ];
 
     public function content()
@@ -47,26 +43,40 @@ class Comment extends Model
 
     public function replies()
     {
+        return $this->hasMany(Comment::class, 'parent_id')->where('is_approved', true);
+    }
+
+    public function allReplies()
+    {
         return $this->hasMany(Comment::class, 'parent_id');
     }
 
-    public function isPending()
+    public function approve()
     {
-        return $this->status === self::STATUS_PENDING;
+        $this->is_approved = true;
+        $this->save();
+        return $this;
     }
 
-    public function isApproved()
+    public function reject()
     {
-        return $this->status === self::STATUS_APPROVED;
+        $this->is_approved = false;
+        $this->save();
+        return $this;
     }
 
-    public function isRejected()
+    public function scopeApproved($query)
     {
-        return $this->status === self::STATUS_REJECTED;
+        return $query->where('is_approved', true);
     }
 
-    public function isSpam()
+    public function scopePending($query)
     {
-        return $this->status === self::STATUS_SPAM;
+        return $query->where('is_approved', false);
+    }
+
+    public function scopeTopLevel($query)
+    {
+        return $query->whereNull('parent_id');
     }
 }
