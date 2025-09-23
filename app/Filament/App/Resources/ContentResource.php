@@ -10,12 +10,13 @@ use App\Filament\App\Resources\ContentResource\Pages\CreateContent;
 use App\Filament\App\Resources\ContentResource\Pages\EditContent;
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use App\Models\Content;
 use App\Models\ContentCategory;
 use App\Filament\Components\RichTextEditor;
 use Filament\Resources\Resource;
+use Illuminate\Support\Collection;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -33,12 +34,12 @@ class ContentResource extends Resource
 {
     protected static ?string $model = Content::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make('Content')
                     ->tabs([
                         Tabs\Tab::make('Content')
