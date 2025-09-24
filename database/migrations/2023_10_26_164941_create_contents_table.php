@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('category_id');
             $table->string('content_status');
             $table->string('featured_image_url')->nullable();
+            $table->string('slug')->unique()
             $table->timestamps();
 
             $table->foreign('author_id')->references('author_id')->on('authors');
