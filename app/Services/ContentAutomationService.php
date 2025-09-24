@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Models\Content;
 use App\Jobs\PublishScheduledContentJob;
 use Illuminate\Support\Facades\Queue;
@@ -81,7 +82,7 @@ class ContentAutomationService
                 $content->publish();
                 $processedCount++;
                 Log::info("Published overdue content: {$content->title}");
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error("Failed to publish overdue content {$content->id}: " . $e->getMessage());
             }
         }
@@ -99,7 +100,7 @@ class ContentAutomationService
                 $content = Content::findOrFail($contentId);
                 $this->scheduleContentPublication($content, $publishDate);
                 $scheduled[] = $content;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $errors[] = [
                     'content_id' => $contentId,
                     'error' => $e->getMessage()

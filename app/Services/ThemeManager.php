@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Exception;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 use App\Models\Theme;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\View;
@@ -53,7 +56,7 @@ class ThemeManager
             $existingTheme = Theme::where('slug', $themeData['slug'])->first();
 
             if ($existingTheme) {
-                throw new \Exception("Theme '{$themeData['slug']}' already exists.");
+                throw new Exception("Theme '{$themeData['slug']}' already exists.");
             }
 
             // Create theme record
@@ -78,7 +81,7 @@ class ThemeManager
 
             return $theme;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to install theme: " . $e->getMessage());
             throw $e;
         }
@@ -96,18 +99,18 @@ class ThemeManager
                 $zip->extractTo($tempDir);
                 $zip->close();
             } else {
-                throw new \Exception('Failed to extract theme ZIP file.');
+                throw new Exception('Failed to extract theme ZIP file.');
             }
 
             // Find theme manifest
             $manifestPath = $this->findThemeManifest($tempDir);
             if (!$manifestPath) {
-                throw new \Exception('Theme manifest (theme.json) not found.');
+                throw new Exception('Theme manifest (theme.json) not found.');
             }
 
             $manifest = json_decode(File::get($manifestPath), true);
             if (!$manifest || !$this->validateManifest($manifest)) {
-                throw new \Exception('Invalid theme manifest.');
+                throw new Exception('Invalid theme manifest.');
             }
 
             // Move theme to themes directory
@@ -115,7 +118,7 @@ class ThemeManager
             $themePath = $this->themesPath . '/' . $themeSlug;
 
             if (File::exists($themePath)) {
-                throw new \Exception("Theme directory '{$themeSlug}' already exists.");
+                throw new Exception("Theme directory '{$themeSlug}' already exists.");
             }
 
             File::moveDirectory(dirname($manifestPath), $themePath);
@@ -133,7 +136,7 @@ class ThemeManager
 
             return $theme;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Cleanup on failure
             if (isset($tempDir) && File::exists($tempDir)) {
                 File::deleteDirectory($tempDir);
@@ -159,7 +162,7 @@ class ThemeManager
 
             return $theme;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to activate theme: " . $e->getMessage());
             throw $e;
         }
@@ -172,7 +175,7 @@ class ThemeManager
 
             // Cannot uninstall active theme
             if ($theme->is_active) {
-                throw new \Exception("Cannot uninstall active theme. Please activate another theme first.");
+                throw new Exception("Cannot uninstall active theme. Please activate another theme first.");
             }
 
             // Remove theme files
@@ -188,7 +191,7 @@ class ThemeManager
 
             return true;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to uninstall theme: " . $e->getMessage());
             throw $e;
         }
@@ -270,7 +273,7 @@ class ThemeManager
 
             return $theme;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to customize theme: " . $e->getMessage());
             throw $e;
         }
@@ -332,8 +335,8 @@ class ThemeManager
 
     protected function findThemeManifest($directory)
     {
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory)
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($directory)
         );
 
         foreach ($iterator as $file) {

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Exception;
+use Log;
 use Illuminate\Support\ServiceProvider;
 use App\Services\PluginManager;
 use App\Services\ThemeManager;
@@ -40,9 +42,9 @@ class CMSServiceProvider extends ServiceProvider
         try {
             $pluginManager = $this->app->make(PluginManager::class);
             $pluginManager->loadActivePlugins();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Log error but don't break the application
-            \Log::warning('Failed to load plugins: ' . $e->getMessage());
+            Log::warning('Failed to load plugins: ' . $e->getMessage());
         }
     }
 
@@ -51,9 +53,9 @@ class CMSServiceProvider extends ServiceProvider
         try {
             $themeManager = $this->app->make(ThemeManager::class);
             $themeManager->loadActiveTheme();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Log error but don't break the application
-            \Log::warning('Failed to load theme: ' . $e->getMessage());
+            Log::warning('Failed to load theme: ' . $e->getMessage());
         }
     }
 

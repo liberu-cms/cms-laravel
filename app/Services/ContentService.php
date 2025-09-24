@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Models\Content;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
@@ -220,7 +221,7 @@ class ContentService
 
                     $content->save();
                     $imported[] = $content;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $errors[] = [
                         'data' => $data,
                         'error' => $e->getMessage()
@@ -229,7 +230,7 @@ class ContentService
             }
 
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
             throw $e;
         }

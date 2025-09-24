@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('contents', function (Blueprint $table) {
-            $table->text('excerpt')->nullable()->after('body');
+            $table->text('excerpt')->nullable()->after('content_body');
             $table->string('seo_title')->nullable()->after('slug');
             $table->text('seo_description')->nullable()->after('seo_title');
             $table->string('seo_keywords')->nullable()->after('seo_description');

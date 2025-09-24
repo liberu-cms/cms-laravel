@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use App\Models\Content;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,7 +42,7 @@ class PublishScheduledContentJob implements ShouldQueue
                 Log::info("Successfully published scheduled content: {$content->title} (ID: {$content->id})");
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to publish scheduled content {$this->contentId}: " . $e->getMessage());
             throw $e;
         }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Exception;
+use Log;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -144,9 +146,9 @@ class MediaLibrary extends Model
                     'height' => $image->height(),
                 ];
 
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Log error but continue
-                \Log::warning("Failed to generate {$sizeName} thumbnail: " . $e->getMessage());
+                Log::warning("Failed to generate {$sizeName} thumbnail: " . $e->getMessage());
             }
         }
 
@@ -169,7 +171,7 @@ class MediaLibrary extends Model
                 if ($exifData) {
                     $metadata['exif'] = $exifData;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // EXIF data not available or corrupted
             }
         }

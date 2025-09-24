@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use App\Models\Content;
 use App\Jobs\PublishScheduledContentJob;
 use Illuminate\Console\Command;
@@ -34,7 +35,7 @@ class PublishScheduledContent extends Command
                 $publishedCount++;
                 $this->info("Published: {$content->title}");
                 Log::info("Auto-published scheduled content: {$content->title} (ID: {$content->id})");
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $errorCount++;
                 $this->error("Failed to publish: {$content->title} - {$e->getMessage()}");
                 Log::error("Failed to auto-publish content {$content->id}: " . $e->getMessage());

@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use Exception;
+use Log;
+use App\Models\Content;
+use App\Models\Plugin;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -62,8 +66,8 @@ class ShortcodeService
             }
 
             return '';
-        } catch (\Exception $e) {
-            \Log::error("Shortcode error for [{$tag}]: " . $e->getMessage());
+        } catch (Exception $e) {
+            Log::error("Shortcode error for [{$tag}]: " . $e->getMessage());
             return "<!-- Shortcode error: {$tag} -->";
         }
     }
@@ -250,7 +254,7 @@ class ShortcodeService
             $type = $attributes['type'] ?? null;
             $category = $attributes['category'] ?? null;
 
-            $query = \App\Models\Content::published()->orderBy('published_at', 'desc');
+            $query = Content::published()->orderBy('published_at', 'desc');
 
             if ($type) {
                 $query->where('type', $type);
@@ -280,7 +284,7 @@ class ShortcodeService
     protected function loadPluginShortcodes()
     {
         // Load shortcodes from active plugins
-        $pluginShortcodes = \App\Models\Plugin::getPluginShortcodes();
+        $pluginShortcodes = Plugin::getPluginShortcodes();
 
         foreach ($pluginShortcodes as $tag => $shortcodeData) {
             $this->register($tag, $shortcodeData['class']);

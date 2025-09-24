@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Str;
+use DB;
+use Hash;
 use Exception;
 use App\Services\FileService;
 use App\Traits\IsTenantModel;
@@ -512,7 +515,7 @@ class Content extends Model
 
     public function generateUniqueSlug($title)
     {
-        $slug = \Str::slug($title);
+        $slug = Str::slug($title);
         $originalSlug = $slug;
         $counter = 1;
 
@@ -661,7 +664,7 @@ class Content extends Model
     public function scopePopular($query, $days = 30)
     {
         return $query->withCount(['analytics as total_views' => function ($q) use ($days) {
-            $q->where('date', '>=', now()->subDays($days))->select(\DB::raw('sum(views)'));
+            $q->where('date', '>=', now()->subDays($days))->select(DB::raw('sum(views)'));
         }])->orderBy('total_views', 'desc');
     }
 
@@ -727,13 +730,13 @@ class Content extends Model
     public function checkPassword($password)
     {
         return $this->isPasswordProtected() && 
-               \Hash::check($password, $this->content_password);
+               Hash::check($password, $this->content_password);
     }
 
     public function setPassword($password)
     {
         $this->password_protected = true;
-        $this->content_password = \Hash::make($password);
+        $this->content_password = Hash::make($password);
         $this->save();
 
         return $this;

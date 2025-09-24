@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Exception;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 use App\Models\Plugin;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
@@ -52,12 +55,12 @@ class PluginManager
             $existingPlugin = Plugin::where('slug', $pluginData['slug'])->first();
 
             if ($existingPlugin) {
-                throw new \Exception("Plugin '{$pluginData['slug']}' already exists.");
+                throw new Exception("Plugin '{$pluginData['slug']}' already exists.");
             }
 
             // Validate compatibility
             if (!$this->checkCompatibility($pluginData)) {
-                throw new \Exception("Plugin '{$pluginData['slug']}' is not compatible with current system.");
+                throw new Exception("Plugin '{$pluginData['slug']}' is not compatible with current system.");
             }
 
             // Create plugin record
@@ -89,7 +92,7 @@ class PluginManager
 
             return $plugin;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to install plugin: " . $e->getMessage());
             throw $e;
         }
@@ -107,18 +110,18 @@ class PluginManager
                 $zip->extractTo($tempDir);
                 $zip->close();
             } else {
-                throw new \Exception('Failed to extract plugin ZIP file.');
+                throw new Exception('Failed to extract plugin ZIP file.');
             }
 
             // Find plugin manifest
             $manifestPath = $this->findPluginManifest($tempDir);
             if (!$manifestPath) {
-                throw new \Exception('Plugin manifest (plugin.json) not found.');
+                throw new Exception('Plugin manifest (plugin.json) not found.');
             }
 
             $manifest = json_decode(File::get($manifestPath), true);
             if (!$manifest || !$this->validateManifest($manifest)) {
-                throw new \Exception('Invalid plugin manifest.');
+                throw new Exception('Invalid plugin manifest.');
             }
 
             // Move plugin to plugins directory
@@ -126,7 +129,7 @@ class PluginManager
             $pluginPath = $this->pluginsPath . '/' . $pluginSlug;
 
             if (File::exists($pluginPath)) {
-                throw new \Exception("Plugin directory '{$pluginSlug}' already exists.");
+                throw new Exception("Plugin directory '{$pluginSlug}' already exists.");
             }
 
             File::moveDirectory(dirname($manifestPath), $pluginPath);
@@ -144,7 +147,7 @@ class PluginManager
 
             return $plugin;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Cleanup on failure
             if (isset($tempDir) && File::exists($tempDir)) {
                 File::deleteDirectory($tempDir);
@@ -180,7 +183,7 @@ class PluginManager
 
             return true;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to uninstall plugin: " . $e->getMessage());
             throw $e;
         }
@@ -193,17 +196,17 @@ class PluginManager
 
             // Check dependencies
             if (!$plugin->validateDependencies()) {
-                throw new \Exception("Plugin dependencies not met.");
+                throw new Exception("Plugin dependencies not met.");
             }
 
             // Check compatibility
             if (!$plugin->checkCompatibility()) {
-                throw new \Exception("Plugin not compatible with current system.");
+                throw new Exception("Plugin not compatible with current system.");
             }
 
             // Load plugin
             if (!$plugin->loadPlugin()) {
-                throw new \Exception("Failed to load plugin main file.");
+                throw new Exception("Failed to load plugin main file.");
             }
 
             // Activate plugin
@@ -213,7 +216,7 @@ class PluginManager
 
             return $plugin;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to activate plugin: " . $e->getMessage());
             throw $e;
         }
@@ -229,7 +232,7 @@ class PluginManager
 
             return $plugin;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error("Failed to deactivate plugin: " . $e->getMessage());
             throw $e;
         }
@@ -242,7 +245,7 @@ class PluginManager
         foreach ($activePlugins as $plugin) {
             try {
                 $plugin->loadPlugin();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error("Failed to load plugin '{$plugin->slug}': " . $e->getMessage());
             }
         }
@@ -283,8 +286,8 @@ class PluginManager
 
     protected function findPluginManifest($directory)
     {
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory)
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($directory)
         );
 
         foreach ($iterator as $file) {
@@ -314,7 +317,7 @@ class PluginManager
                         '--force' => true
                     ]);
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::warning("Plugin migration failed for '{$plugin->slug}': " . $e->getMessage());
             }
         }
