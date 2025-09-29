@@ -2,6 +2,20 @@
 
 namespace App\Filament\App\Resources;
 
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Str;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\Repeater;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\ViewAction;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -24,7 +38,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Tabs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\App\Resources\ContentResource\Pages;
@@ -42,14 +55,14 @@ class ContentResource extends Resource
             ->components([
                 Tabs::make('Content')
                     ->tabs([
-                        Tabs\Tab::make('Content')
+                        Tab::make('Content')
                             ->schema([
                                 TextInput::make('title')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn (string $context, $state, callable $set) => 
-                                        $context === 'create' ? $set('slug', \Str::slug($state)) : null
+                                        $context === 'create' ? $set('slug', Str::slug($state)) : null
                                     ),
 
                                 TextInput::make('slug')
@@ -89,7 +102,7 @@ class ContentResource extends Resource
                                     ->directory('featured-images'),
                             ]),
 
-                        Tabs\Tab::make('SEO')
+                        Tab::make('SEO')
                             ->schema([
                                 TextInput::make('seo_title')
                                     ->label('SEO Title')
@@ -111,7 +124,7 @@ class ContentResource extends Resource
                                     ->url(),
                             ]),
 
-                        Tabs\Tab::make('Settings')
+                        Tab::make('Settings')
                             ->schema([
                                 Select::make('workflow_status')
                                     ->options([
@@ -147,17 +160,17 @@ class ContentResource extends Resource
                                     ])
                                     ->default('default'),
 
-                                Forms\Components\Toggle::make('is_featured')
+                                Toggle::make('is_featured')
                                     ->label('Featured Content'),
 
-                                Forms\Components\Toggle::make('is_sticky')
+                                Toggle::make('is_sticky')
                                     ->label('Sticky Post'),
 
-                                Forms\Components\Toggle::make('allow_comments')
+                                Toggle::make('allow_comments')
                                     ->label('Allow Comments')
                                     ->default(true),
 
-                                Forms\Components\Toggle::make('password_protected')
+                                Toggle::make('password_protected')
                                     ->label('Password Protected')
                                     ->reactive(),
 
@@ -167,18 +180,18 @@ class ContentResource extends Resource
                                     ->visible(fn (callable $get) => $get('password_protected')),
                             ]),
 
-                        Tabs\Tab::make('Advanced')
+                        Tab::make('Advanced')
                             ->schema([
                                 Textarea::make('excerpt')
                                     ->label('Custom Excerpt')
                                     ->rows(3)
                                     ->helperText('Leave empty to auto-generate from content'),
 
-                                Forms\Components\TagsInput::make('tags')
+                                TagsInput::make('tags')
                                     ->label('Tags')
                                     ->separator(','),
 
-                                Forms\Components\Repeater::make('custom_fields')
+                                Repeater::make('custom_fields')
                                     ->label('Custom Fields')
                                     ->schema([
                                         TextInput::make('key')
@@ -253,10 +266,10 @@ class ContentResource extends Resource
                     ->label('Score')
                     ->formatStateUsing(fn ($state) => $state ? round($state) . '%' : 'N/A')
                     ->color(fn ($state) => $state >= 80 ? 'success' : ($state >= 60 ? 'warning' : 'danger')),
-                Tables\Columns\IconColumn::make('is_featured')
+                IconColumn::make('is_featured')
                     ->boolean()
                     ->label('Featured'),
-                Tables\Columns\IconColumn::make('is_sticky')
+                IconColumn::make('is_sticky')
                     ->boolean()
                     ->label('Sticky'),
                 TextColumn::make('published_at')
@@ -269,7 +282,7 @@ class ContentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('workflow_status')
+                SelectFilter::make('workflow_status')
                     ->options([
                         'draft' => 'Draft',
                         'review' => 'In Review',
@@ -278,45 +291,45 @@ class ContentResource extends Resource
                         'scheduled' => 'Scheduled',
                         'rejected' => 'Rejected',
                     ]),
-                Tables\Filters\SelectFilter::make('type')
+                SelectFilter::make('type')
                     ->options([
                         'post' => 'Post',
                         'page' => 'Page',
                         'news' => 'News',
                         'blog' => 'Blog',
                     ]),
-                Tables\Filters\SelectFilter::make('author')
+                SelectFilter::make('author')
                     ->relationship('author', 'name'),
-                Tables\Filters\SelectFilter::make('category')
+                SelectFilter::make('category')
                     ->relationship('category', 'name'),
-                Tables\Filters\Filter::make('is_featured')
+                Filter::make('is_featured')
                     ->query(fn (Builder $query): Builder => $query->where('is_featured', true))
                     ->label('Featured Only'),
-                Tables\Filters\Filter::make('is_sticky')
+                Filter::make('is_sticky')
                     ->query(fn (Builder $query): Builder => $query->where('is_sticky', true))
                     ->label('Sticky Only'),
-                Tables\Filters\Filter::make('published_today')
+                Filter::make('published_today')
                     ->query(fn (Builder $query): Builder => $query->whereDate('published_at', today()))
                     ->label('Published Today'),
-                Tables\Filters\Filter::make('published_this_week')
+                Filter::make('published_this_week')
                     ->query(fn (Builder $query): Builder => $query->whereBetween('published_at', [now()->startOfWeek(), now()->endOfWeek()]))
                     ->label('Published This Week'),
             ])
             ->recordActions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\Action::make('publish')
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    Action::make('publish')
                         ->icon('heroicon-o-eye')
                         ->color('success')
                         ->action(fn (Content $record) => $record->publish())
                         ->visible(fn (Content $record) => !$record->isPublished()),
-                    Tables\Actions\Action::make('feature')
+                    Action::make('feature')
                         ->icon('heroicon-o-star')
                         ->color('warning')
                         ->action(fn (Content $record) => $record->update(['is_featured' => !$record->is_featured]))
                         ->label(fn (Content $record) => $record->is_featured ? 'Unfeature' : 'Feature'),
-                    Tables\Actions\Action::make('duplicate')
+                    Action::make('duplicate')
                         ->icon('heroicon-o-document-duplicate')
                         ->action(function (Content $record) {
                             $newContent = $record->replicate();
@@ -326,30 +339,30 @@ class ContentResource extends Resource
                             $newContent->published_at = null;
                             $newContent->save();
                         }),
-                    Tables\Actions\DeleteAction::make(),
+                    DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('publish')
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    BulkAction::make('publish')
                         ->icon('heroicon-o-eye')
                         ->color('success')
                         ->action(fn (Collection $records) => $records->each->publish())
                         ->deselectRecordsAfterCompletion(),
-                    Tables\Actions\BulkAction::make('feature')
+                    BulkAction::make('feature')
                         ->icon('heroicon-o-star')
                         ->color('warning')
                         ->action(fn (Collection $records) => Content::bulkFeature($records->pluck('id')->toArray(), true))
                         ->deselectRecordsAfterCompletion(),
-                    Tables\Actions\BulkAction::make('unfeature')
+                    BulkAction::make('unfeature')
                         ->icon('heroicon-o-star')
                         ->color('gray')
                         ->action(fn (Collection $records) => Content::bulkFeature($records->pluck('id')->toArray(), false))
                         ->deselectRecordsAfterCompletion(),
-                    Tables\Actions\BulkAction::make('change_status')
+                    BulkAction::make('change_status')
                         ->icon('heroicon-o-pencil-square')
-                        ->form([
+                        ->schema([
                             Select::make('workflow_status')
                                 ->options([
                                     'draft' => 'Draft',

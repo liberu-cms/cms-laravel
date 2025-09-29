@@ -2,6 +2,21 @@
 
 namespace App\Filament\App\Resources;
 
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\KeyValue;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\ViewAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\BulkAction;
+use App\Filament\App\Resources\ContentBlockResource\Pages\ListContentBlocks;
+use App\Filament\App\Resources\ContentBlockResource\Pages\CreateContentBlock;
+use App\Filament\App\Resources\ContentBlockResource\Pages\EditContentBlock;
 use App\Models\ContentBlock;
 use Filament\Forms;
 use Filament\Schemas\Schema;
@@ -55,11 +70,11 @@ class ContentBlockResource extends Resource
                 Textarea::make('description')
                     ->rows(3),
 
-                Forms\Components\RichEditor::make('content')
+                RichEditor::make('content')
                     ->label('Block Content')
                     ->columnSpanFull(),
 
-                Forms\Components\KeyValue::make('settings')
+                KeyValue::make('settings')
                     ->label('Block Settings')
                     ->keyLabel('Setting Name')
                     ->valueLabel('Setting Value'),
@@ -112,10 +127,10 @@ class ContentBlockResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('type')
+                SelectFilter::make('type')
                     ->options(array_map(fn($type) => $type['name'], ContentBlock::getAvailableTypes())),
 
-                Tables\Filters\SelectFilter::make('category')
+                SelectFilter::make('category')
                     ->options([
                         'content' => 'Content',
                         'media' => 'Media',
@@ -124,33 +139,33 @@ class ContentBlockResource extends Resource
                         'advanced' => 'Advanced',
                     ]),
 
-                Tables\Filters\Filter::make('is_active')
+                Filter::make('is_active')
                     ->query(fn (Builder $query): Builder => $query->where('is_active', true))
                     ->label('Active Only'),
             ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\Action::make('duplicate')
+            ->recordActions([
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    Action::make('duplicate')
                         ->icon('heroicon-o-document-duplicate')
                         ->action(fn (ContentBlock $record) => $record->duplicate()),
-                    Tables\Actions\Action::make('toggle_active')
+                    Action::make('toggle_active')
                         ->icon('heroicon-o-power')
                         ->action(fn (ContentBlock $record) => $record->update(['is_active' => !$record->is_active]))
                         ->color(fn (ContentBlock $record) => $record->is_active ? 'danger' : 'success')
                         ->label(fn (ContentBlock $record) => $record->is_active ? 'Deactivate' : 'Activate'),
-                    Tables\Actions\DeleteAction::make(),
+                    DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('activate')
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    BulkAction::make('activate')
                         ->icon('heroicon-o-check')
                         ->action(fn (Collection $records) => $records->each->update(['is_active' => true]))
                         ->deselectRecordsAfterCompletion(),
-                    Tables\Actions\BulkAction::make('deactivate')
+                    BulkAction::make('deactivate')
                         ->icon('heroicon-o-x-mark')
                         ->action(fn (Collection $records) => $records->each->update(['is_active' => false]))
                         ->deselectRecordsAfterCompletion(),
@@ -161,9 +176,9 @@ class ContentBlockResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListContentBlocks::route('/'),
-            'create' => Pages\CreateContentBlock::route('/create'),
-            'edit' => Pages\EditContentBlock::route('/{record}/edit'),
+            'index' => ListContentBlocks::route('/'),
+            'create' => CreateContentBlock::route('/create'),
+            'edit' => EditContentBlock::route('/{record}/edit'),
         ];
     }
 }
