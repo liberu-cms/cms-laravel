@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             TeamSeeder::class,
 //            UserSeeder::class,
             MenuSeeder::class,
-            SiteSettingsSeeder::class,
+//            SiteSettingsSeeder::class,
             GuestLayoutManagmentSeeder::class,
         ]);
     }
