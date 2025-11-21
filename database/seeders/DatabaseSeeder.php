@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             Tables\PermissionsSeeder::class,
             RolesSeeder::class,
             TeamSeeder::class,
-//            UserSeeder::class,
+            UserSeeder::class,
             MenuSeeder::class,
 //            SiteSettingsSeeder::class,
             GuestLayoutManagmentSeeder::class,

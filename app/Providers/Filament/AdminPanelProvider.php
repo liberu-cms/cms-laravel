@@ -59,14 +59,14 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('Administration')
-                    ->icon('heroicon-o-cog'),
+                    ->label('Administration'),
+                    // ->icon('heroicon-o-cog'),
                 NavigationGroup::make()
                     ->label('Content')
                     ->icon('heroicon-o-document-text'),
                 NavigationGroup::make()
-                    ->label('Settings')
-                    ->icon('heroicon-o-adjustments-horizontal'),
+                    ->label('Settings'),
+                    // ->icon('heroicon-o-adjustments-horizontal'),
             ])
             ->plugins([
                 FilamentShieldPlugin::make()

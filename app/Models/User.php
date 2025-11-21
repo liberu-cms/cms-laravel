@@ -68,35 +68,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         'profile_photo_url',
     ];
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'user_roles');
-    }
-
-    public function hasRole($role)
-    {
-        if (is_string($role)) {
-            return $this->roles()->where('slug', $role)->exists();
-        }
-
-        if ($role instanceof Role) {
-            return $this->roles()->where('id', $role->id)->exists();
-        }
-
-        return false;
-    }
-
-    public function hasAnyRole($roles)
-    {
-        foreach ($roles as $role) {
-            if ($this->hasRole($role)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public function hasPermission($permission)
     {
         foreach ($this->roles as $role) {
@@ -106,52 +77,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         }
 
         return false;
-    }
-
-    public function assignRole($role)
-    {
-        if (is_string($role)) {
-            $role = Role::where('slug', $role)->firstOrFail();
-        }
-
-        if (!$this->hasRole($role)) {
-            $this->roles()->attach($role);
-        }
-
-        return $this;
-    }
-
-    public function removeRole($role)
-    {
-        if (is_string($role)) {
-            $role = Role::where('slug', $role)->firstOrFail();
-        }
-
-        $this->roles()->detach($role);
-
-        return $this;
-    }
-
-    public function syncRoles($roles)
-    {
-        $roleIds = [];
-
-        foreach ($roles as $role) {
-            if (is_string($role)) {
-                $roleModel = Role::where('slug', $role)->first();
-                if ($roleModel) {
-                    $roleIds[] = $roleModel->id;
-                }
-            } elseif ($role instanceof Role) {
-                $roleIds[] = $role->id;
-            } elseif (is_numeric($role)) {
-                $roleIds[] = $role;
-            }
-        }
-
-        $this->roles()->sync($roleIds);
-
-        return $this;
     }
 
     public function getHighestRole()
@@ -238,13 +163,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         return true;
     }
 
-    /**
-     * Check if user has permission to perform an action
-     */
-    public function hasPermissionTo($permission): bool
-    {
-        return $this->hasPermissionViaRole($permission) || parent::hasPermissionTo($permission);
-    }
 
     /**
      * Check if user has a specific permission through any of their roles
