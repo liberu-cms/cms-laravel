@@ -25,6 +25,8 @@ class LoginResponse implements LoginResponseContract
         setPermissionsTeamId(Auth::user()->current_team_id);
         $user = Auth::user();
 
+        // dd($user->roles);
+
         foreach ($this->roleRedirects as $role => $redirect) {
             if ($user->hasRole($role)) {
                 return $request->wantsJson()
