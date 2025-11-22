@@ -13,11 +13,11 @@ class RolesSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $permissions = Permission::where('guard_name', 'web')->pluck('id')->toArray();
         $adminRole->syncPermissions($permissions);
 
-        $freeRole = Role::firstOrCreate(['name' => 'free']);
+        $freeRole = Role::firstOrCreate(['name' => 'free', 'guard_name' => 'web']);
         $freePermissions = Permission::where('guard_name', 'web')->pluck('id')->toArray();
         $freeRole->syncPermissions($freePermissions);
     }

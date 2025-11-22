@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\IsTenantModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\View;
 class ContentBlock extends Model
 {
     use HasFactory;
+    use IsTenantModel;
 
     protected $fillable = [
         'name',

@@ -68,16 +68,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         'profile_photo_url',
     ];
 
-    public function hasPermission($permission)
-    {
-        foreach ($this->roles as $role) {
-            if ($role->hasPermission($permission)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     public function getHighestRole()
     {
@@ -161,35 +151,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         }
 
         return true;
-    }
-
-
-    /**
-     * Check if user has a specific permission through any of their roles
-     */
-    public function hasPermissionViaRole($permission): bool
-    {
-        foreach ($this->roles as $role) {
-            if ($role->permissions->contains('name', $permission)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Get all permissions for the user
-     */
-    public function getAllPermissions()
-    {
-        $permissions = collect();
-
-        foreach ($this->roles as $role) {
-            $permissions = $permissions->merge($role->permissions);
-        }
-
-        return $permissions->unique('id');
     }
 
     public function canAccessTenant(Model $tenant): bool

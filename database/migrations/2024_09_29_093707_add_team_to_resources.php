@@ -9,7 +9,7 @@ return new class extends Migration
 
     protected $tables = [
         'pages', 'menus', 'content_categories', 'comments', 'posts', 'contents',
-        'home_contents', 'contacts', 'authors', 'tags'
+        'home_contents', 'contacts', 'authors', 'tags', 'content_blocks'
 
     ];
 
