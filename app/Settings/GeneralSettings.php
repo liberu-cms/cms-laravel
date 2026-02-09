@@ -6,8 +6,8 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
-
     public string $site_name;
+    public bool $site_active;
     public string $site_email;
     public ?string $site_phone;
     public ?string $site_address;

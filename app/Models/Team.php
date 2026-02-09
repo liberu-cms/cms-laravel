@@ -2,51 +2,47 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Jetstream\Events\TeamCreated;
-use Laravel\Jetstream\Events\TeamDeleted;
-use Laravel\Jetstream\Events\TeamUpdated;
-use Laravel\Jetstream\Team as JetstreamTeam;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Jetstream\Models\Team as JetstreamTeam;
 
 class Team extends JetstreamTeam
 {
-    use HasFactory;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'personal_team',
+    protected static array $defaultRoles = [
+        'super_admin' => [],
+        'editor'      => [],
+        'viewer'      => [],
     ];
-
-    /**
-     * The event map for the model.
-     *
-     * @var array<string, class-string>
-     */
-    protected $dispatchesEvents = [
-        'created' => TeamCreated::class,
-        'updated' => TeamUpdated::class,
-        'deleted' => TeamDeleted::class,
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    
+    protected static function booted()
     {
-        return [
-            'personal_team' => 'boolean',
-        ];
-    }
+        static::created(function (Team $team) {
+            foreach (self::$defaultRoles as $roleName => $permissions) {
+                $role = Role::create([
+                    'name' => $roleName,
+                    'team_id' => $team->id,
+                    'guard_name' => 'web',
+                ]);
+        
+                $role->syncPermissions($permissions);
+            }
+        
+            // Assign super_admin to the creator if there is one
+            if (auth()->check()) {
+                $user = auth()->user();
+                $user->teams()->syncWithoutDetaching([$team->id]);
 
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+                $oldteam = getPermissionsTeamId();
+                setPermissionsTeamId($team->id);
+        
+                $superAdminRole = Role::where('name', 'super_admin')
+                    ->where('team_id', $team->id)
+                    ->first();
+        
+                $user->assignRole($superAdminRole);
+
+                setPermissionsTeamId($oldteam);
+            }
+        });
+        
     }
 }

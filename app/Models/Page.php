@@ -3,40 +3,39 @@
 namespace App\Models;
 
 use App\Traits\IsTenantModel;
-use App\Traits\SEOable;
+use Biostate\FilamentMenuBuilder\Traits\Menuable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Page extends Model
 {
-    use HasFactory, SEOable;
     use IsTenantModel;
+    use Menuable;
 
     protected $fillable = [
         'title',
-        'content',
         'slug',
+        'content',
         'published_at',
+        'status',
         'user_id',
-        'category_id',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
     ];
 
-    // public function category()
-    // {
-    //     return $this->belongsTo(Category::class);
-    // }
-
-    public function user()
+    public function getMenuLinkAttribute(): string
     {
-        return $this->belongsTo(User::class);
+        return route('pages.show', $this->slug);
     }
 
-    public function tags()
+    public function getMenuNameAttribute(): string
     {
-        return $this->morphToMany(Tag::class, 'taggable');
+        return $this->title;
+    }
+
+    public static function getFilamentSearchLabel(): string
+    {
+        return 'title';
     }
 }
