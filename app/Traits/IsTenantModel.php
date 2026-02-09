@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\Team;
+use Filament\Jetstream\Models\Team;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait IsTenantModel 

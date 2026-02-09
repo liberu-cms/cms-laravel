@@ -3,28 +3,23 @@
 namespace App\Models;
 
 use App\Traits\IsTenantModel;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tag extends Model
 {
-    use HasFactory;
     use IsTenantModel;
 
-    protected $primaryKey = 'id';
-
     protected $fillable = [
-        'name',
-        'slug',
+        "name",
+        "slug",
+        "collection_id",
+        "description",
+        "image"
     ];
 
-    public function contents()
+    public function collection(): BelongsTo
     {
-        return $this->morphedByMany(Content::class, 'taggable');
-    }
-
-    public function pages()
-    {
-        return $this->morphedByMany(Page::class, 'taggable');
+        return $this->belongsTo(Collection::class);
     }
 }

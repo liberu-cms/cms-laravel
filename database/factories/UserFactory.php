@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Team;
 use App\Models\User;
+use Filament\Jetstream\Jetstream;
+use Filament\Jetstream\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Laravel\Jetstream\Features;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -54,14 +54,14 @@ class UserFactory extends Factory
      */
     public function withPersonalTeam(?callable $callback = null): static
     {
-        if (! Features::hasTeamFeatures()) {
+        if (! Jetstream::plugin()?->hasTeamsFeatures()) {
             return $this->state([]);
         }
 
         return $this->has(
-            Team::factory()
+            TeamFactory::new()
                 ->state(fn (array $attributes, User $user) => [
-                    'name' => $user->name.'\'s Team',
+                    'name' => $user->name . '\'s Team',
                     'user_id' => $user->id,
                     'personal_team' => true,
                 ])

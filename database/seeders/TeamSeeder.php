@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Team;
+use Filament\Jetstream\Models\Team;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,12 +13,9 @@ class TeamSeeder extends Seeder
      */
     public function run(): void
     {
-        $team = Team::create([
-            'id' => 1,
-            'name' => 'default',
-            'personal_team' => false,
-            'user_id' => 1,
+        Team::firstOrCreate([
+            'name' => 'Default',
+            'personal_team' => true,
         ]);
-
     }
 }

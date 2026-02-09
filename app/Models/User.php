@@ -2,37 +2,28 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use App\Traits\IsTenantModel;
+use Filament\Jetstream\InteractsWIthProfile;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasDefaultTenant;
-use Filament\Models\Contracts\HasTenants;
+use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Jetstream\HasTeams;
+use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
+
+use Filament\Models\Contracts\HasTenants;
+use Filament\Jetstream\InteractsWithTeams;
 use Laravel\Sanctum\HasApiTokens;
-use Filament\Panel;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Collection;
-use JoelButcher\Socialstream\SetsProfilePhotoFromUrl;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements HasDefaultTenant, HasTenants, FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasskeys, MustVerifyEmail, HasTenants
 {
-    use HasApiTokens;
     use HasFactory;
-    use HasProfilePhoto;
-    use HasProfilePhoto {
-        HasProfilePhoto::profilePhotoUrl as getPhotoUrl;
-    }
+    use InteractsWIthProfile;
     use Notifiable;
-    use SetsProfilePhotoFromUrl;
-    use HasTeams;
-    use TwoFactorAuthenticatable;
+    use InteractsWithTeams;
+    use HasApiTokens;
     use HasRoles;
 
     /**
@@ -44,7 +35,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         'name',
         'email',
         'password',
-        'is_active',
     ];
 
     /**
@@ -60,6 +50,15 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array<int, string>
@@ -67,70 +66,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     protected $appends = [
         'profile_photo_url',
     ];
-
-    public function hasPermission($permission)
-    {
-        foreach ($this->roles as $role) {
-            if ($role->hasPermission($permission)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function getHighestRole()
-    {
-        return $this->roles()->orderBy('level', 'desc')->first();
-    }
-
-    public function isSuperAdmin()
-    {
-        return $this->hasRole(Role::SUPER_ADMIN);
-    }
-
-    public function isAdmin()
-    {
-        return $this->hasRole(Role::ADMIN) || $this->isSuperAdmin();
-    }
-
-    public function isEditor()
-    {
-        return $this->hasRole(Role::EDITOR) || $this->isAdmin();
-    }
-
-    public function isAuthor()
-    {
-        return $this->hasRole(Role::AUTHOR) || $this->isEditor();
-    }
-
-    public function canManageUser(User $user)
-    {
-        // Super admin can manage all users
-        if ($this->isSuperAdmin()) {
-            return true;
-        }
-
-        // Cannot manage users with higher role level
-        $myHighestRole = $this->getHighestRole();
-        $userHighestRole = $user->getHighestRole();
-
-        if (!$myHighestRole || !$userHighestRole) {
-            return false;
-        }
-
-        return $myHighestRole->level > $userHighestRole->level;
-    }
-
-    public function content()
-    {
-        return $this->hasMany(Content::class, 'author_id');
-    }
-
-    public function mediaUploads()
-    {
-        return $this->hasMany(MediaLibrary::class, 'uploaded_by');
-    }
 
     /**
      * Get the attributes that should be cast.
@@ -143,73 +78,5 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function getTenants(Panel $panel): array | Collection
-    {
-        return $this->teams;
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        if ($panel->getId() === "admin") {
-            return $this->hasRole(['admin', 'super_admin']);
-        }
-
-        if ($panel->getId() === "app") {
-            return $this->hasAnyRole(['admin', 'editor', 'author', 'viewer']);
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Check if user has a specific permission through any of their roles
-     */
-    public function hasPermissionViaRole($permission): bool
-    {
-        foreach ($this->roles as $role) {
-            if ($role->permissions->contains('name', $permission)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Get all permissions for the user
-     */
-    public function getAllPermissions()
-    {
-        $permissions = collect();
-
-        foreach ($this->roles as $role) {
-            $permissions = $permissions->merge($role->permissions);
-        }
-
-        return $permissions->unique('id');
-    }
-
-    public function canAccessTenant(Model $tenant): bool
-    {
-        return $this->teams->contains($tenant);
-    }
-
-    public function canAccessFilament(): bool
-    {
-        //        return $this->hasVerifiedEmail();
-        return true;
-    }
-
-    public function getDefaultTenant(Panel $panel): ?Model
-    {
-        return $this->latestTeam;
-    }
-
-    public function latestTeam(): BelongsTo
-    {
-        return $this->belongsTo(Team::class, 'current_team_id');
     }
 }
