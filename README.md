@@ -1,17 +1,28 @@
 [![](https://avatars.githubusercontent.com/u/158830885?s=200&v=4)](https://www.liberu.co.uk)
 # [Liberu CMS](https://www.liberu.co.uk)
 
+### Open-Source Content Management — Built with Laravel 12, Filament 5, Livewire 4, and PHP 8.5
+
 ![](https://img.shields.io/badge/PHP-8.5-informational?style=flat&logo=php&color=4f5b93)
 ![](https://img.shields.io/badge/Laravel-12-informational?style=flat&logo=laravel&color=ef3b2d)
 ![](https://img.shields.io/badge/Filament-5-informational?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgeG1sbnM6dj0iaHR0cHM6Ly92ZWN0YS5pby9uYW5vIj48cGF0aCBkPSJNMCAwaDQ4djQ4SDBWMHoiIGZpbGw9IiNmNGIyNWUiLz48cGF0aCBkPSJNMjggN2wtMSA2LTMuNDM3LjgxM0wyMCAxNWwtMSAzaDZ2NWgtN2wtMyAxOEg4Yy41MTUtNS44NTMgMS40NTQtMTEuMzMgMy0xN0g4di01bDUtMSAuMjUtMy4yNUMxNCAxMSAxNCAxMSAxNS40MzggOC41NjMgMTkuNDI5IDYuMTI4IDIzLjQ0MiA2LjY4NyAyOCA3eiIgZmlsbD0iIzI4MjQxZSIvPjxwYXRoIGQ9Ik0zMCAxOGg0YzIuMjMzIDUuMzM0IDIuMjMzIDUuMzM0IDEuMTI1IDguNUwzNCAyOWMtLjE2OCAzLjIwOS0uMTY4IDMuMjA5IDAgNmwtMiAxIDEgM2gtNXYyaC0yYy44NzUtNy42MjUuODc1LTcuNjI1IDItMTFoMnYtMmgtMnYtMmwyLTF2LTQtM3oiIGZpbGw9IiMyYTIwMTIiLz48cGF0aCBkPSJNMzUuNTYzIDYuODEzQzM4IDcgMzggNyAzOSA4Yy4xODggMi40MzguMTg4IDIuNDM4IDAgNWwtMiAyYy0yLjYyNS0uMzc1LTIuNjI1LS4zNzUtNS0xLS42MjUtMi4zNzUtLjYyNS0yLjM3NS0xLTUgMi0yIDItMiA0LjU2My0yLjE4N3oiIGZpbGw9IiM0MDM5MzEiLz48cGF0aCBkPSJNMzAgMThoNGMyLjA1NSA1LjMxOSAyLjA1NSA1LjMxOSAxLjgxMyA4LjMxM0wzNSAyOGwtMyAxdi0ybC00IDF2LTJsMi0xdi00LTN6IiBmaWxsPSIjMzEyODFlIi8+PHBhdGggZD0iTTI5IDI3aDN2MmgydjJoLTJ2MmwtNC0xdi0yaDJsLTEtM3oiIGZpbGw9IiMxNTEzMTAiLz48cGF0aCBkPSJNMzAgMThoNHYzaC0ydjJsLTMgMSAxLTZ6IiBmaWxsPSIjNjA0YjMyIi8+PC9zdmc+&&color=fdae4b&link=https://filamentphp.com)
-![](https://img.shields.io/badge/Livewire-4.1-informational?style=flat&logo=Livewire&color=fb70a9)
+![](https://img.shields.io/badge/Livewire-4-informational?style=flat&logo=Livewire&color=fb70a9)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Open Source Love](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red.svg)
+[![Latest Release](https://img.shields.io/github/v/release/liberu-cms/cms-laravel)](https://github.com/liberu-cms/cms-laravel/releases)
+[![codecov](https://codecov.io/gh/liberu-cms/cms-laravel/branch/main/graph/badge.svg)](https://codecov.io/gh/liberu-cms/cms-laravel)
 
+[![Install](https://github.com/liberu-cms/cms-laravel/actions/workflows/install.yml/badge.svg)](https://github.com/liberu-cms/cms-laravel/actions/workflows/install.yml)
+[![Tests](https://github.com/liberu-cms/cms-laravel/actions/workflows/tests.yml/badge.svg)](https://github.com/liberu-cms/cms-laravel/actions/workflows/tests.yml)
+[![Docker](https://github.com/liberu-cms/cms-laravel/actions/workflows/main.yml/badge.svg)](https://github.com/liberu-cms/cms-laravel/actions/workflows/main.yml)
 
-## Welcome to Liberu, our visionary open-source initiative that marries the power of Laravel 12, PHP 8.5 and Filament 5.2 to redefine the landscape of web development.
+## About Liberu CMS
 
-[![Contact us on WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/+447762430333)
+Liberu CMS is a powerful, open-source content management system built on the latest versions of Laravel 12, PHP 8.5, Filament 5, and Livewire 4. Designed to be fast, flexible, and developer-friendly, it gives content creators and administrators an intuitive platform for building and managing modern digital experiences — from blogs and landing pages to full enterprise websites.
+
+Whether you're a solo creator or a team managing large-scale digital content, Liberu CMS delivers the tools and structure you need, backed by a clean codebase and an active open-source community.
+
+[![Contact us on WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/441793200950)
 [![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/@liberusoftware)
 [![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?style=for-the-badge&logo=Facebook&logoColor=white)](https://www.facebook.com/liberusoftware)
 [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white)](https://www.instagram.com/liberusoftware)
@@ -19,122 +30,140 @@
 [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/liberugroup)
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://www.github.com/liberusoftware)
 
+## Key Features
+
+1. **User-Friendly Content Creation:** An intuitive interface for creating and managing articles, multimedia content, and dynamic pages — no technical expertise required.
+
+2. **Real-Time Livewire Interactions:** Built with Livewire 4, Liberu CMS delivers seamless, reactive user experiences — edit, preview, and publish without full page reloads.
+
+3. **Powerful Filament 5 Admin Panel:** The Filament 5-powered admin panel provides a rich, customisable interface for managing users, roles, settings, and the entire content ecosystem.
+
+4. **Customisable Templates:** Tailor your site's appearance with flexible templates. Build unique, brand-aligned websites using the CMS's theming and layout tools.
+
+5. **Role-Based Access Control:** Granular permission management via Filament Shield, ensuring the right people have access to the right content and settings.
+
+6. **Menu Builder:** Easily create and manage navigation menus across your site using the integrated Filament Menu Builder.
+
+7. **Scalability and Performance:** Suitable for personal blogs through to enterprise-scale websites. The modern Laravel 12 foundation ensures excellent performance and reliability.
+
+8. **Docker & Laravel Sail Support:** Spin up a full development environment in minutes using Docker or Laravel Sail.
+
 ## Our Projects
 
-* https://github.com/liberu-accounting/accounting-laravel
-* https://github.com/liberu-automation/automation-laravel
-* https://github.com/liberu-billing/billing-laravel
-* https://github.com/liberusoftware/boilerplate
-* https://github.com/liberu-browser-game/browser-game-laravel
-* https://github.com/liberu-cms/cms-laravel
-* https://github.com/liberu-control-panel/control-panel-laravel
-* https://github.com/liberu-crm/crm-laravel
-* https://github.com/liberu-ecommerce/ecommerce-laravel
-* https://github.com/liberu-genealogy/genealogy-laravel
-* https://github.com/liberu-maintenance/maintenance-laravel
-* https://github.com/liberu-real-estate/real-estate-laravel
-* https://github.com/liberu-social-network/social-network-laravel
+* [Accounting](https://github.com/liberu-accounting/accounting-laravel)
+* [Automation](https://github.com/liberu-automation/automation-laravel)
+* [Billing](https://github.com/liberu-billing/billing-laravel)
+* [Boilerplate](https://github.com/liberusoftware/boilerplate)
+* [Browser Game](https://github.com/liberu-browser-game/browser-game-laravel)
+* [CMS](https://github.com/liberu-cms/cms-laravel)
+* [Control Panel](https://github.com/liberu-control-panel/control-panel-laravel)
+* [CRM](https://github.com/liberu-crm/crm-laravel)
+* [E-Commerce](https://github.com/liberu-ecommerce/ecommerce-laravel)
+* [Genealogy](https://github.com/liberu-genealogy/genealogy-laravel)
+* [Maintenance](https://github.com/liberu-maintenance/maintenance-laravel)
+* [Real Estate](https://github.com/liberu-real-estate/real-estate-laravel)
+* [Social Network](https://github.com/liberu-social-network/social-network-laravel)
 
+## Installation
 
-## Setup
+### Requirements
 
-1. Ensure your environment is set up with PHP 8.3 and Composer installed.
-2. Download the project files from this GitHub repository.
-3. Open a terminal in the project folder. If you are on Windows and have Git Bash installed, you can use it for the following steps.
-4. Run the following command:
+- PHP 8.5+
+- Composer
+- Node.js 22+
+- A supported database (MySQL, PostgreSQL, SQLite)
+
+### Option 1: Automated Script (Recommended)
+
+The easiest way to get started is to run the included setup script from the command line. It will guide you through copying your environment file, installing dependencies, running migrations, and seeding the database.
 
 ```bash
+git clone https://github.com/liberu-cms/cms-laravel.git
+cd cms-laravel
 ./setup.sh
 ```
 
-and everything should be installed automatically if you are using Linux you just run the script as you normally run scripts in the terminal.
+> **Note:** On Linux/macOS, run the script as you would any shell script in the terminal. On Windows, use Git Bash or WSL.
 
-NOTE 1: The script will ask you if you want to have your .env be overwritten by .env.example, in case you have already an .env configuration available please answer with "n" (No).
+The script will prompt you to confirm each step, including whether to overwrite an existing `.env` file. If you already have a `.env` configured, answer **n** when prompted.
 
-NOTE 2: This script will run seeders, please make sure you are aware of this and don't run this script if you don't want this to happen.
+> **Note:** The script runs database seeders automatically. Ensure your database credentials are correct in `.env` before proceeding.
+
+### Option 2: Manual Installation
+
+If you prefer to install manually, run the following commands:
+
 ```bash
+git clone https://github.com/liberu-cms/cms-laravel.git
+cd cms-laravel
+cp .env.example .env
 composer install
 php artisan key:generate
 php artisan migrate --seed
+npm install
+npm run build
+php artisan serve
 ```
-This will install the necessary dependencies, generate an application key, and set up your database with initial data.
 
-NOTE 3: Ensure your `.env` file is correctly configured with your database connection details before running migrations.
+Ensure your `.env` file is configured with your database connection details before running migrations.
 
-## Building with Docker
+### Option 3: Docker / Laravel Sail
 
-Alternatively, you can build and run the project using Docker. To build the Dockerfile, follow these steps:
+You can also run Liberu CMS using Docker or the included Laravel Sail configuration.
 
-1. Ensure you have Docker installed on your system.
-2. Open a terminal in the project folder.
-3. Run the following command to build the Docker image:
-   ```
-   docker build -t cms-laravel .
-   ```
-4. Once the image is built, you can run the container with:
-   ```
-   docker run -p 8000:8000 cms-laravel
-   ```
+**Using Docker:**
 
-NOTE 3: Ensure your `.env` file is correctly configured with your database connection details before running migrations.
+```bash
+docker build -t cms-laravel .
+docker run -p 8000:8000 cms-laravel
+```
 
-### Using Laravel Sail
+**Using Laravel Sail:**
 
-This project also includes support for Laravel Sail, which provides a Docker-based development environment. To use Laravel Sail, follow these steps:
+```bash
+./vendor/bin/sail up
+```
 
-1. Ensure you have Docker installed on your system.
-2. Open a terminal in the project folder.
-3. Run the following command to start the Laravel Sail environment:
-   ```
-   ./vendor/bin/sail up
-   ```
-4. Once the containers are running, you can access the application at `http://localhost`.
-5. To stop the Sail environment, press `Ctrl+C` in the terminal.
+Once running, access the application at `http://localhost`. For more details, see the [Laravel Sail documentation](https://laravel.com/docs/sail).
 
-For more information on using Laravel Sail, refer to the [official documentation](https://laravel.com/docs/sail).
+### Graphical Installer
 
+For users who prefer a GUI-based setup, a graphical installer is available. Download and run it from the [Releases page](https://github.com/liberu-cms/cms-laravel/releases) — it walks you through environment configuration and installation without needing to use the command line.
 
-### Description
-Welcome to Liberu CMS, our forward-thinking open-source project designed to empower content creators and administrators alike. Leveraging the dynamic capabilities of Laravel 11, PHP 8.3, Livewire 3, and Filament 3, Liberu CMS is not just a content management system – it's a versatile and intuitive platform crafted to elevate the creation, organization, and delivery of digital content.
+## Contributing
 
-**Key Features:**
+Contributions are warmly welcome! Whether you want to fix a bug, add a feature, improve documentation, or raise an issue, your involvement helps make Liberu CMS better for everyone.
 
-1. **User-Friendly Content Creation:** Liberu CMS provides an intuitive and user-friendly interface for content creation. From articles and multimedia to dynamic pages, our project ensures that content creators can bring their ideas to life with ease.
+**Pull Request Process:**
 
-2. **Dynamic Livewire Interactions:** Built on Laravel 11 and PHP 8.3, Liberu CMS integrates Livewire 3 to deliver dynamic and real-time interactions. Enjoy seamless and responsive user experiences as you edit, preview, and publish content without the need for page refreshes.
+1. Fork the repository and create a new branch for your changes.
+2. Make your changes with clear, descriptive commit messages.
+3. Ensure tests pass by running `php artisan test`.
+4. Submit a pull request to the `main` branch with a clear description of what you've changed and why.
+5. The maintainers will review your PR and may request changes before merging.
 
-3. **Efficient Admin Panel:** Filament 3, our admin panel built on Laravel, adds an extra layer of efficiency to Liberu CMS. Administrators can manage users, customize settings, and oversee the entire content ecosystem with a powerful and intuitive interface.
+If you're not comfortable writing code, raising a [GitHub Issue](https://github.com/liberu-cms/cms-laravel/issues) is equally valuable — it helps us track bugs, ideas, and improvements.
 
-4. **Customizable Templates:** Tailor your website's appearance with customizable templates. Liberu CMS offers flexibility in design, allowing users to create unique and visually appealing websites that align with their brand and vision.
+We believe in an inclusive, collaborative community where every contribution is respected and appreciated.
 
-5. **Scalability and Performance:** Whether you're managing a personal blog or a large-scale enterprise website, Liberu CMS is built for scalability and optimized performance. The project adapts to your content needs, ensuring a seamless experience for both creators and visitors.
+## License
 
-Liberu CMS is open source, released under the permissive MIT license. We invite developers, content creators, and organizations to contribute to the evolution of content management systems. Together, let's redefine the standards of digital content creation and management.
+Liberu CMS is open source, licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
-Welcome to Liberu CMS – where innovation meets simplicity, and the possibilities of digital content creation are limitless. Join us on this journey to transform the way we create, manage, and deliver content to the world.
+The MIT license is one of the most permissive open-source licenses available. It means you are free to:
 
-### Licensed under MIT, use for any personal or commercial project.
-  
-### Contributions
+- **Use** the software for any purpose — personal, commercial, or otherwise
+- **Modify** the source code to suit your needs
+- **Distribute** copies of the software, with or without your modifications
+- **Integrate** it into proprietary products without requiring you to open-source your own code
 
-We warmly welcome new contributions from the community! We believe in the power of collaboration and appreciate any involvement you'd like to have in improving our project. Whether you prefer submitting pull requests with code enhancements or raising issues to help us identify areas of improvement, we value your participation.
+The only requirement is that the original copyright notice and licence text are included with any distribution.
 
-If you have code changes or feature enhancements to propose, pull requests are a fantastic way to share your ideas with us. We encourage you to fork the project, make the necessary modifications, and submit a pull request for our review. Our team will diligently review your changes and work together with you to ensure the highest quality outcome.
+This permissive approach makes Liberu CMS an ideal foundation for both individual projects and commercial products, with no hidden costs or licensing restrictions.
 
-However, we understand that not everyone is comfortable with submitting code directly. If you come across any issues or have suggestions for improvement, we greatly appreciate your input. By raising an issue, you provide valuable insights that help us identify and address potential problems or opportunities for growth.
-
-Whether through pull requests or issues, your contributions play a vital role in making our project even better. We believe in fostering an inclusive and collaborative environment where everyone's ideas are valued and respected.
-
-We look forward to your involvement, and together, we can create a vibrant and thriving project. Thank you for considering contributing to our community!
-<!--/h-->
-
-### License
-
-This project is licensed under the MIT license, granting you the freedom to utilize it for both personal and commercial projects. The MIT license ensures that you have the flexibility to adapt, modify, and distribute the project as per your needs. Feel free to incorporate it into your own ventures, whether they are personal endeavors or part of a larger commercial undertaking. The permissive nature of the MIT license empowers you to leverage this project without any unnecessary restrictions. Enjoy the benefits of this open and accessible license as you embark on your creative and entrepreneurial pursuits.
 <!--/h-->
 
 ## Contributors
-
 
 <a href = "https://github.com/liberu-cms/cms-laravel/graphs/contributors">
   <img src = "https://contrib.rocks/image?repo=liberu-cms/cms-laravel"/>
