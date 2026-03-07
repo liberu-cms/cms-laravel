@@ -22,6 +22,10 @@ class CollectionItem extends Model
         "published_at",
     ];
 
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
     public function collection(): BelongsTo
     {
         return $this->belongsTo(Collection::class);
