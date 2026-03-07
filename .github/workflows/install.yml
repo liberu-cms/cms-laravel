@@ -46,7 +46,9 @@ jobs:
       run: sudo /etc/init.d/mysql start
 
     - name: Create database
-      run: mysql -e "CREATE DATABASE IF NOT EXISTS liberu;" -uroot -proot
+      run: |
+        sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root'; FLUSH PRIVILEGES;" 2>/dev/null || true
+        mysql -e "CREATE DATABASE IF NOT EXISTS liberu;" -uroot -proot
       
     - name: Copy environment file
       run: cp .env.testing .env

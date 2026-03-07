@@ -26,7 +26,7 @@ class CollectionItemFactory extends Factory
             'content'       => fake()->paragraphs(3, true),
             'published_at'  => now(),
             'status'        => "published",
-            'collection_id' => Collection::inRandomOrder()->first()->id,
+            'collection_id' => Collection::factory(),
             'user_id'       => User::factory(),
         ];
     }
