@@ -1,4 +1,4 @@
-FROM php:8.2-cli AS base
+FROM php:8.4-cli AS base
 
 LABEL maintainer="Liberu CMS"
 
