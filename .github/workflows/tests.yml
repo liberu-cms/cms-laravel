@@ -10,6 +10,20 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: liberu
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     
     steps:
     - uses: actions/checkout@v4
@@ -17,18 +31,32 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3'
-        extensions: mbstring, pdo, pdo_sqlite, sqlite3, bcmath, gd, zip, intl
+        php-version: '8.4'
+        extensions: mbstring, pdo, pdo_mysql, bcmath, gd, zip, intl
         coverage: xdebug
 
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
     - name: Copy environment file
-      run: cp .env.example .env
+      run: cp .env.testing .env
       
     - name: Install dependencies
       run: composer install --no-interaction --prefer-dist
       
     - name: Generate application key
       run: php artisan key:generate
+
+    - name: Run database migrations
+      run: php artisan migrate --force
       
     - name: Run tests
       run: vendor/bin/phpunit --coverage-clover=coverage.xml
