@@ -59,7 +59,7 @@ jobs:
       run: php artisan migrate --force
       
     - name: Run tests
-      run: vendor/bin/phpunit --coverage-clover=coverage.xml
+      run: vendor/bin/pest --coverage-clover=coverage.xml
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
