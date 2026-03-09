@@ -6,7 +6,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.5",
         "bezhansalleh/filament-shield": "^4.0",
         "biostate/filament-menu-builder": "^4.0",
         "filament/filament": "^4.0",
