@@ -88,7 +88,8 @@ class AppPanelProvider extends PanelProvider
                         roleModel: Role::class,
                     ),
                 FilamentShieldPlugin::make()
-                    ->navigationGroup("Administration"),
+                    ->navigationGroup("Administration")
+                    ->tenantOwnershipRelationshipName('teams'),
                 FilamentMenuBuilderPlugin::make()
                     ->usingMenuModel(Menu::class)
                     ->usingMenuItemModel(MenuItem::class)
