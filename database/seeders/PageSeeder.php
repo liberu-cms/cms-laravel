@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Page;
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PageSeeder extends Seeder
@@ -31,15 +30,16 @@ class PageSeeder extends Seeder
                 'template' => 'default',
                 'status' => 'published',
                 'user_id' => User::first()->id,
-            ]
+            ],
         ];
 
         foreach ($pages as $page) {
-            if (env('MULTITENANCY', false)) 
-                $page["team_id"] = Team::first()->id;
-    
+            if (config('app.multitenancy')) {
+                $page['team_id'] = Team::first()->id;
+            }
+
             Page::create($page);
         }
-        
+
     }
 }

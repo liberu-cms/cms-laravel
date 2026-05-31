@@ -7,5 +7,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateCollection extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = CollectionResource::class;
 }

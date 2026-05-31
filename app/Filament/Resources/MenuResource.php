@@ -6,6 +6,7 @@ use Biostate\FilamentMenuBuilder\Filament\Resources\MenuResource as BaseMenuReso
 
 class MenuResource extends BaseMenuResource
 {
+    #[\Override]
     public static function getNavigationGroup(): ?string
     {
         return null;

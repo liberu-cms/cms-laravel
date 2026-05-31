@@ -2,47 +2,98 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Jetstream\Models\Team as JetstreamTeam;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
-class Team extends JetstreamTeam
+class Team extends Model
 {
-    protected static array $defaultRoles = [
-        'super_admin' => [],
-        'editor'      => [],
-        'viewer'      => [],
+    use HasFactory;
+
+    #[\Override]
+    protected $fillable = [
+        'user_id',
+        'name',
+        'personal_team',
     ];
-    
-    protected static function booted()
+
+    #[\Override]
+    protected function casts(): array
     {
-        static::created(function (Team $team) {
-            foreach (self::$defaultRoles as $roleName => $permissions) {
+        return [
+            'personal_team' => 'boolean',
+        ];
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'team_user')
+            ->using(Membership::class)
+            ->withPivot('role')
+            ->withTimestamps()
+            ->as('membership');
+    }
+
+    public function allUsers(): Collection
+    {
+        return $this->users->merge([$this->owner]);
+    }
+
+    public function hasUser(User $user): bool
+    {
+        return $this->users->contains($user) || $user->ownsTeam($this);
+    }
+
+    public function hasUserWithEmail(string $email): bool
+    {
+        return $this->allUsers()->contains(fn ($user): bool => $user->email === $email);
+    }
+
+    public function removeUser(User $user): void
+    {
+        if ($user->current_team_id === $this->id) {
+            $user->forceFill(['current_team_id' => null])->save();
+        }
+
+        $this->users()->detach($user);
+    }
+
+    #[\Override]
+    protected static function booted(): void
+    {
+        static::created(function (Team $team): void {
+            foreach (['super_admin' => [], 'editor' => [], 'viewer' => []] as $roleName => $permissions) {
                 $role = Role::create([
                     'name' => $roleName,
                     'team_id' => $team->id,
                     'guard_name' => 'web',
                 ]);
-        
+
                 $role->syncPermissions($permissions);
             }
-        
-            // Assign super_admin to the creator if there is one
+
             if (auth()->check()) {
                 $user = auth()->user();
                 $user->teams()->syncWithoutDetaching([$team->id]);
 
-                $oldteam = getPermissionsTeamId();
+                $oldTeam = getPermissionsTeamId();
                 setPermissionsTeamId($team->id);
-        
+
                 $superAdminRole = Role::where('name', 'super_admin')
                     ->where('team_id', $team->id)
                     ->first();
-        
+
                 $user->assignRole($superAdminRole);
 
-                setPermissionsTeamId($oldteam);
+                setPermissionsTeamId($oldTeam);
             }
         });
-        
     }
 }

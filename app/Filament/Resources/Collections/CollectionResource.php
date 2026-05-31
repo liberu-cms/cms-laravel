@@ -16,22 +16,28 @@ use Filament\Tables\Table;
 
 class CollectionResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Collection::class;
 
+    #[\Override]
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCircleStack;
 
+    #[\Override]
     protected static ?string $recordTitleAttribute = 'name';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return CollectionForm::configure($schema);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return CollectionsTable::configure($table);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -39,6 +45,7 @@ class CollectionResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

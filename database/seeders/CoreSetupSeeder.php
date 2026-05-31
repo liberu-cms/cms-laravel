@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
+use App\Models\Team;
 use App\Models\User;
-use Filament\Jetstream\Models\Team;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -29,8 +28,7 @@ class CoreSetupSeeder extends Seeder
             'name' => 'super_admin',
             'guard_name' => 'web',
         ];
-        
-        
+
         // 2. Create Default Team (belongs to admin)
         if (Utils::isTenancyEnabled()) {
             $team = Team::create([
@@ -41,13 +39,13 @@ class CoreSetupSeeder extends Seeder
 
             setPermissionsTeamId($team->id);
             $admin->teams()->syncWithoutDetaching([$team->id]);
-            $roleData["team_id"] = $team->id;
+            $roleData['team_id'] = $team->id;
         }
 
         $superAdminRole = Role::create($roleData);
 
         // 3. Assign super_admin role
         $admin->assignRole($superAdminRole);
-        
+
     }
 }

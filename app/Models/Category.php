@@ -10,12 +10,13 @@ class Category extends Model
 {
     use IsTenantModel;
 
+    #[\Override]
     protected $fillable = [
-        "name",
-        "slug",
-        "collection_id",
-        "description",
-        "image"
+        'name',
+        'slug',
+        'collection_id',
+        'description',
+        'image',
     ];
 
     public function collection(): BelongsTo

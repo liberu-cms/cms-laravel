@@ -8,8 +8,10 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditCollection extends EditRecord
 {
+    #[\Override]
     protected static string $resource = CollectionResource::class;
 
+    #[\Override]
     protected function getHeaderActions(): array
     {
         return [

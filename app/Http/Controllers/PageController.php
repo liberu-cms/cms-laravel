@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
-use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    //
-    public function show($slug = null)
+    public function show(?string $slug = null): View
     {
-        $page = Page::where('slug', $slug ?: 'home')->firstOrFail();
+        $page = Page::where('slug', $slug ?? 'home')->firstOrFail();
 
         $template = $page->template ?: 'default';
 
-        return view("templates.$template", compact('page'));
+        return view("templates.$template", ['page' => $page]);
     }
-
-
 }

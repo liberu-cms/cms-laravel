@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Collection;
-use App\Models\CollectionItem;
 use App\Models\Page;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,11 +32,11 @@ class PageControllerTest extends TestCase
     {
         $user = User::factory()->create();
         Page::factory()->create([
-            'title'    => 'About',
-            'slug'     => 'about',
+            'title' => 'About',
+            'slug' => 'about',
             'template' => 'default',
-            'status'   => 'published',
-            'user_id'  => $user->id,
+            'status' => 'published',
+            'user_id' => $user->id,
         ]);
 
         $response = $this->get('/about');
@@ -68,9 +66,9 @@ class PageControllerTest extends TestCase
     {
         $user = User::factory()->create();
         Page::factory()->create([
-            'slug'     => 'test-page',
+            'slug' => 'test-page',
             'template' => 'default',
-            'user_id'  => $user->id,
+            'user_id' => $user->id,
         ]);
 
         $response = $this->get('/test-page');
@@ -83,14 +81,14 @@ class PageControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $page = Page::factory()->create([
-            'title'   => 'My Test Page',
-            'slug'    => 'my-test-page',
+            'title' => 'My Test Page',
+            'slug' => 'my-test-page',
             'user_id' => $user->id,
         ]);
 
         $response = $this->get('/my-test-page');
 
         $response->assertStatus(200);
-        $response->assertViewHas('page', fn ($viewPage) => $viewPage->id === $page->id);
+        $response->assertViewHas('page', fn ($viewPage): bool => $viewPage->id === $page->id);
     }
 }

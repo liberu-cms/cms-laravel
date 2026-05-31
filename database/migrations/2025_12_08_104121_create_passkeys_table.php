@@ -7,13 +7,13 @@ use Spatie\LaravelPasskeys\Support\Config;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         $authenticatableClass = Config::getAuthenticatableModel();
 
         $authenticatableTableName = (new $authenticatableClass)->getTable();
 
-        Schema::create('passkeys', function (Blueprint $table) use ($authenticatableTableName,$authenticatableClass) {
+        Schema::create('passkeys', function (Blueprint $table) use ($authenticatableTableName, $authenticatableClass): void {
             $table->id();
 
             $table
