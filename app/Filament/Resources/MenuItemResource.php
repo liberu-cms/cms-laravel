@@ -6,5 +6,6 @@ use Biostate\FilamentMenuBuilder\Filament\Resources\MenuItemResource as BaseMenu
 
 class MenuItemResource extends BaseMenuItemResource
 {
+    #[\Override]
     protected static bool $shouldRegisterNavigation = false;
 }

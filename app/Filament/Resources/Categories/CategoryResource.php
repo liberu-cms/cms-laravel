@@ -16,22 +16,28 @@ use Filament\Tables\Table;
 
 class CategoryResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Category::class;
 
+    #[\Override]
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    #[\Override]
     protected static ?string $recordTitleAttribute = 'name';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return CategoryForm::configure($schema);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return CategoriesTable::configure($table);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -39,6 +45,7 @@ class CategoryResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

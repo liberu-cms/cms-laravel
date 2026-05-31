@@ -14,9 +14,10 @@ class Collection extends Model
     use IsTenantModel;
     use Menuable;
 
+    #[\Override]
     protected $fillable = [
-        "name",
-        "slug",
+        'name',
+        'slug',
     ];
 
     public function categories(): HasMany

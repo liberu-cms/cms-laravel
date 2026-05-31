@@ -12,19 +12,24 @@ class CollectionItem extends Model
     use HasFactory;
     use IsTenantModel;
 
+    #[\Override]
     protected $fillable = [
-        "title",
-        "slug",
-        "collection_id",
-        "content",
-        "status",
-        "user_id",
-        "published_at",
+        'title',
+        'slug',
+        'collection_id',
+        'content',
+        'status',
+        'user_id',
+        'published_at',
     ];
 
-    protected $casts = [
-        'published_at' => 'datetime',
-    ];
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'published_at' => 'datetime',
+        ];
+    }
 
     public function collection(): BelongsTo
     {

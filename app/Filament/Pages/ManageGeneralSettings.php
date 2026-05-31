@@ -14,16 +14,22 @@ use Filament\Support\Icons\Heroicon;
 
 class ManageGeneralSettings extends SettingsPage
 {
+    #[\Override]
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
+    #[\Override]
     protected static string $settings = GeneralSettings::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Settings';
+    #[\Override]
+    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
 
+    #[\Override]
     protected static ?string $title = 'General Settings';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'General Settings';
 
+    #[\Override]
     public function form(Schema $schema): Schema
     {
         return $schema

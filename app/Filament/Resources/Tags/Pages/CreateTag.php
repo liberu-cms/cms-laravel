@@ -7,5 +7,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateTag extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = TagResource::class;
 }

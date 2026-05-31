@@ -13,6 +13,7 @@ class Page extends Model
     use IsTenantModel;
     use Menuable;
 
+    #[\Override]
     protected $fillable = [
         'title',
         'slug',
@@ -22,9 +23,13 @@ class Page extends Model
         'user_id',
     ];
 
-    protected $casts = [
-        'published_at' => 'datetime',
-    ];
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'published_at' => 'datetime',
+        ];
+    }
 
     public function getMenuLinkAttribute(): string
     {

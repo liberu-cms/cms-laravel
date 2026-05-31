@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->foreignId('current_team_id')->nullable()->after('id');
         });
 
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->index();
             $table->string('name');
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('team_user', function (Blueprint $table) {
+        Schema::create('team_user', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('team_id');
             $table->foreignId('user_id');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->unique(['team_id', 'user_id']);
         });
 
-        Schema::create('team_invitations', function (Blueprint $table) {
+        Schema::create('team_invitations', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->string('email');

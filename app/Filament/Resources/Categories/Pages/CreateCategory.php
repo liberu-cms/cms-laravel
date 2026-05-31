@@ -7,5 +7,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateCategory extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = CategoryResource::class;
 }

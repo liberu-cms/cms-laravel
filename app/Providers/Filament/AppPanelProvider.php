@@ -7,15 +7,12 @@ use App\Filament\Resources\MenuResource;
 use App\Http\Middleware\SetPermissionsTeam;
 use App\Models\Menu;
 use App\Models\MenuItem;
-use App\Models\Role;
-use App\Models\Team;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Biostate\FilamentMenuBuilder\FilamentMenuBuilderPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Jetstream\JetstreamPlugin;
-use Filament\Jetstream\Pages\Dashboard;
+use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -27,6 +24,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -43,10 +41,9 @@ class AppPanelProvider extends PanelProvider
             ->login()
             ->registration()
             ->passwordReset()
-            // ->emailVerification()
+            ->profile()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            // ->topNavigation()
             ->pages([
                 Dashboard::class,
             ])
@@ -64,7 +61,7 @@ class AppPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                ])
+            ])
             ->tenantMiddleware([
                 SetPermissionsTeam::class,
             ])
@@ -72,23 +69,9 @@ class AppPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
-                JetstreamPlugin::make()
-                    ->profilePhoto()
-                    ->deleteAccount()
-                    ->updatePassword()
-                    ->profileInformation()
-                    ->logoutBrowserSessions()
-                    ->twoFactorAuthentication()
-                    ->apiTokens()
-                    ->teams(
-                        condition: fn() => env('MULTITENANCY', false)
-                    )
-                    ->configureTeamModels(
-                        teamModel: Team::class,
-                        roleModel: Role::class,
-                    ),
+                TwoFactorAuthenticationPlugin::make(),
                 FilamentShieldPlugin::make()
-                    ->navigationGroup("Administration")
+                    ->navigationGroup('Administration')
                     ->tenantOwnershipRelationshipName('teams'),
                 FilamentMenuBuilderPlugin::make()
                     ->usingMenuModel(Menu::class)
@@ -100,6 +83,6 @@ class AppPanelProvider extends PanelProvider
 
     public function boot(): void
     {
-        // \Illuminate\Support\Facades\Gate::policy(\Filament\Jetstream\Models\Team::class, \Filament\Jetstream\Policies\TeamPolicy::class);
+        //
     }
 }

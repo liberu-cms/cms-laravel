@@ -20,9 +20,9 @@ class CollectionItemControllerTest extends TestCase
         ]);
         CollectionItem::factory()->create([
             'collection_id' => $collection->id,
-            'user_id'       => $user->id,
-            'slug'          => 'my-first-post',
-            'status'        => 'published',
+            'user_id' => $user->id,
+            'slug' => 'my-first-post',
+            'status' => 'published',
         ]);
 
         $response = $this->get('/blog/my-first-post');
@@ -34,11 +34,11 @@ class CollectionItemControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $collection = Collection::factory()->create(['slug' => 'blog']);
-        $otherCollection = Collection::factory()->create(['slug' => 'portfolio']);
+        Collection::factory()->create(['slug' => 'portfolio']);
         CollectionItem::factory()->create([
             'collection_id' => $collection->id,
-            'user_id'       => $user->id,
-            'slug'          => 'my-post',
+            'user_id' => $user->id,
+            'slug' => 'my-post',
         ]);
 
         $response = $this->get('/portfolio/my-post');
@@ -59,11 +59,11 @@ class CollectionItemControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $collection = Collection::factory()->create(['slug' => 'blog']);
-        $item = CollectionItem::factory()->create([
+        CollectionItem::factory()->create([
             'collection_id' => $collection->id,
-            'user_id'       => $user->id,
-            'slug'          => 'test-post',
-            'title'         => 'Test Post Title',
+            'user_id' => $user->id,
+            'slug' => 'test-post',
+            'title' => 'Test Post Title',
         ]);
 
         $response = $this->get('/blog/test-post');

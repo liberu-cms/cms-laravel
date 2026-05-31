@@ -4,7 +4,9 @@ namespace Tests\Unit;
 
 use App\Models\Page;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class PageModelTest extends TestCase
@@ -14,21 +16,21 @@ class PageModelTest extends TestCase
     public function test_page_can_be_created(): void
     {
         $user = User::factory()->create();
-        $page = Page::factory()->create([
-            'title'   => 'Test Page',
-            'slug'    => 'test-page',
+        Page::factory()->create([
+            'title' => 'Test Page',
+            'slug' => 'test-page',
             'user_id' => $user->id,
         ]);
 
         $this->assertDatabaseHas('pages', [
             'title' => 'Test Page',
-            'slug'  => 'test-page',
+            'slug' => 'test-page',
         ]);
     }
 
     public function test_page_has_fillable_attributes(): void
     {
-        $page = new Page();
+        $page = new Page;
 
         $this->assertContains('title', $page->getFillable());
         $this->assertContains('slug', $page->getFillable());
@@ -41,19 +43,19 @@ class PageModelTest extends TestCase
     {
         $user = User::factory()->create();
         $page = Page::factory()->create([
-            'user_id'      => $user->id,
+            'user_id' => $user->id,
             'published_at' => '2025-01-01 00:00:00',
         ]);
 
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $page->published_at);
+        $this->assertInstanceOf(Carbon::class, $page->published_at);
     }
 
     public function test_page_belongs_to_team(): void
     {
-        $page = new Page();
+        $page = new Page;
 
         $this->assertInstanceOf(
-            \Illuminate\Database\Eloquent\Relations\BelongsTo::class,
+            BelongsTo::class,
             $page->team()
         );
     }
@@ -72,7 +74,7 @@ class PageModelTest extends TestCase
     {
         $user = User::factory()->create();
         $page = Page::factory()->create([
-            'slug'    => 'about',
+            'slug' => 'about',
             'user_id' => $user->id,
         ]);
 
@@ -83,7 +85,7 @@ class PageModelTest extends TestCase
     {
         $user = User::factory()->create();
         $page = Page::factory()->create([
-            'title'   => 'About Us',
+            'title' => 'About Us',
             'user_id' => $user->id,
         ]);
 

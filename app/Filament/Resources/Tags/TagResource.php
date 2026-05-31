@@ -16,22 +16,28 @@ use Filament\Tables\Table;
 
 class TagResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Tag::class;
 
+    #[\Override]
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
+    #[\Override]
     protected static ?string $recordTitleAttribute = 'name';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return TagForm::configure($schema);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return TagsTable::configure($table);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -39,6 +45,7 @@ class TagResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

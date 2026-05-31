@@ -14,7 +14,7 @@ class CollectionControllerTest extends TestCase
 
     public function test_collection_page_returns_successful_response(): void
     {
-        $user = User::factory()->create();
+        User::factory()->create();
         Collection::factory()->create([
             'name' => 'Blog',
             'slug' => 'blog',
@@ -67,8 +67,8 @@ class CollectionControllerTest extends TestCase
 
         CollectionItem::factory()->count(5)->create([
             'collection_id' => $collection->id,
-            'user_id'       => $user->id,
-            'status'        => 'published',
+            'user_id' => $user->id,
+            'status' => 'published',
         ]);
 
         $response = $this->get('/articles');

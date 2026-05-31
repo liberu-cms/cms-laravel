@@ -16,22 +16,28 @@ use Filament\Tables\Table;
 
 class PageResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Page::class;
 
+    #[\Override]
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentDuplicate;
 
+    #[\Override]
     protected static ?string $recordTitleAttribute = 'title';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return PageForm::configure($schema);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return PagesTable::configure($table);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -39,6 +45,7 @@ class PageResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

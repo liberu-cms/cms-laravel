@@ -8,8 +8,10 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewCollectionItem extends ViewRecord
 {
+    #[\Override]
     protected static string $resource = CollectionItemResource::class;
 
+    #[\Override]
     protected function getHeaderActions(): array
     {
         return [
