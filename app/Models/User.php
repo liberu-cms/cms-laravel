@@ -2,42 +2,57 @@
 
 namespace App\Models;
 
-use App\Traits\HasProfilePhoto;
 use App\Traits\HasTeams;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use JoelButcher\Socialstream\HasConnectedAccounts;
+use JoelButcher\Socialstream\SetsProfilePhotoFromUrl;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 use Spatie\LaravelPasskeys\Models\Concerns\InteractsWithPasskeys;
 use Spatie\Permission\Traits\HasRoles;
-use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticatable;
 
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasskeys, HasTenants, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, HasPasskeys, HasTenants
 {
-    use HasApiTokens, HasRoles, HasTeams {
-        HasTeams::teams insteadof HasRoles;
-        HasRoles::teams as permissionTeams;
-    }
+    use HasApiTokens;
+    use HasConnectedAccounts;
     use HasFactory;
-    use HasProfilePhoto;
+    use HasProfilePhoto {
+        HasProfilePhoto::profilePhotoUrl as getPhotoUrl;
+    }
+    use HasRoles, HasTeams {
+        HasTeams::teams insteadof HasRoles;
+        HasRoles::teams as spatieTeams;
+    }
     use InteractsWithPasskeys;
     use Notifiable;
+    use SetsProfilePhotoFromUrl;
     use TwoFactorAuthenticatable;
 
-    #[\Override]
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'current_team_id',
     ];
 
-    #[\Override]
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array<int, string>
+     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -45,27 +60,39 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasske
         'two_factor_secret',
     ];
 
-    #[\Override]
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
     protected $appends = [
         'profile_photo_url',
     ];
 
-    #[\Override]
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
         ];
-    }
-
-    public function getFilamentAvatarUrl(): ?string
-    {
-        return $this->profile_photo_url;
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
+    }
+
+    /**
+     * Get the URL to the user's profile photo.
+     */
+    protected function profilePhotoUrl(): Attribute
+    {
+        return filter_var($this->profile_photo_path, FILTER_VALIDATE_URL)
+            ? Attribute::get(fn () => $this->profile_photo_path)
+            : $this->getPhotoUrl();
     }
 }
