@@ -2948,16 +2948,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.11.0",
+            "version": "7.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "c987f8ce84b8434fa430795eca0f3430663da72b"
+                "reference": "5af96f374e0ab4ebd747b8310888c99d3adb0a8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/c987f8ce84b8434fa430795eca0f3430663da72b",
-                "reference": "c987f8ce84b8434fa430795eca0f3430663da72b",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/5af96f374e0ab4ebd747b8310888c99d3adb0a8c",
+                "reference": "5af96f374e0ab4ebd747b8310888c99d3adb0a8c",
                 "shasum": ""
             },
             "require": {
@@ -2976,7 +2976,7 @@
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-curl": "*",
                 "guzzle/client-integration-tests": "3.0.2",
-                "guzzlehttp/test-server": "^0.4",
+                "guzzlehttp/test-server": "^0.5",
                 "php-http/message-factory": "^1.1",
                 "phpunit/phpunit": "^8.5.52 || ^9.6.34",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
@@ -3056,7 +3056,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.11.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.11.1"
             },
             "funding": [
                 {
@@ -3072,7 +3072,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-02T12:40:51+00:00"
+            "time": "2026-06-07T22:54:06+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -3838,16 +3838,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v13.13.0",
+            "version": "v13.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "1daa6d3b4defe46976ccfa4fb0a7ab62717712a2"
+                "reference": "7e23b2aa4e1133a43835c93a810b4bedc40e425b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/1daa6d3b4defe46976ccfa4fb0a7ab62717712a2",
-                "reference": "1daa6d3b4defe46976ccfa4fb0a7ab62717712a2",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/7e23b2aa4e1133a43835c93a810b4bedc40e425b",
+                "reference": "7e23b2aa4e1133a43835c93a810b4bedc40e425b",
                 "shasum": ""
             },
             "require": {
@@ -4058,7 +4058,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-02T14:28:17+00:00"
+            "time": "2026-06-09T13:45:51+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -11121,16 +11121,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.38.1",
+            "version": "v1.38.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "14c5439eec4ccff081ac14eca2dc57feb2a66d92"
+                "reference": "d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/14c5439eec4ccff081ac14eca2dc57feb2a66d92",
-                "reference": "14c5439eec4ccff081ac14eca2dc57feb2a66d92",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6",
+                "reference": "d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6",
                 "shasum": ""
             },
             "require": {
@@ -11182,7 +11182,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.38.2"
             },
             "funding": [
                 {
@@ -11202,7 +11202,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T12:51:13+00:00"
+            "time": "2026-05-27T06:59:30+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
@@ -11450,16 +11450,16 @@
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.38.1",
+            "version": "v1.38.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
-                "reference": "8339098cae28673c15cce00d80734af0453054e2"
+                "reference": "796a26abb75ce49f3a84433cd81bf1009d73d5f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/8339098cae28673c15cce00d80734af0453054e2",
-                "reference": "8339098cae28673c15cce00d80734af0453054e2",
+                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/796a26abb75ce49f3a84433cd81bf1009d73d5f8",
+                "reference": "796a26abb75ce49f3a84433cd81bf1009d73d5f8",
                 "shasum": ""
             },
             "require": {
@@ -11506,7 +11506,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.38.2"
             },
             "funding": [
                 {
@@ -11526,7 +11526,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T12:51:13+00:00"
+            "time": "2026-05-27T06:51:48+00:00"
         },
         {
             "name": "symfony/polyfill-php84",
@@ -13856,16 +13856,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v2.4.8",
+            "version": "v2.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "d11d720cf9537f8d236a11d973e99563a598ec9c"
+                "reference": "080189f51c8d27c0792a03483a70adc7770f6eeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/d11d720cf9537f8d236a11d973e99563a598ec9c",
-                "reference": "d11d720cf9537f8d236a11d973e99563a598ec9c",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/080189f51c8d27c0792a03483a70adc7770f6eeb",
+                "reference": "080189f51c8d27c0792a03483a70adc7770f6eeb",
                 "shasum": ""
             },
             "require": {
@@ -13874,7 +13874,7 @@
                 "illuminate/contracts": "^11.45.3|^12.41.1|^13.0",
                 "illuminate/routing": "^11.45.3|^12.41.1|^13.0",
                 "illuminate/support": "^11.45.3|^12.41.1|^13.0",
-                "laravel/mcp": "^0.5.1|^0.6.0|~0.7.0,<0.7.1",
+                "laravel/mcp": "^0.7.1|^0.8.0",
                 "laravel/prompts": "^0.3.10",
                 "laravel/roster": "^0.5.0",
                 "php": "^8.2"
@@ -13918,20 +13918,20 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-05-19T20:09:50+00:00"
+            "time": "2026-06-09T10:21:08+00:00"
         },
         {
             "name": "laravel/mcp",
-            "version": "v0.7.0",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/mcp.git",
-                "reference": "3513b4feca5f1678be4d2261dcfa8e456436d02a"
+                "reference": "18221a07093d84153883bc956e5e213999549a4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/mcp/zipball/3513b4feca5f1678be4d2261dcfa8e456436d02a",
-                "reference": "3513b4feca5f1678be4d2261dcfa8e456436d02a",
+                "url": "https://api.github.com/repos/laravel/mcp/zipball/18221a07093d84153883bc956e5e213999549a4b",
+                "reference": "18221a07093d84153883bc956e5e213999549a4b",
                 "shasum": ""
             },
             "require": {
@@ -13945,7 +13945,8 @@
                 "illuminate/routing": "^11.45.3|^12.41.1|^13.0",
                 "illuminate/support": "^11.45.3|^12.41.1|^13.0",
                 "illuminate/validation": "^11.45.3|^12.41.1|^13.0",
-                "php": "^8.2"
+                "php": "^8.2",
+                "symfony/process": "^7.4.5|^8.0.5"
             },
             "require-dev": {
                 "laravel/pint": "^1.20",
@@ -13958,7 +13959,7 @@
             "extra": {
                 "laravel": {
                     "aliases": {
-                        "Mcp": "Laravel\\Mcp\\Server\\Facades\\Mcp"
+                        "Mcp": "Laravel\\Mcp\\Facades\\Mcp"
                     },
                     "providers": [
                         "Laravel\\Mcp\\Server\\McpServiceProvider"
@@ -13991,7 +13992,7 @@
                 "issues": "https://github.com/laravel/mcp/issues",
                 "source": "https://github.com/laravel/mcp"
             },
-            "time": "2026-04-21T10:23:03+00:00"
+            "time": "2026-06-08T13:48:51+00:00"
         },
         {
             "name": "laravel/pail",
