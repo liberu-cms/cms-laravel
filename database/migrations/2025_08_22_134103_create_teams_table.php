@@ -11,10 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table): void {
-            $table->foreignId('current_team_id')->nullable()->after('id');
-        });
-
         Schema::create('teams', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->index();
@@ -49,10 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropColumns('users', 'current_team_id');
-        Schema::enableForeignKeyConstraints();
-
         Schema::dropIfExists('teams');
         Schema::dropIfExists('team_user');
         Schema::dropIfExists('team_invitations');

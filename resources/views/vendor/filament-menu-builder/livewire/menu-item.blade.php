@@ -1,9 +1,9 @@
 <div class="item" data-id="{{ $item->id }}" wire:key="{{'menu-item-'.$item->id}}">
     <div @class([
-        'flex justify-between mb-2 content-center rounded bg-white border border-gray-300 shadow-sm pr-2 dark:bg-gray-900 dark:border-gray-800' => true
+        'flex justify-between mb-2 content-center rounded bg-white border border-gray-300 shadow-sm pr-2' => true
 ])>
         <div class="flex content-center items-center">
-            <div class="border-r-2 border-gray-300 dark:border-gray-800 cursor-pointer bg-grey-400">
+            <div class="border-r-2 border-gray-300 cursor-pointer bg-grey-400">
                 <x-heroicon-o-arrows-up-down class="w-6 h-6 m-2 handle" />
             </div>
             <div class="ml-2 flex">

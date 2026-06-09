@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Setup script for the Liberu CMS project.
 #
-# This script provides installation options for Standalone, Docker, or Kubernetes deployments.
-# It handles composer and npm installations with fallback logic and error checking.
+# Provides installation options for Standalone, Docker, or Kubernetes deployments.
+# Handles composer/npm installations with fallback logic and error checking.
 
 set -e  # Exit on error
 
@@ -305,16 +305,22 @@ install_standalone() {
     echo "=================================="
     echo ""
 
-    # Run PHPUnit tests
-    print_header "🎬 RUNNING PHPUNIT TESTS"
-    if [ -f "vendor/bin/phpunit" ]; then
+    # Run test suite (Pest preferred, falls back to PHPUnit)
+    print_header "🎬 RUNNING TESTS"
+    if [ -f "vendor/bin/pest" ]; then
+        if vendor/bin/pest; then
+            print_success "Tests passed"
+        else
+            print_warning "Tests failed. Please review the errors."
+        fi
+    elif [ -f "vendor/bin/phpunit" ]; then
         if ./vendor/bin/phpunit; then
             print_success "PHPUnit tests passed"
         else
             print_warning "PHPUnit tests failed. Please review the errors."
         fi
     else
-        print_warning "PHPUnit not found. Skipping tests."
+        print_warning "No test runner found. Skipping tests."
     fi
 
     echo ""
@@ -332,17 +338,31 @@ install_standalone() {
     print_success "=================================="
     echo ""
 
+    echo ""
+    print_success "=================================="
+    print_success "     INSTALLATION COMPLETE        "
+    print_success "=================================="
+    echo ""
+    echo "Useful commands:"
+    echo "  php artisan serve          - Start development server"
+    echo "  php artisan horizon        - Start queue worker dashboard"
+    echo "  php artisan reverb:start   - Start WebSocket server"
+    echo "  php artisan octane:start   - Start Octane server (production)"
+    echo "  npm run dev                - Start Vite dev server"
+    echo "  composer run dev           - Start all dev services concurrently"
+    echo ""
+
     # Ask if user wants to start the server
     while true; do
-        read -p "🎬 DEV ---> DID YOU WANT TO START THE SERVER? (y/n) " cond
+        read -p "🎬 DEV ---> START THE DEV SERVER NOW? (y/n) " cond
         case $cond in
             [Yy]* )
-                print_success "Starting server..."
+                print_success "Starting server at http://localhost:8000 ..."
                 php artisan serve
                 break
                 ;;
             [Nn]* )
-                print_success "Installation complete. Start with: php artisan octane:start"
+                print_success "Start manually with: php artisan serve"
                 exit 0
                 ;;
             * )
@@ -430,29 +450,45 @@ install_kubernetes() {
 
     print_info "Using Kubernetes configurations from: $K8S_DIR/"
 
-    # Setup .env file
-    if [ ! -f ".env" ]; then
-        print_info "Copying .env.example to .env"
-        cp .env.example .env
-        print_warning "Please edit .env file to configure your Kubernetes environment"
-        read -p "Press Enter to continue after editing .env..."
-    fi
+    # Check for deploy.sh
+    if [ -f "$K8S_DIR/deploy.sh" ]; then
+        print_info "Found deploy.sh — using automated deployment script"
 
-    # Apply Kubernetes configurations
-    print_info "Applying Kubernetes configurations..."
-    if kubectl apply -f "$K8S_DIR/"; then
-        print_success "Kubernetes resources created successfully"
-        print_info "Check status with: kubectl get pods"
+        if [ -z "$APP_KEY" ]; then
+            print_warning "APP_KEY not set. Generate one with: php artisan key:generate --show"
+            read -p "Enter APP_KEY (or press Enter to skip): " APP_KEY
+        fi
+        if [ -z "$DB_PASSWORD" ]; then
+            read -p "Enter DB_PASSWORD: " DB_PASSWORD
+        fi
+        if [ -z "$DB_ROOT_PASSWORD" ]; then
+            read -p "Enter DB_ROOT_PASSWORD: " DB_ROOT_PASSWORD
+        fi
+
+        export APP_KEY DB_PASSWORD DB_ROOT_PASSWORD
+        if bash "$K8S_DIR/deploy.sh"; then
+            print_success "Kubernetes deployment complete"
+        else
+            print_error "Kubernetes deployment failed"
+            exit 1
+        fi
     else
-        print_error "Failed to apply Kubernetes configurations"
-        exit 1
+        # Fallback: apply manifests directly
+        print_info "Applying Kubernetes configurations with kubectl..."
+        if kubectl apply -k "$K8S_DIR/overlays/production" 2>/dev/null || kubectl apply -f "$K8S_DIR/"; then
+            print_success "Kubernetes resources created successfully"
+            print_info "Check status with: kubectl get pods -n cms-laravel"
+        else
+            print_error "Failed to apply Kubernetes configurations"
+            exit 1
+        fi
     fi
 }
 
 # Main installation menu
 main() {
     clear
-    print_header "LIBERU CMS - INSTALLER"
+    print_header "LIBERU CMS LARAVEL - INSTALLER"
 
     echo "Please select installation type:"
     echo ""

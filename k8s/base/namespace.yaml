@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cms-laravel
+  labels:
+    name: cms-laravel
+    app: liberu-cms

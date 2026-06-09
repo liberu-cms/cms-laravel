@@ -24,6 +24,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use JoelButcher\Socialstream\Filament\SocialstreamPlugin;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
 class AppPanelProvider extends PanelProvider
@@ -69,6 +70,7 @@ class AppPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                new SocialstreamPlugin,
                 TwoFactorAuthenticationPlugin::make(),
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Administration')

@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: cms-laravel
+
+commonLabels:
+  app: liberu-cms
+
+resources:
+- namespace.yaml
+- configmap.yaml
+- secret.yaml
+- pvc.yaml
+- mysql-statefulset.yaml
+- mysql-service.yaml
+- redis.yaml
+- deployment.yaml
+- queue-worker.yaml
+- service.yaml
+- ingress.yaml
+- network-policy.yaml
+- resource-quota.yaml

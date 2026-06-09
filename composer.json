@@ -9,10 +9,13 @@
         "php": "^8.5",
         "bezhansalleh/filament-shield": "^4.0",
         "biostate/filament-menu-builder": "^5.0",
+        "bursteri/socialstream": "^7.0",
         "filament/filament": "^5.0",
         "filament/spatie-laravel-settings-plugin": "^5.0",
+        "internachi/modular": "^3.0",
         "laravel/framework": "^13.0",
         "laravel/horizon": "^5.47",
+        "laravel/jetstream": "^5.1",
         "laravel/octane": "^2.17",
         "laravel/reverb": "^1.10",
         "laravel/sanctum": "^4.0",
@@ -38,7 +41,8 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Modules\\": "app-modules/"
         }
     },
     "autoload-dev": {
