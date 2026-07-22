@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        PHP_VERSION: '8.3'
+        PHP_VERSION: '8.5'
         WWWUSER: '${WWWUSER:-1000}'
         WWWGROUP: '${WWWGROUP:-1000}'
     image: boilerplate-laravel:latest
@@ -34,7 +34,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        PHP_VERSION: '8.3'
+        PHP_VERSION: '8.5'
     image: boilerplate-laravel:latest
     environment:
       CONTAINER_MODE: worker
@@ -95,6 +95,23 @@ services:
     networks:
       - appnet
 
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    ports:
+      - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
+    environment:
+      MEILI_MASTER_KEY: '${MEILISEARCH_KEY:-masterKey}'
+      MEILI_NO_ANALYTICS: 'true'
+    volumes:
+      - meilisearch:/meili_data
+    networks:
+      - appnet
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--spider', 'http://localhost:7700/health']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 networks:
   appnet:
     driver: bridge
@@ -103,6 +120,8 @@ volumes:
   mysql:
     driver: local
   redis:
+    driver: local
+  meilisearch:
     driver: local
   storage:
     driver: local

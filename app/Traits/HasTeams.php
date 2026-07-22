@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Membership;
+use App\Models\Role;
 use App\Models\Team;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Model;
@@ -10,9 +11,43 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 trait HasTeams
 {
+    /**
+     * Create a personal team for the user and make it their current tenant.
+     *
+     * Registration creates a user before it is authenticated, so the Team
+     * model's created hook cannot attach them; this does it explicitly and
+     * assigns the team's super_admin role within that team's permission scope.
+     */
+    public function createPersonalTeam(): Team
+    {
+        /** @var Team $team */
+        $team = $this->ownedTeams()->create([
+            'name' => Str::of($this->name)->explode(' ')->first().'\'s Team',
+            'personal_team' => true,
+        ]);
+
+        $this->forceFill(['current_team_id' => $team->id])->save();
+        $this->teams()->syncWithoutDetaching([$team->id]);
+
+        $superAdmin = Role::query()
+            ->where('name', 'super_admin')
+            ->where('team_id', $team->id)
+            ->first();
+
+        if ($superAdmin !== null) {
+            $previousTeamId = getPermissionsTeamId();
+            setPermissionsTeamId($team->id);
+            $this->assignRole($superAdmin);
+            setPermissionsTeamId($previousTeamId);
+        }
+
+        return $team;
+    }
+
     public function isCurrentTeam(Team $team): bool
     {
         return $team->id === $this->currentTeam->id;

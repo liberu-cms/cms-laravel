@@ -7,6 +7,7 @@ use App\Filament\Resources\MenuResource;
 use App\Http\Middleware\SetPermissionsTeam;
 use App\Models\Menu;
 use App\Models\MenuItem;
+use App\Models\Team;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Biostate\FilamentMenuBuilder\FilamentMenuBuilderPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -31,6 +32,10 @@ class AppPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        if (config('permission.teams')) {
+            $panel->tenant(Team::class, ownershipRelationship: 'team');
+        }
+
         return $panel
             ->default()
             ->id('app')

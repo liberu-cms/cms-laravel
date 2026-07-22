@@ -1,0 +1,25 @@
+{
+    // Mutation testing focused on the CMS kernel's business logic — the module
+    // manager, registry, and state resolution — where correctness matters most.
+    // Requires a coverage driver (pcov/xdebug); runs in CI, see .github/workflows.
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "packages/liberu-cms/cms-core/src",
+            "packages/liberu-cms/cms-contracts/src"
+        ]
+    },
+    "mutators": {
+        "@default": true
+    },
+    "testFramework": "pest",
+    "testFrameworkOptions": "--testsuite=Unit,Modules",
+    "minMsi": 80,
+    "minCoveredMsi": 90,
+    "logs": {
+        "text": "storage/logs/infection.log",
+        "stryker": {
+            "report": "liberu-cms"
+        }
+    }
+}

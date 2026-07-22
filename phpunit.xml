@@ -7,7 +7,11 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
-    <testsuite name="Modules"><directory suffix="Test.php">./app-modules/*/tests</directory></testsuite></testsuites>
+    <testsuite name="Modules">
+            <directory suffix="Test.php">./app-modules/*/tests</directory>
+            <directory suffix="Test.php">./packages/liberu-cms/*/tests</directory>
+        </testsuite>
+    </testsuites>
     <source>
         <include>
             <directory>app</directory>
@@ -16,6 +20,7 @@
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <env name="MULTITENANCY" value="true"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>

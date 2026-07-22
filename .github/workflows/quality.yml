@@ -1,0 +1,57 @@
+name: Quality Gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, pdo, pdo_sqlite, bcmath, opcache, zip, gd, intl, pcntl, posix
+          coverage: pcov
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Copy environment file
+        run: cp .env.example .env
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      # --- Style: Phase 0 code must be Pint-clean (existing app/ debt tracked separately) ---
+      - name: Pint (code style)
+        run: vendor/bin/pint --test packages/liberu-cms tests/Feature/Cms tests/Unit/Cms
+
+      # --- Static analysis: PHPStan at max level on every CMS package ---
+      - name: PHPStan (max level)
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=512M
+
+      # --- Refactoring safety: Rector must report no pending changes ---
+      - name: Rector (dry run)
+        run: vendor/bin/rector process packages/liberu-cms --dry-run --no-progress-bar
+
+      # --- Architecture: dependency direction + disable-any-module removability ---
+      - name: Architecture & removability guards
+        run: php artisan test tests/Feature/Cms/ArchitectureTest.php tests/Feature/Cms/RemovabilityTest.php tests/Feature/Cms/EmbeddabilityTest.php
+
+      # --- Mutation testing on the CMS kernel's business logic ---
+      # Non-blocking until the MSI thresholds are calibrated against real runs.
+      - name: Infection (mutation testing)
+        continue-on-error: true
+        run: vendor/bin/infection --no-progress --threads=max --ignore-msi-with-no-mutations
