@@ -22,6 +22,7 @@
         "laravel/reverb": "^1.10",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
+        "liberu-cms/cms-content": "*",
         "liberu-cms/cms-contracts": "*",
         "liberu-cms/cms-core": "*",
         "liberu-cms/cms-hello": "*",

@@ -57,6 +57,7 @@ it('keeps module dependencies pointing only inward (no sideways or backward impo
     $namespaces = cmsPackageNamespaces();
     $contracts = 'Liberu\Cms\Contracts';
     $core = 'Liberu\Cms\Core';
+    $content = 'Liberu\Cms\Content';
     $violations = [];
 
     foreach ($namespaces as $ownRoot => $package) {
@@ -66,10 +67,13 @@ it('keeps module dependencies pointing only inward (no sideways or backward impo
             continue;
         }
 
+        // Foundation packages (contracts, core, content) may be imported by any
+        // module; foundations themselves only point further inward.
         $allowed = match (true) {
             $ownRoot === $contracts => [$contracts],
             $ownRoot === $core => [$contracts, $core],
-            default => [$contracts, $core, $ownRoot],
+            $ownRoot === $content => [$contracts, $content],
+            default => [$contracts, $core, $content, $ownRoot],
         };
 
         foreach (Finder::create()->files()->in($src)->name('*.php') as $file) {

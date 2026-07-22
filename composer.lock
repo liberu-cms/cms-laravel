@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "246e853b1986a864d6f105e0e1cbbc9e",
+    "content-hash": "6772ce75e1dbd938e00583096856fe6e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5626,6 +5626,48 @@
                 }
             ],
             "time": "2026-03-08T20:05:35+00:00"
+        },
+        {
+            "name": "liberu-cms/cms-content",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/liberu-cms/cms-content",
+                "reference": "cde86441508baa9058a3a3c1acde442599d2ce5b"
+            },
+            "require": {
+                "illuminate/contracts": "^13.0",
+                "illuminate/database": "^13.0",
+                "illuminate/support": "^13.0",
+                "liberu-cms/cms-contracts": "*",
+                "php": "^8.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Liberu\\Cms\\Content\\ContentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Liberu\\Cms\\Content\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Liberu\\Cms\\Content\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Content foundation for Liberu CMS: editorial workflow and versioning shared by every content module.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "liberu-cms/cms-contracts",
