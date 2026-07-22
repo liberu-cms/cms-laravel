@@ -28,6 +28,7 @@
         "liberu-cms/cms-hello": "*",
         "liberu-cms/cms-media": "*",
         "liberu-cms/cms-pages": "*",
+        "liberu-cms/cms-posts": "*",
         "liberu-cms/cms-users": "*",
         "livewire/livewire": "^4.0",
         "php": "^8.5",
