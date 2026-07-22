@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 use Liberu\Cms\Content\Revisions\HasRevisions;
+use Liberu\Cms\Content\Support\Slugger;
 use Liberu\Cms\Content\Workflow\HasWorkflow;
 use Liberu\Cms\Contracts\Content\PublishableInterface;
 use Liberu\Cms\Contracts\Media\MediaItemInterface;
@@ -65,7 +65,7 @@ final class Page extends Model implements PublishableInterface
     {
         self::saving(function (Page $page): void {
             if (blank($page->slug) && filled($page->title)) {
-                $page->slug = $page->generateUniqueSlug($page->title);
+                $page->slug = Slugger::unique($page, $page->title);
             }
         });
     }
@@ -93,31 +93,6 @@ final class Page extends Model implements PublishableInterface
         }
 
         return app(MediaRepositoryInterface::class)->find($this->featured_media_id);
-    }
-
-    public function generateUniqueSlug(string $title): string
-    {
-        $base = Str::slug($title) ?: 'page';
-        $slug = $base;
-        $suffix = 2;
-
-        while ($this->slugExists($slug)) {
-            $slug = $base.'-'.$suffix;
-            $suffix++;
-        }
-
-        return $slug;
-    }
-
-    private function slugExists(string $slug): bool
-    {
-        $query = self::query()->where('slug', $slug);
-
-        if ($this->exists) {
-            $query->whereKeyNot($this->getKey());
-        }
-
-        return $query->exists();
     }
 
     protected static function newFactory(): PageFactory

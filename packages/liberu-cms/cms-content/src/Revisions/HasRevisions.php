@@ -60,14 +60,25 @@ trait HasRevisions
     }
 
     /**
-     * Capture the revisionable attributes that are actually loaded on the model,
-     * so a snapshot never records a null for a column that simply was not hydrated.
+     * Capture the cast values of the revisionable attributes that are actually
+     * loaded on the model. Using cast values (not raw storage) means casts such
+     * as array or enum round-trip correctly through a revert; intersecting with
+     * loaded attributes means a snapshot never records a null for a column that
+     * simply was not hydrated.
      *
      * @return array<string, mixed>
      */
     protected function revisionSnapshot(): array
     {
-        return array_intersect_key($this->getAttributes(), array_flip($this->revisionableAttributes()));
+        $keys = array_intersect($this->revisionableAttributes(), array_keys($this->getAttributes()));
+
+        $snapshot = [];
+
+        foreach ($keys as $key) {
+            $snapshot[$key] = $this->getAttribute($key);
+        }
+
+        return $snapshot;
     }
 
     /**
