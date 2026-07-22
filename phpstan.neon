@@ -4,9 +4,12 @@ includes:
 parameters:
     level: max
     paths:
+        - packages/liberu-cms/cms-content/src
         - packages/liberu-cms/cms-contracts/src
         - packages/liberu-cms/cms-core/src
         - packages/liberu-cms/cms-hello/src
         - packages/liberu-cms/cms-media/src
+        - packages/liberu-cms/cms-pages/src
         - packages/liberu-cms/cms-users/src
+        - tests/Fixtures
     treatPhpDocTypesAsCertain: false

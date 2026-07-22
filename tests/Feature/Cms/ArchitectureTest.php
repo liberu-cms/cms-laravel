@@ -56,21 +56,32 @@ function cmsRootOf(string $fqcn, array $namespaces): ?string
 it('keeps module dependencies pointing only inward (no sideways or backward imports)', function (): void {
     $namespaces = cmsPackageNamespaces();
     $contracts = 'Liberu\Cms\Contracts';
-    $core = 'Liberu\Cms\Core';
+    $foundations = [$contracts, 'Liberu\Cms\Core', 'Liberu\Cms\Content'];
     $violations = [];
 
-    foreach ($namespaces as $ownRoot => $package) {
+    // A package may own several namespaces (e.g. a factories root); group them
+    // so a package importing its own namespaces is never a violation.
+    $ownNamespacesByPackage = [];
+
+    foreach ($namespaces as $namespace => $package) {
+        $ownNamespacesByPackage[$package][] = $namespace;
+    }
+
+    foreach ($ownNamespacesByPackage as $package => $ownNamespaces) {
         $src = base_path("packages/liberu-cms/{$package}/src");
 
         if (! is_dir($src)) {
             continue;
         }
 
-        $allowed = match (true) {
-            $ownRoot === $contracts => [$contracts],
-            $ownRoot === $core => [$contracts, $core],
-            default => [$contracts, $core, $ownRoot],
-        };
+        // Any package may import contracts and its own namespaces. Only modules
+        // (non-foundations) may additionally import the core/content foundations.
+        $isFoundation = array_intersect($ownNamespaces, $foundations) !== [];
+        $allowed = [...$ownNamespaces, $contracts];
+
+        if (! $isFoundation) {
+            $allowed = [...$allowed, ...$foundations];
+        }
 
         foreach (Finder::create()->files()->in($src)->name('*.php') as $file) {
             foreach (cmsImports($file->getRealPath()) as $import) {
