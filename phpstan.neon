@@ -7,4 +7,5 @@ parameters:
         - packages/liberu-cms/cms-contracts/src
         - packages/liberu-cms/cms-core/src
         - packages/liberu-cms/cms-hello/src
+        - packages/liberu-cms/cms-users/src
     treatPhpDocTypesAsCertain: false
