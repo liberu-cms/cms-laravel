@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84b4c7a9c0ced925ecaab4c5094f29a9",
+    "content-hash": "53cc2d03b53bd25b63645cfa330b4cd2",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5664,6 +5664,51 @@
                 "MIT"
             ],
             "description": "Content foundation for Liberu CMS: editorial workflow and versioning shared by every content module.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "liberu-cms/cms-content-types",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/liberu-cms/cms-content-types",
+                "reference": "04d8a1a4da601ce2d7f8ece667b01c8b0b817d18"
+            },
+            "require": {
+                "illuminate/contracts": "^13.0",
+                "illuminate/database": "^13.0",
+                "illuminate/support": "^13.0",
+                "liberu-cms/cms-content": "*",
+                "liberu-cms/cms-contracts": "*",
+                "liberu-cms/cms-core": "*",
+                "php": "^8.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Liberu\\Cms\\ContentTypes\\ContentTypesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Liberu\\Cms\\ContentTypes\\": "src/",
+                    "Liberu\\Cms\\ContentTypes\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Liberu\\Cms\\ContentTypes\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Custom content types for Liberu CMS: JSON field schemas and validated content entries with workflow and versioning.",
             "transport-options": {
                 "symlink": true,
                 "relative": true
