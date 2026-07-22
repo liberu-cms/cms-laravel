@@ -26,6 +26,19 @@ work continues; revisit when the owning phase arrives.
    their proper phases (Pages/Posts/Media → Phase 2, Menu/Theme → Phase 3), keeping
    `main` green throughout.
 
+   **Phase 2 progress — strangler migration in flight.** `cms-pages` is built as
+   the new canonical Pages module (its own `cms_pages` table, workflow + versioning,
+   slugs, hierarchy, featured media via contract). The legacy host `Page` / `pages`
+   table / `PageResource` / public routes remain **live and untouched** so the suite
+   stays green. **Cutover still to do:** (a) move `PageResource` into the module and
+   wire panel resource discovery for module resources; (b) migrate `pages` data into
+   `cms_pages`; (c) hand the public `/{slug}` route to the module; (d) drop the
+   legacy model/table. **Blocker to resolve first — tenant coupling:** the host
+   `Page` scopes via `App\Traits\IsTenantModel` → `App\Models\Team`, which a module
+   must not import. Introduce a **tenancy contract** (or config-resolved tenant
+   model) so `cms_pages` can be tenant-scoped without importing the host `Team`.
+   This is the delicate step and is intentionally deferred to its own focused PR.
+
 ## Quality gates
 
 4. **Pre-existing style debt.** `vendor/bin/pint --test` flags many existing

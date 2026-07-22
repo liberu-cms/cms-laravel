@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6772ce75e1dbd938e00583096856fe6e",
+    "content-hash": "8127dc31d7f594385d0b79ee3ca57949",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5824,6 +5824,51 @@
                 "MIT"
             ],
             "description": "Media library for Liberu CMS: secure uploads, storage, folders, and metadata behind a content-agnostic contract.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "liberu-cms/cms-pages",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/liberu-cms/cms-pages",
+                "reference": "05a63fa09f72cc7c930bb24e1b09d91ae92b0d1c"
+            },
+            "require": {
+                "illuminate/contracts": "^13.0",
+                "illuminate/database": "^13.0",
+                "illuminate/support": "^13.0",
+                "liberu-cms/cms-content": "*",
+                "liberu-cms/cms-contracts": "*",
+                "liberu-cms/cms-core": "*",
+                "php": "^8.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Liberu\\Cms\\Pages\\PagesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Liberu\\Cms\\Pages\\": "src/",
+                    "Liberu\\Cms\\Pages\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Liberu\\Cms\\Pages\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Pages module for Liberu CMS: hierarchical pages with editorial workflow, versioning, slugs, and featured media.",
             "transport-options": {
                 "symlink": true,
                 "relative": true
