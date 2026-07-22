@@ -11,11 +11,14 @@ work continues; revisit when the owning phase arrives.
    **Default:** leave installed for now. **Decision needed:** remove it (and the
    `Modules\` autoload + `app-modules/*` phpunit entry) to avoid two module systems.
 
-2. **Filament Shield vs. `spatie/laravel-permission`.** Both are installed and the
-   existing app uses Spatie's `permission_tables` migration plus a `Role` model.
-   **Default:** unchanged in Phase 0. **Decision needed (Phase 1):** the Users
-   module exposes one permission contract; decide which library backs it and keep
-   the other from leaking across module boundaries (Golden Rule 2).
+2. **Filament Shield vs. `spatie/laravel-permission`. — RESOLVED (Phase 1).**
+   They are layered, not competing: Spatie is the permission engine (stores
+   roles/permissions, wires the gate); Shield is the Filament admin UI and
+   policy/permission generator built on Spatie. The `cms-users` module exposes one
+   contract, `AccessControlInterface`, implemented over the framework **gate**
+   (which Spatie populates); Spatie is used only internally to materialise
+   permissions (Golden Rule 2d). An architecture test now forbids any CMS package
+   from importing the host `App\` namespace, so no module touches the users table.
 
 3. **Existing host-app CMS code.** `app/Models` and `app/Filament` already contain
    Page, Menu, Collection, Category, Tag, etc., violating Golden Rule 1 (feature

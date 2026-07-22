@@ -86,7 +86,32 @@ it('keeps module dependencies pointing only inward (no sideways or backward impo
     expect($violations)->toBe([]);
 });
 
-it('discovers the three foundational Phase 0 packages', function (): void {
+it('never lets a module reach into the host application namespace', function (): void {
+    $violations = [];
+
+    foreach (cmsPackageNamespaces() as $package) {
+        $src = base_path("packages/liberu-cms/{$package}/src");
+
+        if (! is_dir($src)) {
+            continue;
+        }
+
+        foreach (Finder::create()->files()->in($src)->name('*.php') as $file) {
+            if (preg_match('/^\s*use\s+App\\\\/m', (string) file_get_contents($file->getRealPath()))) {
+                $violations[] = "{$package} imports the host App\\ namespace";
+            }
+        }
+    }
+
+    expect($violations)->toBe([]);
+});
+
+it('discovers the foundational CMS packages', function (): void {
     expect(cmsPackageNamespaces())
-        ->toHaveKeys(['Liberu\Cms\Contracts', 'Liberu\Cms\Core', 'Liberu\Cms\Hello']);
+        ->toHaveKeys([
+            'Liberu\Cms\Contracts',
+            'Liberu\Cms\Core',
+            'Liberu\Cms\Hello',
+            'Liberu\Cms\Users',
+        ]);
 });
