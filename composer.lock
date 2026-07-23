@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2418c5ccfa27accdbdba7aaedc4ab504",
+    "content-hash": "8f709590362b35ee1244fb7e54bb3a07",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5626,6 +5626,47 @@
                 }
             ],
             "time": "2026-03-08T20:05:35+00:00"
+        },
+        {
+            "name": "liberu-cms/cms-blocks",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/liberu-cms/cms-blocks",
+                "reference": "6c68de192e047562f87f23ab2dd18f32fbb81832"
+            },
+            "require": {
+                "illuminate/support": "^13.0",
+                "liberu-cms/cms-contracts": "*",
+                "liberu-cms/cms-core": "*",
+                "php": "^8.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Liberu\\Cms\\Blocks\\BlocksServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Liberu\\Cms\\Blocks\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Liberu\\Cms\\Blocks\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Block system and page-builder rendering for Liberu CMS: a registry of block types and a recursive, XSS-safe renderer.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "liberu-cms/cms-content",
