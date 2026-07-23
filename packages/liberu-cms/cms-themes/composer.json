@@ -1,0 +1,34 @@
+{
+    "name": "liberu-cms/cms-themes",
+    "description": "Theme engine for Liberu CMS: registration, inheritance, override resolution, and switching of Blade themes.",
+    "type": "library",
+    "license": "MIT",
+    "version": "0.1.0",
+    "require": {
+        "php": "^8.5",
+        "liberu-cms/cms-contracts": "*",
+        "liberu-cms/cms-core": "*",
+        "illuminate/contracts": "^13.0",
+        "illuminate/database": "^13.0",
+        "illuminate/support": "^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Liberu\\Cms\\Themes\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Liberu\\Cms\\Themes\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Liberu\\Cms\\Themes\\ThemesServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

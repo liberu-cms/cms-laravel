@@ -1,0 +1,35 @@
+{
+    "name": "liberu-cms/cms-menus",
+    "description": "Menu & navigation for Liberu CMS: multi-level menus by location with permission-aware rendering.",
+    "type": "library",
+    "license": "MIT",
+    "version": "0.1.0",
+    "require": {
+        "php": "^8.5",
+        "liberu-cms/cms-contracts": "*",
+        "liberu-cms/cms-core": "*",
+        "illuminate/contracts": "^13.0",
+        "illuminate/database": "^13.0",
+        "illuminate/support": "^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Liberu\\Cms\\Menus\\": "src/",
+            "Liberu\\Cms\\Menus\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Liberu\\Cms\\Menus\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Liberu\\Cms\\Menus\\MenusServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Liberu\Cms\Core;
 
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Support\ServiceProvider;
 use Liberu\Cms\Contracts\Events\EventBusInterface;
@@ -48,7 +47,7 @@ final class CmsCoreServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(EventBusInterface::class, fn (): EventBus => new EventBus($this->app->make(Dispatcher::class)));
+        $this->app->singleton(EventBusInterface::class, fn (): EventBus => new EventBus($this->app));
     }
 
     /**
