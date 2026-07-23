@@ -2,11 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Models\Page;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Liberu\Cms\Contracts\Content\WorkflowState;
+use Liberu\Cms\Pages\Models\Page;
 use Tests\TestCase;
 
 class PageModelTest extends TestCase
@@ -22,7 +23,7 @@ class PageModelTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $this->assertDatabaseHas('pages', [
+        $this->assertDatabaseHas('cms_pages', [
             'title' => 'Test Page',
             'slug' => 'test-page',
         ]);
@@ -32,11 +33,9 @@ class PageModelTest extends TestCase
     {
         $page = new Page;
 
-        $this->assertContains('title', $page->getFillable());
-        $this->assertContains('slug', $page->getFillable());
-        $this->assertContains('content', $page->getFillable());
-        $this->assertContains('status', $page->getFillable());
-        $this->assertContains('user_id', $page->getFillable());
+        foreach (['title', 'slug', 'content', 'status', 'user_id'] as $attribute) {
+            $this->assertContains($attribute, $page->getFillable());
+        }
     }
 
     public function test_page_published_at_is_cast_to_datetime(): void
@@ -52,43 +51,27 @@ class PageModelTest extends TestCase
 
     public function test_page_belongs_to_team(): void
     {
-        $page = new Page;
-
-        $this->assertInstanceOf(
-            BelongsTo::class,
-            $page->team()
-        );
+        $this->assertInstanceOf(BelongsTo::class, (new Page)->team());
     }
 
     public function test_page_factory_creates_home_page(): void
     {
-        $user = User::factory()->create();
-        $page = Page::factory()->home()->create(['user_id' => $user->id]);
+        $page = Page::factory()->home()->create();
 
         $this->assertEquals('home', $page->slug);
-        $this->assertEquals('Home', $page->title);
         $this->assertEquals('home', $page->template);
     }
 
-    public function test_page_menu_link_attribute(): void
+    public function test_page_defaults_to_draft_state(): void
     {
-        $user = User::factory()->create();
-        $page = Page::factory()->create([
-            'slug' => 'about',
-            'user_id' => $user->id,
-        ]);
-
-        $this->assertStringContainsString('about', $page->getMenuLinkAttribute());
+        $this->assertSame(WorkflowState::Draft, Page::factory()->create()->workflowState());
     }
 
-    public function test_page_menu_name_attribute(): void
+    public function test_page_nests_under_a_parent(): void
     {
-        $user = User::factory()->create();
-        $page = Page::factory()->create([
-            'title' => 'About Us',
-            'user_id' => $user->id,
-        ]);
+        $parent = Page::factory()->create();
+        $child = Page::factory()->create(['parent_id' => $parent->id]);
 
-        $this->assertEquals('About Us', $page->getMenuNameAttribute());
+        $this->assertTrue($child->parent?->is($parent));
     }
 }

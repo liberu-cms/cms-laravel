@@ -4,11 +4,11 @@ use App\Filament\Resources\Pages\PageResource;
 use App\Filament\Resources\Pages\Pages\CreatePage;
 use App\Filament\Resources\Pages\Pages\EditPage;
 use App\Filament\Resources\Pages\Pages\ListPages;
-use App\Models\Page;
 use App\Models\Team;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Liberu\Cms\Pages\Models\Page;
 use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
@@ -79,7 +79,7 @@ it('can create a page', function (): void {
         ->call('create')
         ->assertHasNoFormErrors();
 
-    $this->assertDatabaseHas('pages', [
+    $this->assertDatabaseHas('cms_pages', [
         'title' => 'My New Page',
         'slug' => 'my-new-page',
     ]);

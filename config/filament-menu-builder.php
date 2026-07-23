@@ -1,10 +1,15 @@
 <?php
 
+use App\Models\Collection;
+use Biostate\FilamentMenuBuilder\DTO\Menu;
+use Biostate\FilamentMenuBuilder\DTO\MenuItem;
+use Liberu\Cms\Pages\Models\Page;
+
 return [
     'models' => [
         // 'Product' => 'App\\Models\\Product',
-        'Page' => \App\Models\Page::class,
-        'Collection' => \App\Models\Collection::class,
+        'Page' => Page::class,
+        'Collection' => Collection::class,
     ],
     'api_enabled' => true,
     'cache' => [
@@ -26,7 +31,7 @@ return [
         //
     ],
     'dto' => [
-        'menu' => \Biostate\FilamentMenuBuilder\DTO\Menu::class,
-        'menu_item' => \Biostate\FilamentMenuBuilder\DTO\MenuItem::class,
+        'menu' => Menu::class,
+        'menu_item' => MenuItem::class,
     ],
 ];

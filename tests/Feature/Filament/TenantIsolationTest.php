@@ -7,11 +7,11 @@ use App\Filament\Resources\Collections\Pages\ListCollections;
 use App\Filament\Resources\Pages\PageResource;
 use App\Filament\Resources\Pages\Pages\ListPages;
 use App\Models\Collection as CollectionModel;
-use App\Models\Page;
 use App\Models\Team;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Liberu\Cms\Pages\Models\Page;
 use Livewire\Livewire;
 
 uses(RefreshDatabase::class);

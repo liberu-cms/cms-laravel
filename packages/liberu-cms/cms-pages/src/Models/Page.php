@@ -14,6 +14,7 @@ use Liberu\Cms\Content\Workflow\HasWorkflow;
 use Liberu\Cms\Contracts\Content\PublishableInterface;
 use Liberu\Cms\Contracts\Media\MediaItemInterface;
 use Liberu\Cms\Contracts\Media\MediaRepositoryInterface;
+use Liberu\Cms\Core\Tenant\HasTenant;
 use Liberu\Cms\Pages\Database\Factories\PageFactory;
 
 /**
@@ -37,6 +38,7 @@ final class Page extends Model implements PublishableInterface
     use HasFactory;
 
     use HasRevisions;
+    use HasTenant;
     use HasWorkflow;
 
     #[\Override]

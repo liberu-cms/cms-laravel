@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\Page;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Liberu\Cms\Pages\Models\Page;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Page;
 use Illuminate\View\View;
+use Liberu\Cms\Pages\Models\Page;
 
 class PageController extends Controller
 {
