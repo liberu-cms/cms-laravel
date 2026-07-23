@@ -4203,16 +4203,16 @@
         },
         {
             "name": "laravel/octane",
-            "version": "v2.17.4",
+            "version": "v2.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/octane.git",
-                "reference": "ffeac11324accc6edf8df426ba4541f3171d494e"
+                "reference": "404a2f98370c5dea7fb65ecce03c807e8d324074"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/octane/zipball/ffeac11324accc6edf8df426ba4541f3171d494e",
-                "reference": "ffeac11324accc6edf8df426ba4541f3171d494e",
+                "url": "https://api.github.com/repos/laravel/octane/zipball/404a2f98370c5dea7fb65ecce03c807e8d324074",
+                "reference": "404a2f98370c5dea7fb65ecce03c807e8d324074",
                 "shasum": ""
             },
             "require": {
@@ -4288,7 +4288,7 @@
                 "issues": "https://github.com/laravel/octane/issues",
                 "source": "https://github.com/laravel/octane"
             },
-            "time": "2026-05-22T11:30:06+00:00"
+            "time": "2026-07-21T13:23:39+00:00"
         },
         {
             "name": "laravel/passkeys",
