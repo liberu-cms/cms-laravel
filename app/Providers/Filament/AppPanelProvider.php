@@ -26,6 +26,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use JoelButcher\Socialstream\Filament\SocialstreamPlugin;
+use Liberu\Cms\Admin\Filament\CmsAdminPlugin;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
 class AppPanelProvider extends PanelProvider
@@ -75,6 +76,7 @@ class AppPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                CmsAdminPlugin::make(),
                 new SocialstreamPlugin,
                 TwoFactorAuthenticationPlugin::make(),
                 FilamentShieldPlugin::make()
