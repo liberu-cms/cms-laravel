@@ -16,5 +16,6 @@ parameters:
         - packages/liberu-cms/cms-posts/src
         - packages/liberu-cms/cms-themes/src
         - packages/liberu-cms/cms-users/src
+        - packages/liberu-cms/cms-widgets/src
         - tests/Fixtures
     treatPhpDocTypesAsCertain: false
