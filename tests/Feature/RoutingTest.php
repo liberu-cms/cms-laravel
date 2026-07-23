@@ -2,9 +2,9 @@
 
 use App\Models\Collection;
 use App\Models\CollectionItem;
-use App\Models\Page;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Liberu\Cms\Pages\Models\Page;
 
 uses(RefreshDatabase::class);
 

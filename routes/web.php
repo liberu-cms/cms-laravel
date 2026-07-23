@@ -4,8 +4,8 @@ use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\CollectionItemController;
 use App\Http\Controllers\PageController;
 use App\Models\Collection;
-use App\Models\Page;
 use Illuminate\Support\Facades\Route;
+use Liberu\Cms\Pages\Models\Page;
 
 Route::get('/dashboard', function () {
     return redirect(auth()->user()?->hasRole('admin') ? '/admin' : '/app');
