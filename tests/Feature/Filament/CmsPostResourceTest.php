@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Models\Team;
+use App\Models\User;
+use Filament\Facades\Filament;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Liberu\Cms\Posts\Filament\Pages\ListPosts;
+use Liberu\Cms\Posts\Models\Post;
+use Livewire\Livewire;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function (): void {
+    $this->user = User::factory()->create();
+    $this->team = Team::factory()->create(['user_id' => $this->user->id]);
+    $this->actingAs($this->user);
+    Filament::setCurrentPanel(Filament::getPanel('app'));
+    Filament::setTenant($this->team);
+});
+
+it('renders the posts list', function (): void {
+    Livewire::test(ListPosts::class)->assertSuccessful();
+});
+
+it('lists post records', function (): void {
+    $posts = Post::factory()->count(3)->create();
+
+    Livewire::test(ListPosts::class)->assertCanSeeTableRecords($posts);
+});
+
+it('creates a post through the modal', function (): void {
+    Livewire::test(ListPosts::class)
+        ->callAction('create', [
+            'title' => 'Hello World Post',
+            'status' => 'published',
+            'is_featured' => true,
+        ]);
+
+    $this->assertDatabaseHas('cms_posts', [
+        'title' => 'Hello World Post',
+        'is_featured' => true,
+    ]);
+});
+
+it('edits a post through the row action', function (): void {
+    $post = Post::factory()->create(['title' => 'Draft Title']);
+
+    Livewire::test(ListPosts::class)
+        ->callTableAction('edit', $post, ['title' => 'Published Title']);
+
+    expect($post->fresh()->title)->toBe('Published Title');
+});
+
+it('deletes a post through the row action', function (): void {
+    $post = Post::factory()->create();
+
+    Livewire::test(ListPosts::class)->callTableAction('delete', $post);
+
+    $this->assertModelMissing($post);
+});

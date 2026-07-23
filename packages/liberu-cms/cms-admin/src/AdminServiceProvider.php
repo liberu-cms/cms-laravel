@@ -7,6 +7,8 @@ namespace Liberu\Cms\Admin;
 use Liberu\Cms\Contracts\Access\AccessScope;
 use Liberu\Cms\Contracts\Access\PermissionGroup;
 use Liberu\Cms\Contracts\Access\PermissionRegistrarInterface;
+use Liberu\Cms\Contracts\Admin\AdminDashboardRegistryInterface;
+use Liberu\Cms\Contracts\Admin\AdminResourceRegistryInterface;
 use Liberu\Cms\Contracts\Module\ModuleInterface;
 use Liberu\Cms\Core\Module\ModuleServiceProvider;
 
@@ -20,6 +22,9 @@ final class AdminServiceProvider extends ModuleServiceProvider
     protected function registerModule(): void
     {
         $this->mergeModuleConfig(__DIR__.'/../config/admin.php', 'cms-admin');
+
+        $this->app->singleton(AdminResourceRegistryInterface::class, AdminResourceRegistry::class);
+        $this->app->singleton(AdminDashboardRegistryInterface::class, AdminDashboardRegistry::class);
     }
 
     protected function bootModule(): void

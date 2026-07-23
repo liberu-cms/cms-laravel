@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Liberu\Cms\Posts;
 
+use Liberu\Cms\Contracts\Admin\AdminDashboardRegistryInterface;
+use Liberu\Cms\Contracts\Admin\AdminResourceRegistryInterface;
+use Liberu\Cms\Contracts\Admin\DashboardStat;
 use Liberu\Cms\Contracts\Module\ModuleInterface;
 use Liberu\Cms\Core\Module\ModuleServiceProvider;
 use Liberu\Cms\Posts\Contracts\PostRepositoryInterface;
+use Liberu\Cms\Posts\Filament\PostResource;
+use Liberu\Cms\Posts\Models\Post;
 use Liberu\Cms\Posts\Repositories\PostRepository;
 
 final class PostsServiceProvider extends ModuleServiceProvider
@@ -21,11 +26,21 @@ final class PostsServiceProvider extends ModuleServiceProvider
         $this->mergeModuleConfig(__DIR__.'/../config/posts.php', 'cms-posts');
 
         $this->app->singleton(PostRepositoryInterface::class, PostRepository::class);
+
+        if ($this->app->bound(AdminResourceRegistryInterface::class)) {
+            $this->app->make(AdminResourceRegistryInterface::class)->registerResource('posts', PostResource::class);
+        }
     }
 
     protected function bootModule(): void
     {
         $this->loadModuleMigrations(__DIR__.'/../database/migrations');
+
+        if ($this->app->bound(AdminDashboardRegistryInterface::class)) {
+            $this->app->make(AdminDashboardRegistryInterface::class)->registerStat(
+                new DashboardStat('Posts', fn (): int => Post::count(), 'heroicon-o-newspaper', 'primary'),
+            );
+        }
 
         if ($this->app->runningInConsole()) {
             $this->publishes([

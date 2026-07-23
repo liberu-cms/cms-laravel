@@ -5759,9 +5759,10 @@
             "dist": {
                 "type": "path",
                 "url": "packages/liberu-cms/cms-content-types",
-                "reference": "04d8a1a4da601ce2d7f8ece667b01c8b0b817d18"
+                "reference": "c1bd178cef46285962005d635d89748122c9546f"
             },
             "require": {
+                "filament/filament": "^5.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/database": "^13.0",
                 "illuminate/support": "^13.0",
@@ -5919,9 +5920,10 @@
             "dist": {
                 "type": "path",
                 "url": "packages/liberu-cms/cms-media",
-                "reference": "dc3a36b68238c26f2c2f6f7567dad6e54018cf3e"
+                "reference": "cf956c8a7727733ce643d836bf557795c0eecbb2"
             },
             "require": {
+                "filament/filament": "^5.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/database": "^13.0",
                 "illuminate/filesystem": "^13.0",
@@ -5964,9 +5966,10 @@
             "dist": {
                 "type": "path",
                 "url": "packages/liberu-cms/cms-menus",
-                "reference": "01b06e2c81310e8d7d0800c9e418bfe1e8b1ddac"
+                "reference": "d290cddcf1dbc2e8d71df82e7406d32834c0c4d4"
             },
             "require": {
+                "filament/filament": "^5.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/database": "^13.0",
                 "illuminate/support": "^13.0",
@@ -6008,9 +6011,10 @@
             "dist": {
                 "type": "path",
                 "url": "packages/liberu-cms/cms-pages",
-                "reference": "05a63fa09f72cc7c930bb24e1b09d91ae92b0d1c"
+                "reference": "44d7c0624e15102f8917ee9ccad3f8aa7d5a515a"
             },
             "require": {
+                "filament/filament": "^5.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/database": "^13.0",
                 "illuminate/support": "^13.0",
@@ -6053,9 +6057,10 @@
             "dist": {
                 "type": "path",
                 "url": "packages/liberu-cms/cms-posts",
-                "reference": "ffaa56fb822945e99d877353f585c969af59d369"
+                "reference": "dfc623ec969b64343dbc56227cc9f7130378cca8"
             },
             "require": {
+                "filament/filament": "^5.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/database": "^13.0",
                 "illuminate/support": "^13.0",
@@ -6098,9 +6103,10 @@
             "dist": {
                 "type": "path",
                 "url": "packages/liberu-cms/cms-themes",
-                "reference": "4b0d7b9ce4be58030b88ce920ca44e3e35fd346a"
+                "reference": "990e3cc755a260a13a8e92c35ee07451a3fbde1c"
             },
             "require": {
+                "filament/filament": "^5.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/database": "^13.0",
                 "illuminate/support": "^13.0",
@@ -6186,9 +6192,10 @@
             "dist": {
                 "type": "path",
                 "url": "packages/liberu-cms/cms-widgets",
-                "reference": "a2c7e773257d3bb64374d3ceacc0792180ef36ea"
+                "reference": "fe5bf4ef61c9f2c9b90c5aa2c8d509ab226e6df6"
             },
             "require": {
+                "filament/filament": "^5.0",
                 "illuminate/support": "^13.0",
                 "liberu-cms/cms-contracts": "*",
                 "liberu-cms/cms-core": "*",

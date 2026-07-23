@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace Liberu\Cms\Media;
 
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Liberu\Cms\Contracts\Admin\AdminDashboardRegistryInterface;
+use Liberu\Cms\Contracts\Admin\AdminResourceRegistryInterface;
+use Liberu\Cms\Contracts\Admin\DashboardStat;
 use Liberu\Cms\Contracts\Events\EventBusInterface;
 use Liberu\Cms\Contracts\Media\MediaRepositoryInterface;
 use Liberu\Cms\Contracts\Module\ModuleInterface;
 use Liberu\Cms\Core\Module\ModuleServiceProvider;
+use Liberu\Cms\Media\Filament\MediaResource;
 use Liberu\Cms\Media\Media\MediaRepository;
 use Liberu\Cms\Media\Media\StoreUpload;
+use Liberu\Cms\Media\Models\Media;
 
 final class MediaServiceProvider extends ModuleServiceProvider
 {
@@ -39,11 +44,21 @@ final class MediaServiceProvider extends ModuleServiceProvider
                 is_array($mimeTypes) ? array_values(array_filter($mimeTypes, is_string(...))) : [],
             );
         });
+
+        if ($this->app->bound(AdminResourceRegistryInterface::class)) {
+            $this->app->make(AdminResourceRegistryInterface::class)->registerResource('media', MediaResource::class);
+        }
     }
 
     protected function bootModule(): void
     {
         $this->loadModuleMigrations(__DIR__.'/../database/migrations');
+
+        if ($this->app->bound(AdminDashboardRegistryInterface::class)) {
+            $this->app->make(AdminDashboardRegistryInterface::class)->registerStat(
+                new DashboardStat('Media', fn (): int => Media::count(), 'heroicon-o-photo', 'primary'),
+            );
+        }
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
