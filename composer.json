@@ -29,6 +29,7 @@
         "liberu-cms/cms-core": "*",
         "liberu-cms/cms-hello": "*",
         "liberu-cms/cms-media": "*",
+        "liberu-cms/cms-menus": "*",
         "liberu-cms/cms-pages": "*",
         "liberu-cms/cms-posts": "*",
         "liberu-cms/cms-themes": "*",
