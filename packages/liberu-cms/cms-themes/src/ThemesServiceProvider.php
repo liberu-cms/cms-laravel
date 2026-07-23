@@ -8,11 +8,13 @@ use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\View\Factory as ViewFactory;
 use Illuminate\View\FileViewFinder;
+use Liberu\Cms\Contracts\Admin\AdminResourceRegistryInterface;
 use Liberu\Cms\Contracts\Events\EventBusInterface;
 use Liberu\Cms\Contracts\Module\ModuleInterface;
 use Liberu\Cms\Contracts\Theme\ThemeInterface;
 use Liberu\Cms\Contracts\Theme\ThemeManagerInterface;
 use Liberu\Cms\Core\Module\ModuleServiceProvider;
+use Liberu\Cms\Themes\Filament\Pages\ThemeManagement;
 
 final class ThemesServiceProvider extends ModuleServiceProvider
 {
@@ -34,11 +36,16 @@ final class ThemesServiceProvider extends ModuleServiceProvider
             $this->app->make(EventBusInterface::class),
             $this->defaultThemeKey(),
         ));
+
+        if ($this->app->bound(AdminResourceRegistryInterface::class)) {
+            $this->app->make(AdminResourceRegistryInterface::class)->registerPage('themes', ThemeManagement::class);
+        }
     }
 
     protected function bootModule(): void
     {
         $this->loadModuleMigrations(__DIR__.'/../database/migrations');
+        $this->loadModuleViews(__DIR__.'/../resources/views', 'cms-themes');
 
         $manager = $this->app->make(ThemeManagerInterface::class);
         $manager->register(new Theme($this->defaultThemeKey(), 'Default', $this->app->resourcePath('views')));

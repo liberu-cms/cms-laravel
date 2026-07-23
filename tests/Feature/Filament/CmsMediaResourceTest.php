@@ -1,0 +1,82 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Models\Team;
+use App\Models\User;
+use Filament\Facades\Filament;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Liberu\Cms\Media\Filament\MediaResource;
+use Liberu\Cms\Media\Filament\Pages\ListMedia;
+use Liberu\Cms\Media\Models\Media;
+use Livewire\Livewire;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function (): void {
+    $this->user = User::factory()->create();
+    $this->team = Team::factory()->create(['user_id' => $this->user->id]);
+    $this->actingAs($this->user);
+    Filament::setCurrentPanel(Filament::getPanel('app'));
+    Filament::setTenant($this->team);
+});
+
+function makeMedia(array $overrides = []): Media
+{
+    return Media::create(array_merge([
+        'disk' => 'public',
+        'path' => 'media/example.jpg',
+        'file_name' => 'example.jpg',
+        'mime_type' => 'image/jpeg',
+        'size' => 2048,
+        'folder' => null,
+        'metadata' => [],
+    ], $overrides));
+}
+
+it('renders the media list', function (): void {
+    Livewire::test(ListMedia::class)->assertSuccessful();
+});
+
+it('lists media records', function (): void {
+    $items = collect(range(1, 3))->map(fn (int $i): Media => makeMedia(['file_name' => "file-{$i}.jpg", 'path' => "media/file-{$i}.jpg"]));
+
+    Livewire::test(ListMedia::class)->assertCanSeeTableRecords($items);
+});
+
+it('does not allow creating media directly', function (): void {
+    expect(MediaResource::canCreate())->toBeFalse();
+});
+
+it('edits media metadata through the row action', function (): void {
+    $media = makeMedia(['file_name' => 'old.jpg']);
+
+    Livewire::test(ListMedia::class)
+        ->callTableAction('edit', $media, ['file_name' => 'renamed.jpg']);
+
+    expect($media->fresh()->file_name)->toBe('renamed.jpg');
+});
+
+it('deletes media through the row action', function (): void {
+    $media = makeMedia();
+
+    Livewire::test(ListMedia::class)->callTableAction('delete', $media);
+
+    $this->assertModelMissing($media);
+});
+
+it('uploads a file through the header action', function (): void {
+    Storage::fake('public');
+    config()->set('cms-media.disk', 'public');
+    config()->set('cms-media.max_size_kb', 20480);
+    config()->set('cms-media.allowed_mime_types', ['image/jpeg', 'image/png']);
+
+    Livewire::test(ListMedia::class)
+        ->callAction('upload', [
+            'file' => UploadedFile::fake()->image('new-upload.png'),
+        ]);
+
+    expect(Media::query()->where('file_name', 'new-upload.png')->exists())->toBeTrue();
+});

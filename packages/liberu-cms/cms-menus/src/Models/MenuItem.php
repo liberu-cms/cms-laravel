@@ -52,6 +52,14 @@ final class MenuItem extends Model
         return $this->belongsTo(Menu::class);
     }
 
+    /**
+     * @return BelongsTo<MenuItem, $this>
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
     protected static function newFactory(): MenuItemFactory
     {
         return MenuItemFactory::new();

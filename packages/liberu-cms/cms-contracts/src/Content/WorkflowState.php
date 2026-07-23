@@ -15,4 +15,20 @@ enum WorkflowState: string
     case Review = 'review';
     case Published = 'published';
     case Archived = 'archived';
+
+    /**
+     * The states as value => human label pairs, for admin form selects.
+     *
+     * @return array<string, string>
+     */
+    public static function options(): array
+    {
+        $options = [];
+
+        foreach (self::cases() as $state) {
+            $options[$state->value] = ucfirst($state->value);
+        }
+
+        return $options;
+    }
 }
