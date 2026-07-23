@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Liberu\Cms\Content\Support\Slugger;
+use Liberu\Cms\Core\Tenant\HasTenant;
 use Liberu\Cms\Posts\Database\Factories\TagFactory;
 
 /**
@@ -20,6 +21,8 @@ final class Tag extends Model
 {
     /** @use HasFactory<TagFactory> */
     use HasFactory;
+
+    use HasTenant;
 
     #[\Override]
     protected $table = 'cms_tags';

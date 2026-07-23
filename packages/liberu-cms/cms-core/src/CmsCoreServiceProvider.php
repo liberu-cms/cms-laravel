@@ -11,11 +11,13 @@ use Liberu\Cms\Contracts\Events\EventBusInterface;
 use Liberu\Cms\Contracts\Module\ModuleManagerInterface;
 use Liberu\Cms\Contracts\Module\ModuleRegistryInterface;
 use Liberu\Cms\Contracts\Module\ModuleStateRepositoryInterface;
+use Liberu\Cms\Contracts\Tenancy\TenantModelResolverInterface;
 use Liberu\Cms\Core\Console\MakeModuleCommand;
 use Liberu\Cms\Core\Events\EventBus;
 use Liberu\Cms\Core\Module\DatabaseModuleStateRepository;
 use Liberu\Cms\Core\Module\ModuleManager;
 use Liberu\Cms\Core\Module\ModuleRegistry;
+use Liberu\Cms\Core\Tenant\NullTenantResolver;
 
 /**
  * The CMS kernel provider.
@@ -48,6 +50,8 @@ final class CmsCoreServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(EventBusInterface::class, fn (): EventBus => new EventBus($this->app));
+
+        $this->app->bindIf(TenantModelResolverInterface::class, NullTenantResolver::class);
     }
 
     /**
