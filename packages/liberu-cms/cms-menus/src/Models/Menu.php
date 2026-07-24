@@ -7,6 +7,7 @@ namespace Liberu\Cms\Menus\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Liberu\Cms\Core\Tenant\HasTenant;
 use Liberu\Cms\Menus\Database\Factories\MenuFactory;
 
 /**
@@ -16,11 +17,14 @@ use Liberu\Cms\Menus\Database\Factories\MenuFactory;
  * @property int $id
  * @property string $name
  * @property string $location
+ * @property int|null $team_id
  */
 final class Menu extends Model
 {
     /** @use HasFactory<MenuFactory> */
     use HasFactory;
+
+    use HasTenant;
 
     #[\Override]
     protected $table = 'cms_menus';
@@ -29,7 +33,7 @@ final class Menu extends Model
      * @var list<string>
      */
     #[\Override]
-    protected $fillable = ['name', 'location'];
+    protected $fillable = ['name', 'location', 'team_id'];
 
     /**
      * @return HasMany<MenuItem, $this>

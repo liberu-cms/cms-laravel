@@ -6,6 +6,7 @@ use App\Models\Team;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Liberu\Cms\ContentTypes\Filament\ContentEntryResource;
 use Liberu\Cms\ContentTypes\Filament\Pages\ListContentEntries;
 use Liberu\Cms\ContentTypes\Models\ContentEntry;
 use Liberu\Cms\ContentTypes\Models\ContentType;
@@ -17,7 +18,15 @@ beforeEach(function (): void {
     $this->user = User::factory()->create();
     $this->team = Team::factory()->create(['user_id' => $this->user->id]);
     $this->actingAs($this->user);
-    Filament::setCurrentPanel(Filament::getPanel('app'));
+
+    $panel = Filament::getPanel('app');
+    Filament::setCurrentPanel($panel);
+
+    // Livewire::test() does not run Panel::boot(), so register the tenancy scope
+    // and creation observer the way a real request would.
+    ContentEntryResource::registerTenancyModelGlobalScope($panel);
+    ContentEntryResource::observeTenancyModelCreation($panel);
+
     Filament::setTenant($this->team);
 });
 
@@ -68,4 +77,22 @@ it('deletes an entry through the row action', function (): void {
     Livewire::test(ListContentEntries::class)->callTableAction('delete', $entry);
 
     $this->assertModelMissing($entry);
+});
+
+it('scopes entries to the current tenant', function (): void {
+    Filament::setTenant($this->team);
+    $mine = ContentEntry::factory()->create();
+
+    $otherTeam = Team::factory()->create(['user_id' => $this->user->id]);
+    Filament::setTenant($otherTeam);
+    $theirs = ContentEntry::factory()->create();
+
+    Filament::setTenant($this->team);
+
+    expect($mine->team_id)->toBe($this->team->id)
+        ->and($theirs->team_id)->toBe($otherTeam->id);
+
+    Livewire::test(ListContentEntries::class)
+        ->assertCanSeeTableRecords([$mine])
+        ->assertCanNotSeeTableRecords([$theirs]);
 });

@@ -7,6 +7,7 @@ use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Liberu\Cms\Posts\Filament\Pages\ListPosts;
+use Liberu\Cms\Posts\Filament\PostResource;
 use Liberu\Cms\Posts\Models\Post;
 use Livewire\Livewire;
 
@@ -16,7 +17,15 @@ beforeEach(function (): void {
     $this->user = User::factory()->create();
     $this->team = Team::factory()->create(['user_id' => $this->user->id]);
     $this->actingAs($this->user);
-    Filament::setCurrentPanel(Filament::getPanel('app'));
+
+    $panel = Filament::getPanel('app');
+    Filament::setCurrentPanel($panel);
+
+    // Livewire::test() does not run Panel::boot(), so register the tenancy scope
+    // and creation observer the way a real request would.
+    PostResource::registerTenancyModelGlobalScope($panel);
+    PostResource::observeTenancyModelCreation($panel);
+
     Filament::setTenant($this->team);
 });
 
@@ -25,7 +34,7 @@ it('renders the posts list', function (): void {
 });
 
 it('lists post records', function (): void {
-    $posts = Post::factory()->count(3)->create();
+    $posts = Post::factory()->count(3)->create(['team_id' => $this->team->id]);
 
     Livewire::test(ListPosts::class)->assertCanSeeTableRecords($posts);
 });
@@ -45,7 +54,7 @@ it('creates a post through the modal', function (): void {
 });
 
 it('edits a post through the row action', function (): void {
-    $post = Post::factory()->create(['title' => 'Draft Title']);
+    $post = Post::factory()->create(['title' => 'Draft Title', 'team_id' => $this->team->id]);
 
     Livewire::test(ListPosts::class)
         ->callTableAction('edit', $post, ['title' => 'Published Title']);
@@ -54,7 +63,7 @@ it('edits a post through the row action', function (): void {
 });
 
 it('deletes a post through the row action', function (): void {
-    $post = Post::factory()->create();
+    $post = Post::factory()->create(['team_id' => $this->team->id]);
 
     Livewire::test(ListPosts::class)->callTableAction('delete', $post);
 

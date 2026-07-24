@@ -40,8 +40,6 @@ final class MenuItemResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'label';
 
-    protected static bool $isScopedToTenant = false;
-
     public static function form(Schema $schema): Schema
     {
         return $schema->components([

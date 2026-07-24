@@ -19,7 +19,15 @@ beforeEach(function (): void {
     $this->user = User::factory()->create();
     $this->team = Team::factory()->create(['user_id' => $this->user->id]);
     $this->actingAs($this->user);
-    Filament::setCurrentPanel(Filament::getPanel('app'));
+
+    $panel = Filament::getPanel('app');
+    Filament::setCurrentPanel($panel);
+
+    // Livewire::test() does not run Panel::boot(), so register the tenancy scope
+    // and creation observer the way a real request would.
+    MediaResource::registerTenancyModelGlobalScope($panel);
+    MediaResource::observeTenancyModelCreation($panel);
+
     Filament::setTenant($this->team);
 });
 
@@ -79,4 +87,22 @@ it('uploads a file through the header action', function (): void {
         ]);
 
     expect(Media::query()->where('file_name', 'new-upload.png')->exists())->toBeTrue();
+});
+
+it('scopes media to the current tenant', function (): void {
+    Filament::setTenant($this->team);
+    $mine = makeMedia(['file_name' => 'mine.jpg', 'path' => 'media/mine.jpg']);
+
+    $otherTeam = Team::factory()->create(['user_id' => $this->user->id]);
+    Filament::setTenant($otherTeam);
+    $theirs = makeMedia(['file_name' => 'theirs.jpg', 'path' => 'media/theirs.jpg']);
+
+    Filament::setTenant($this->team);
+
+    expect($mine->team_id)->toBe($this->team->id)
+        ->and($theirs->team_id)->toBe($otherTeam->id);
+
+    Livewire::test(ListMedia::class)
+        ->assertCanSeeTableRecords([$mine])
+        ->assertCanNotSeeTableRecords([$theirs]);
 });
