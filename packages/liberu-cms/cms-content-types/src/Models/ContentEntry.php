@@ -12,6 +12,7 @@ use Liberu\Cms\Content\Support\Slugger;
 use Liberu\Cms\Content\Workflow\HasWorkflow;
 use Liberu\Cms\ContentTypes\Database\Factories\ContentEntryFactory;
 use Liberu\Cms\Contracts\Content\PublishableInterface;
+use Liberu\Cms\Core\Tenant\HasTenant;
 
 /**
  * A content item belonging to a custom content type, whose `data` conforms to
@@ -22,6 +23,7 @@ use Liberu\Cms\Contracts\Content\PublishableInterface;
  * @property string $title
  * @property string $slug
  * @property array<string, mixed>|null $data
+ * @property int|null $team_id
  */
 final class ContentEntry extends Model implements PublishableInterface
 {
@@ -29,6 +31,7 @@ final class ContentEntry extends Model implements PublishableInterface
     use HasFactory;
 
     use HasRevisions;
+    use HasTenant;
     use HasWorkflow;
 
     #[\Override]
@@ -38,7 +41,7 @@ final class ContentEntry extends Model implements PublishableInterface
      * @var list<string>
      */
     #[\Override]
-    protected $fillable = ['content_type_id', 'title', 'slug', 'data', 'status', 'published_at'];
+    protected $fillable = ['content_type_id', 'title', 'slug', 'data', 'status', 'published_at', 'team_id'];
 
     /**
      * @return array<string, string>

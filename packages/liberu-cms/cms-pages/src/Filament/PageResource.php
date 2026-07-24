@@ -43,12 +43,6 @@ final class PageResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    /**
-     * Module content is not yet tenant-scoped — the tenancy contract that lets
-     * module models resolve the host tenant is a deferred, separate step.
-     */
-    protected static bool $isScopedToTenant = false;
-
     public static function form(Schema $schema): Schema
     {
         return $schema->components([

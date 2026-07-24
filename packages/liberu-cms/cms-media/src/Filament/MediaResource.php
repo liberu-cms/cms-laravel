@@ -41,8 +41,6 @@ final class MediaResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'file_name';
 
-    protected static bool $isScopedToTenant = false;
-
     public static function canCreate(): bool
     {
         return false;

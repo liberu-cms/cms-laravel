@@ -41,4 +41,13 @@ final class PageFactory extends Factory
             'published_at' => now(),
         ]);
     }
+
+    public function home(): static
+    {
+        return $this->state(fn (): array => [
+            'title' => 'Home',
+            'slug' => 'home',
+            'template' => 'home',
+        ]);
+    }
 }

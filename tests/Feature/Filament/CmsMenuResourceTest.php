@@ -6,6 +6,8 @@ use App\Models\Team;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Liberu\Cms\Menus\Filament\MenuItemResource;
+use Liberu\Cms\Menus\Filament\MenuResource;
 use Liberu\Cms\Menus\Filament\Pages\ListMenuItems;
 use Liberu\Cms\Menus\Filament\Pages\ListMenus;
 use Liberu\Cms\Menus\Models\Menu;
@@ -18,7 +20,17 @@ beforeEach(function (): void {
     $this->user = User::factory()->create();
     $this->team = Team::factory()->create(['user_id' => $this->user->id]);
     $this->actingAs($this->user);
-    Filament::setCurrentPanel(Filament::getPanel('app'));
+
+    $panel = Filament::getPanel('app');
+    Filament::setCurrentPanel($panel);
+
+    // Livewire::test() does not run Panel::boot(), so register the tenancy scope
+    // and creation observer the way a real request would.
+    foreach ([MenuResource::class, MenuItemResource::class] as $resource) {
+        $resource::registerTenancyModelGlobalScope($panel);
+        $resource::observeTenancyModelCreation($panel);
+    }
+
     Filament::setTenant($this->team);
 });
 
@@ -80,4 +92,22 @@ it('lists menu item records', function (): void {
     $items = MenuItem::factory()->count(2)->for($menu)->create();
 
     Livewire::test(ListMenuItems::class)->assertCanSeeTableRecords($items);
+});
+
+it('scopes menus to the current tenant', function (): void {
+    Filament::setTenant($this->team);
+    $mine = Menu::factory()->create();
+
+    $otherTeam = Team::factory()->create(['user_id' => $this->user->id]);
+    Filament::setTenant($otherTeam);
+    $theirs = Menu::factory()->create();
+
+    Filament::setTenant($this->team);
+
+    expect($mine->team_id)->toBe($this->team->id)
+        ->and($theirs->team_id)->toBe($otherTeam->id);
+
+    Livewire::test(ListMenus::class)
+        ->assertCanSeeTableRecords([$mine])
+        ->assertCanNotSeeTableRecords([$theirs]);
 });

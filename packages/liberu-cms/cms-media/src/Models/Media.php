@@ -7,6 +7,7 @@ namespace Liberu\Cms\Media\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Liberu\Cms\Contracts\Media\MediaItemInterface;
+use Liberu\Cms\Core\Tenant\HasTenant;
 
 /**
  * @property int $id
@@ -17,9 +18,12 @@ use Liberu\Cms\Contracts\Media\MediaItemInterface;
  * @property int $size
  * @property string|null $folder
  * @property array<string, mixed>|null $metadata
+ * @property int|null $team_id
  */
 final class Media extends Model implements MediaItemInterface
 {
+    use HasTenant;
+
     #[\Override]
     protected $table = 'cms_media';
 
@@ -35,6 +39,7 @@ final class Media extends Model implements MediaItemInterface
         'size',
         'folder',
         'metadata',
+        'team_id',
     ];
 
     /**

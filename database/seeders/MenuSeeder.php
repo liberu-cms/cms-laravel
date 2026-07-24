@@ -2,71 +2,45 @@
 
 namespace Database\Seeders;
 
-use App\Models\Collection;
-use App\Models\Menu;
-use App\Models\MenuItem;
-use App\Models\Page;
 use App\Models\Team;
 use Illuminate\Database\Seeder;
+use Liberu\Cms\Menus\Models\Menu;
+use Liberu\Cms\Menus\Models\MenuItem;
+use Liberu\Cms\Pages\Models\Page;
 
 class MenuSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Seed a primary navigation menu using the cms-menus module.
      */
     public function run(): void
     {
-        $menus = [
-            'main' => [
-                [
-                    'name' => 'Home',
-                    'menuable_type' => Page::class,
-                    'menuable_id' => Page::where('slug', 'home')->first()?->id,
-                    'type' => 'model',
-                ],
-                [
-                    'name' => 'About',
-                    'menuable_type' => Page::class,
-                    'menuable_id' => Page::where('slug', 'about')->first()?->id,
-                    'type' => 'model',
-                ],
-                [
-                    'name' => 'Blog',
-                    'menuable_type' => Collection::class,
-                    'menuable_id' => Collection::where('slug', 'blog')->first()?->id,
-                    'type' => 'model',
-                ],
-                // [
-                //     'name' => 'Contact',
-                //     'url' => 'contact',
-                //     'order' => 3
-                // ],
-            ],
+        $teamId = Team::first()?->id;
+
+        $menu = Menu::create([
+            'name' => 'Main',
+            'location' => 'header',
+            'team_id' => $teamId,
+        ]);
+
+        $items = [
+            ['label' => 'Home', 'slug' => 'home', 'fallback' => '/'],
+            ['label' => 'About', 'slug' => 'about', 'fallback' => '/about'],
+            ['label' => 'Blog', 'slug' => null, 'fallback' => '/blog'],
         ];
 
-        foreach ($menus as $menu => $menuItems) {
-            $menu = Menu::create([
-                'name' => $menu,
-                'slug' => $menu,
-                'team_id' => Team::first()?->id,
+        foreach ($items as $sort => $item) {
+            $url = $item['slug'] !== null
+                ? '/'.(Page::where('slug', $item['slug'])->value('slug') ?? ltrim($item['fallback'], '/'))
+                : $item['fallback'];
+
+            MenuItem::create([
+                'menu_id' => $menu->id,
+                'label' => $item['label'],
+                'url' => $url,
+                'sort' => $sort,
+                'team_id' => $teamId,
             ]);
-            foreach ($menuItems as $menuData) {
-                $this->createMenu($menu->id, $menuData);
-            }
-        }
-    }
-
-    private function createMenu($menuId, array $menuData, $parentId = null): void
-    {
-        $children = $menuData['children'] ?? [];
-        unset($menuData['children']);
-
-        $menuData['menu_id'] = $menuId;
-        $menuData['parent_id'] = $parentId;
-        $menuItem = MenuItem::create($menuData);
-
-        foreach ($children as $childData) {
-            $this->createMenu($menuId, $childData, $menuItem->id);
         }
     }
 }

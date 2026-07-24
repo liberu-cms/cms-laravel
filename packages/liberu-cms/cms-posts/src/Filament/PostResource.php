@@ -44,8 +44,6 @@ final class PostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static bool $isScopedToTenant = false;
-
     public static function form(Schema $schema): Schema
     {
         return $schema->components([

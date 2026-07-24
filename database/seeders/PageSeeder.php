@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Page;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Liberu\Cms\Pages\Models\Page;
 
 class PageSeeder extends Seeder
 {

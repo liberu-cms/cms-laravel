@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Liberu\Cms\Content\Support\Slugger;
+use Liberu\Cms\Core\Tenant\HasTenant;
 use Liberu\Cms\Posts\Database\Factories\CategoryFactory;
 
 /**
@@ -21,6 +22,8 @@ final class Category extends Model
 {
     /** @use HasFactory<CategoryFactory> */
     use HasFactory;
+
+    use HasTenant;
 
     #[\Override]
     protected $table = 'cms_categories';
