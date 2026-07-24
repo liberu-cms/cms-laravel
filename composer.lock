@@ -5717,14 +5717,15 @@
             "dist": {
                 "type": "path",
                 "url": "packages/liberu-cms/cms-content",
-                "reference": "cde86441508baa9058a3a3c1acde442599d2ce5b"
+                "reference": "f6436e7d9e902b8a04b781d6068cbe368e5a8479"
             },
             "require": {
                 "illuminate/contracts": "^13.0",
                 "illuminate/database": "^13.0",
                 "illuminate/support": "^13.0",
                 "liberu-cms/cms-contracts": "*",
-                "php": "^8.5"
+                "php": "^8.5",
+                "symfony/html-sanitizer": "^7.0|^8.0"
             },
             "type": "library",
             "extra": {
