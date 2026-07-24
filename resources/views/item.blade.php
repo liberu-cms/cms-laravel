@@ -22,7 +22,7 @@
 
         {{-- Content --}}
         <div class="prose prose-lg max-w-none">
-            {!! $item->content !!}
+            @sanitize($item->content)
         </div>
 
         {{-- Footer --}}
